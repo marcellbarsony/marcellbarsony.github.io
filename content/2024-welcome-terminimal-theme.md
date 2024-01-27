@@ -27,6 +27,8 @@ printer()
 # prints: Hello, World!
 ```
 
+<!-- more -->
+
 Inline code: `print("Hello world!")`.
 
 Basic typography:
@@ -37,8 +39,6 @@ Basic typography:
 ## Header 2
 ### Header 3
 #### Header 4
-
-<!-- more -->
 
 Quote:
 
