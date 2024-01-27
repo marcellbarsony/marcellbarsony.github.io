@@ -3,7 +3,7 @@ title = "About"
 path = "about"
 +++
 
-I am Marcell, IT Security Operations Engineer with 2 years of demonstrated international experience in IT Security and with 6 years in IT overall.
+I am Marcell, IT Security Operations Engineer with 2 years of demonstrated international experience in IT Security (and with 6 years in IT overall).
 
 Since December 2017, I am working for an industry-leading multinational professional services company - 
 managing IT Security-related tasks and processes, providing professional IT services for more than 13,000 people in 19 countries.
