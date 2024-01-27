@@ -1,5 +1,5 @@
 base_url = "https://marcellbarsony.github.io/"
-title = "Zola Terminimal theme"
+title = "Page Title"
 
 # Sass
 compile_sass = true
@@ -13,7 +13,7 @@ feed_filename = "atom.xml"
 
 # Tags
 taxonomies = [
-    {name = "tags"}
+    { name = "tags" }
 ]
 
 # Code highlighting
@@ -22,7 +22,7 @@ highlight_code = true
 highlight_theme = "boron"
 
 [extra]
-logo_text = "e"
+logo_text = "------------"
 
 # Author name: when specified, modifies the default
 # copyright text. Apart from author, it will
