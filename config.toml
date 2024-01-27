@@ -1,0 +1,66 @@
+base_url = "https://marcellbarsony.github.io/"
+title = "Zola Terminimal theme"
+
+# Sass
+compile_sass = true
+
+# JavaScript
+build_search_index = false
+
+# RSS
+generate_feed = false
+feed_filename = "atom.xml"
+
+# Tags
+taxonomies = [
+    {name = "tags"}
+]
+
+# Code highlighting
+[markdown]
+highlight_code = true
+highlight_theme = "boron"
+
+[extra]
+logo_text = "e"
+
+# Author name: when specified, modifies the default
+# copyright text. Apart from author, it will
+# contain current year and a link to the theme.
+author = "My Name 2023"
+
+# Copyright text in HTML format
+copyright_html = "My custom&nbsp;<b>copyright</b>"
+
+# menu is enabled by adding menu_items (optional)
+menu_items = [
+    {name = "blog", url = "$BASE_URL"},
+    {name = "tags", url = "$BASE_URL/tags"}, # tags should only be enabled if you have "tags" taxonomy
+    {name = "archive", url = "$BASE_URL/archive"},
+    {name = "about", url = "$BASE_URL/about"},
+    # {name = "github", url = "https://github.com/pawroman/zola-theme-terminimal", newtab = true},
+]
+
+# Whether to show links to earlier and later (aka. higher/lower) posts
+# on each post page (defaults to true).
+enable_post_view_navigation = true
+
+use_full_hack_font = false
+
+# Optional: Global favicon URL and mimetype.
+#           Mimetype defaults to "image/x-icon".
+#           The URL should point at a file located
+#           in your site's "static" directory.
+# favicon = "/favicon.png"
+# favicon_mimetype = "image/png"
+
+# Optional: Set how <title> elements are rendered.
+# Values:
+# - "main_only" -- only the main title (`config.title`) is rendered.
+# - "page_only" -- only the page title (if defined) is rendered,
+#                  falling back to `config.title` if not defined or empty.
+# - "combined" -- combine like so: "page_title | main_title",
+#                 or if page_title is not defined or empty, fall back to `main_title`
+#
+# Note that the main (index) page only has the main title.
+page_titles = "main_only"
