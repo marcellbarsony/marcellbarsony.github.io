@@ -66,9 +66,9 @@
 
     display: inline;
 
-    @media (max-width: $phone-max-width) {
-      display: block;
-    }
+    // @media (max-width: $phone-max-width) {
+    //   display: block;
+    // }
   }
 
   &-content {

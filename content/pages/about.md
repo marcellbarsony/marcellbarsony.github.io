@@ -12,7 +12,7 @@ managing IT Security-related tasks and processes, providing professional IT serv
 
 [GitHub](https://github.com/marcellbarsony)
 
-[LinkedIn](https://linkedin.com/marcellbarsony)
+[LinkedIn](https://linkedin.com/marcellbarsony) _(login required)_
 
 {{ figure(src="https://avatars.githubusercontent.com/u/56371023",
           style="width: 100%;",
