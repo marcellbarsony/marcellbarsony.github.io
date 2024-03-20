@@ -95,7 +95,7 @@
                 ::
                 {%- set sep = "," -%}
             {% else %}
-                ::&nbsp;
+                ::
                 {%- set sep = "&nbsp;" -%}
             {% endif -%}
             {%- for tag in page.taxonomies.tags | sort | unique(case_sensitive=false) %}
