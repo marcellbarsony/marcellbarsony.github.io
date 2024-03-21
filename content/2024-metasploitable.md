@@ -9,7 +9,6 @@ tags = ["metasploitable", "showcase"]
 ## Notes
 
 - Simple vulnerability
-- 
 
 ## Lab setup
 

@@ -34,8 +34,8 @@ copyright_html = "My custom&nbsp;<b>copyright</b>"
 
 # menu is enabled by adding menu_items (optional)
 menu_items = [
-    {name = "blog", url = "$BASE_URL"},
-    {name = "tags", url = "$BASE_URL/tags"}, # tags should only be enabled if you have "tags" taxonomy
+    {name = "posts", url = "$BASE_URL"},
+    {name = "tags", url = "$BASE_URL/tags"},
     {name = "archive", url = "$BASE_URL/archive"},
     {name = "about", url = "$BASE_URL/about"},
     # {name = "github", url = "https://github.com/pawroman/zola-theme-terminimal", newtab = true},
