@@ -7,7 +7,7 @@ tags = ["portswigger", "burp-suite", "directory-traversal", "path-traversal"]
 +++
 
 
-![directory-traversal](/pictures/path-traversal.svg)
+![directory-traversal](/pictures/directory-traversal.svg)
 
 
 Directory traversal (path traversal) vulnerabilities enable an attacker
