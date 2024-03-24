@@ -1,6 +1,6 @@
 +++
 title = "Authentication vulnerabilities"
-date = 2024-03-20
+date = 2024-03-19
 
 [taxonomies]
 tags = ["portswigger", "authentication"]
