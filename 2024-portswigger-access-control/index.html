@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title>Page Title</title>
+    
+    <meta http-equiv="content-type" content="text/html; charset=utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
+    <meta name="robots" content="noodp"/>
+
+    <link rel="stylesheet" href="https://marcellbarsony.github.io/style.css">
+
+    <link rel="stylesheet" href="https://marcellbarsony.github.io/color/blue.css">
+    <link rel="stylesheet" href="https://marcellbarsony.github.io/font-hack-subset.css">
+
+    <meta name="description" content="">
+
+    <meta property="og:description" content="">
+    <meta property="og:title" content="Page Title">
+    <meta property="og:type" content="article">
+    <meta property="og:url" content="https://marcellbarsony.github.io/2024-portswigger-access-control/">
+
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:description" content="">
+    <meta name="twitter:title" content="Page Title">
+    <meta property="twitter:domain" content="marcellbarsony.github.io&#x2F;">
+    <meta property="twitter:url" content="https://marcellbarsony.github.io/2024-portswigger-access-control/">
+
+    </head>
+
+<body class="">
+<div class="container">
+    <!-- HEADER -->
+    
+    <header class="header">
+        <!-- LOGO -->
+        <!-- <div class="header__inner"> -->
+        <!--     <div class="header__logo"> -->
+        <!-- -->
+        <!--              -->
+        <!--         -->
+        <!--         <a href="https://marcellbarsony.github.io/" style="text-decoration: none;"> -->
+        <!--             <div class="logo"> -->
+        <!--                -->
+        <!-- -->
+        <!--                     | | | | | | | | | | -->
+        <!--                 -->
+        <!--                  -->
+        <!--             </div> -->
+        <!--         </a> -->
+        <!--     </div> -->
+        <!-- </div> -->
+
+        
+        
+                <nav class="menu">
+            <ul class="menu__inner">
+                <li class="active"><a href="https://marcellbarsony.github.io/">posts</a></li>
+            
+                <li><a href="https://marcellbarsony.github.io//tags">tags</a></li>
+            
+                <li><a href="https://marcellbarsony.github.io//archive">archive</a></li>
+            
+                <li><a href="https://marcellbarsony.github.io//about">about</a></li>
+            </ul>
+        </nav>
+    
+    
+        
+    </header>
+    
+
+    <div class="content">
+        
+    <div class="post">
+        
+    <h1 class="post-title"><a href="https://marcellbarsony.github.io/2024-portswigger-access-control/">Access control vulnerabilities</a></h1>
+    <div class="post-meta-inline">
+        
+    <span class="post-date">
+            2024-03-21
+        </span>
+
+    </div>
+
+    
+        <span class="post-tags-inline">
+                ::
+                <a class="post-tag" href="https://marcellbarsony.github.io/tags/portswigger/">portswigger</a>&nbsp;
+            
+                <a class="post-tag" href="https://marcellbarsony.github.io/tags/burp-suite/">burp-suite</a>&nbsp;
+            
+                <a class="post-tag" href="https://marcellbarsony.github.io/tags/access-control/">access-control</a>&nbsp;
+            
+        </span>
+    
+
+        <div class="post-content">
+            <p><img src="/pictures/access-control.svg" alt="access-control" /></p>
+<!-- Access control is the application of constraints on who or what is -->
+<!-- authorized to perform actions or access resources. -->
+<!-- In the context of web applications, access control is dependent on -->
+<!-- authentication and session management: -->
+<ul>
+<li><strong>Authentication</strong> confirms that the user is who they say they are</li>
+<li><strong>Session management</strong> identifies if HTTP requests are made by the same user</li>
+<li><strong>Access control</strong> determines whether the user is authorized to carry
+out the action that they are attempting to perform.</li>
+</ul>
+<!-- Design and management of access controls is a complex and dynamic -->
+<!-- problem that applies business, organizational, -->
+<!-- and legal constraints to a technical implementation. -->
+<span id="continue-reading"></span><h2 id="exploitation">Exploitation</h2>
+<p><strong>LAB 1 - <a href="https://portswigger.net/web-security/learning-paths/server-side-vulnerabilities-apprentice/access-control-apprentice/access-control/lab-unprotected-admin-functionality">Unprotected admin functionality</a></strong></p>
+<p>By appending <code>/robots.txt</code> to the end of the lab URL we can read the
+contents of the file.</p>
+<p><img src="/pictures/access-control-robots.png" alt="access-control" /></p>
+<p><code>robots.txt</code> implements the Robots Exlusion Standard by telling the
+search engine crawlers which URLs they can and can't access.</p>
+<p>In this case the hidden and unprotected administrator panel is being exposed.</p>
+<p><strong>LAB 2 - <a href="https://portswigger.net/web-security/learning-paths/server-side-vulnerabilities-apprentice/access-control-apprentice/access-control/lab-unprotected-admin-functionality-with-unpredictable-url">Unprotected admin functionality with unpredictable URL</a></strong></p>
+<p>Some applications try to protect sensitive features with non-obvious URLs,
+this approach, known as &quot;security by obscurity&quot;, is not secure.</p>
+<p><img src="/pictures/access-control-unprotected-admin.png" alt="access-control-unprotected-admin" /></p>
+<p>The webpage's source code contains a script that adds a link to the UI if the
+user is an administrator.</p>
+<h3 id="lab-3-user-role-controlled-by-request-parameter">LAB 3 - User role controlled by request parameter</h3>
+<p>Some applications determine the user's access rights or role at login,
+and then store this information in a user-controllable location that could be:</p>
+<ul>
+<li>A hidden field</li>
+<li>A cookie</li>
+<li>A preset query string parameter</li>
+</ul>
+<h3 id="lab-4-user-id-controlled-by-request-parameter-with-unpredictable-user-ids">LAB 4 - User ID controlled by request parameter, with unpredictable user IDs</h3>
+<h3 id="lab-5-user-id-controlled-by-request-parameter-with-password-disclosure">LAB 5 - User ID controlled by request parameter with password disclosure</h3>
+<h2 id="mitigation">Mitigation</h2>
+
+        </div>
+
+        
+        <div class="pagination">
+            <div class="pagination__title">
+                <hr />
+            </div>
+            <div class="pagination__buttons">
+                    <span class="button previous">
+                        <a href="https://marcellbarsony.github.io/2024-portswigger-directory-traversal/">
+                            <span class="button__icon">󰄽</span>&nbsp;
+                            <span class="button__text">Directory traversal vulnerabilities</span>
+                        </a>
+                    </span>
+                
+                </div>
+        </div>
+    
+    </div>
+
+    </div>
+
+    <!-- FOOTER -->
+    <!--  -->
+    <!-- <footer class="footer"> -->
+    <!--     <div class="footer__inner"> -->
+    <!-- -->
+    <!--             <div class="copyright copyright--user">My custom&nbsp;<b>copyright</b></div> -->
+    <!--         -->
+    <!--     </div> -->
+    <!-- </footer> -->
+    <!--  -->
+
+</div>
+</body>
+
+</html>
