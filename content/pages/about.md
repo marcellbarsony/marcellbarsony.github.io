@@ -12,11 +12,13 @@ managing IT Security-related tasks and processes, providing professional IT serv
 
 [GitHub](https://github.com/marcellbarsony)
 
-[LinkedIn](https://linkedin.com/marcellbarsony) _(login required)_
+[LinkedIn](https://linkedin.com/in/marcellbarsony) _(login required)_
 
-{{ figure(src="https://avatars.githubusercontent.com/u/56371023",
-          style="width: 100%;",
-          position="left",
-          caption_position="left",
-          caption="",
-          caption_style="") }}
+<!-- {{ figure(src="https://avatars.githubusercontent.com/u/56371023", -->
+<!--     style="width: 100%;", -->
+<!--     position="left", -->
+<!--     caption_position="left", -->
+<!--     caption="", -->
+<!--     caption_style="") }} -->
+
+![avatar](/pictures/avatar.png)

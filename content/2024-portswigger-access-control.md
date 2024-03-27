@@ -30,7 +30,7 @@ out the action that they are attempting to perform.
 
 ## Exploitation
 
-### LAB 1 - Unprotected admin functionality
+**LAB 1 - [Unprotected admin functionality](https://portswigger.net/web-security/learning-paths/server-side-vulnerabilities-apprentice/access-control-apprentice/access-control/lab-unprotected-admin-functionality)**
 
 By appending `/robots.txt` to the end of the lab URL we can read the
 contents of the file.
@@ -40,11 +40,27 @@ contents of the file.
 `robots.txt` implements the Robots Exlusion Standard by telling the
 search engine crawlers which URLs they can and can't access.
 
-In this case the hidden unprotected administrator panel is being exposed.
+In this case the hidden and unprotected administrator panel is being exposed.
 
-### LAB 2 - Unprotected admin functionality with unpredictable URL
+**LAB 2 - [Unprotected admin functionality with unpredictable URL](https://portswigger.net/web-security/learning-paths/server-side-vulnerabilities-apprentice/access-control-apprentice/access-control/lab-unprotected-admin-functionality-with-unpredictable-url)**
+
+Some applications try to protect sensitive features with non-obvious URLs,
+this approach, known as "security by obscurity", is not secure.
+
+![access-control-unprotected-admin](/pictures/access-control-unprotected-admin.png)
+
+The webpage's source code contains a script that adds a link to the UI if the
+user is an administrator.
 
 ### LAB 3 - User role controlled by request parameter
+
+Some applications determine the user's access rights or role at login,
+and then store this information in a user-controllable location that could be:
+
+- A hidden field
+- A cookie
+- A preset query string parameter
+
 
 ### LAB 4 - User ID controlled by request parameter, with unpredictable user IDs
 

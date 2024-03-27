@@ -3,7 +3,7 @@ title = "Metasploitable - File upload vulnerability"
 date = 2019-02-02
 
 [taxonomies]
-tags = ["metasploitable", "showcase"]
+tags = ["metasploitable"]
 +++
 
 ## Notes
