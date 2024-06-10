@@ -7,7 +7,7 @@ tags = ["portswigger", "burp-suite", "access-control"]
 +++
 
 
-![access-control](/pictures/access-control.svg)
+![access-control](/pictures/articles/access-control/access-control.svg)
 
 
 <!-- Access control is the application of constraints on who or what is -->
@@ -33,21 +33,23 @@ out the action that they are attempting to perform.
 **LAB 1 - [Unprotected admin functionality](https://portswigger.net/web-security/learning-paths/server-side-vulnerabilities-apprentice/access-control-apprentice/access-control/lab-unprotected-admin-functionality)**
 
 By appending `/robots.txt` to the end of the lab URL we can read the
-contents of the file.
+content of the file.
 
-![access-control](/pictures/access-control-robots.png)
+![access-control](/pictures/articles/access-control/access-control-robots.png)
 
-`robots.txt` implements the Robots Exlusion Standard by telling the
+`robots.txt` implements the [Robots Exlusion Standard](https://en.wikipedia.org/wiki/Robots.txt)
+([RFC 9309](https://www.rfc-editor.org/rfc/rfc9309.html)) by telling the
 search engine crawlers which URLs they can and can't access.
 
-In this case the hidden and unprotected administrator panel is being exposed.
+In this case the hidden and unprotected administrator panel is being exposed
+as `robots.txt` cannot be used to safeguard critical website functionality.
 
 **LAB 2 - [Unprotected admin functionality with unpredictable URL](https://portswigger.net/web-security/learning-paths/server-side-vulnerabilities-apprentice/access-control-apprentice/access-control/lab-unprotected-admin-functionality-with-unpredictable-url)**
 
 Some applications try to protect sensitive features with non-obvious URLs,
 this approach, known as "security by obscurity", is not secure.
 
-![access-control-unprotected-admin](/pictures/access-control-unprotected-admin.png)
+![access-control-unprotected-admin](/pictures/articles/access-control/access-control-unprotected-admin.png)
 
 The webpage's source code contains a script that adds a link to the UI if the
 user is an administrator.
