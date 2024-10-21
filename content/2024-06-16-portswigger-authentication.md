@@ -1,6 +1,6 @@
 +++
 title = "Authentication vulnerabilities"
-date = 2024-06-17
+date = 2024-06-16
 
 [taxonomies]
 tags = ["webapp", "portswigger", "burp-suite", "server-side", "authentication",
