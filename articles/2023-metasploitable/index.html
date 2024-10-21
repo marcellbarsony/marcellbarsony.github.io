@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title>I hack things sometimes</title>
+    
+    <meta http-equiv="content-type" content="text/html; charset=utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
+    <meta name="robots" content="noodp"/>
+
+    <link rel="stylesheet" href="https://marcellbarsony.github.io/style.css">
+
+    <link rel="stylesheet" href="https://marcellbarsony.github.io/color/blue.css">
+    <link rel="stylesheet" href="https://marcellbarsony.github.io/font-hack-subset.css">
+
+    <meta name="description" content="">
+
+    <meta property="og:description" content="">
+    <meta property="og:title" content="I hack things sometimes">
+    <meta property="og:type" content="article">
+    <meta property="og:url" content="https://marcellbarsony.github.io/articles/2023-metasploitable/">
+
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:description" content="">
+    <meta name="twitter:title" content="I hack things sometimes">
+    <meta property="twitter:domain" content="marcellbarsony.github.io&#x2F;">
+    <meta property="twitter:url" content="https://marcellbarsony.github.io/articles/2023-metasploitable/">
+
+    </head>
+
+<body class="">
+<div class="container">
+    <!-- HEADER -->
+    
+    <header class="header">
+        <!-- LOGO -->
+        <!-- <div class="header__inner"> -->
+        <!--     <div class="header__logo"> -->
+        <!-- -->
+        <!--              -->
+        <!--         -->
+        <!--         <a href="https://marcellbarsony.github.io/" style="text-decoration: none;"> -->
+        <!--             <div class="logo"> -->
+        <!--                -->
+        <!-- -->
+        <!--                     | | | | | | | | | | -->
+        <!--                 -->
+        <!--                  -->
+        <!--             </div> -->
+        <!--         </a> -->
+        <!--     </div> -->
+        <!-- </div> -->
+
+        
+        
+                <nav class="menu">
+            <ul class="menu__inner">
+                <li class="active"><a href="https://marcellbarsony.github.io/">posts</a></li>
+            
+                <li><a href="https://marcellbarsony.github.io//tags">tags</a></li>
+            
+                <li><a href="https://marcellbarsony.github.io//archive">archive</a></li>
+            
+                <li><a href="https://marcellbarsony.github.io//about">about</a></li>
+            </ul>
+        </nav>
+    
+    
+        
+    </header>
+    
+
+    <div class="content">
+        
+    <div class="post">
+        
+    <h1 class="post-title"><a href="https://marcellbarsony.github.io/articles/2023-metasploitable/">Metasploitable - File upload vulnerability</a></h1>
+    <div class="post-meta-inline">
+        
+    <span class="post-date">
+            2019-02-02
+        </span>
+
+    </div>
+
+    
+        <span class="post-tags-inline">
+                ::
+                <a class="post-tag" href="https://marcellbarsony.github.io/tags/metasploitable/">metasploitable</a>&nbsp;::
+            
+        </span>
+    
+
+        <div class="post-content">
+            <h2 id="notes">Notes</h2>
+<ul>
+<li>Simple vulnerability</li>
+</ul>
+<h2 id="lab-setup">Lab setup</h2>
+<p>The virtual machines are placed onto the same isolated internal network where
+they can only communicate with each other.<br>
+On the isolated internal network, the VirtualBox DHCP server assigns IP
+addresses to the machines:</p>
+<pre data-lang="sh" style="background-color:#151515;color:#e8e8d3;" class="language-sh "><code class="language-sh" data-lang="sh"><span style="color:#ffb964;">marci@arch$</span><span> vboxmanage dhcpserver add</span><span style="color:#ffb964;"> --network</span><span>=intnet</span><span style="color:#ffb964;"> --server-ip</span><span>=10.38.1.1</span><span style="color:#ffb964;"> --lower-ip</span><span>=10.38.1.110</span><span style="color:#ffb964;"> --upper-ip</span><span>=10.38.1.120</span><span style="color:#ffb964;"> --netmask</span><span>=255.255.255.0</span><span style="color:#ffb964;"> --enable
+</span></code></pre>
+<p>The <strong>Kali</strong> machine received the IP address <code>10.38.1.110</code>.</p>
+<p>Launching <strong>Mr. Robot</strong>, we're presented with a login screen that cannot be
+bypassed as the login credentials aren't known.</p>
+<p><img src="https://www.dropbox.com/s/rftjad3vikt9yyp/mr_robot.jpg?dl=1" alt="mr_robot" /></p>
+<h3 id="nmap">Nmap</h3>
+<p><strong>Nmap</strong> can be used to discover the vulnerable machine on the network:</p>
+<pre data-lang="sh" style="background-color:#151515;color:#e8e8d3;" class="language-sh "><code class="language-sh" data-lang="sh"><span style="color:#ffb964;">kali@kali$</span><span> nmap</span><span style="color:#ffb964;"> -sS -T4</span><span> 10.38.1.110-120
+</span></code></pre>
+<pre data-lang="sh" style="background-color:#151515;color:#e8e8d3;" class="language-sh "><code class="language-sh" data-lang="sh"><span style="color:#ffb964;">Starting</span><span> Nmap 7.92 ( https://nmap.org ) </span><span style="color:#ffb964;">at</span><span> 2022-04-07 15:04 EDT
+</span><span style="color:#ffb964;">Nmap</span><span> scan report for 10.38.1.110
+</span><span style="color:#ffb964;">Host</span><span> is up (0.0000060s latency).
+</span><span style="color:#ffb964;">All</span><span> 1000 scanned ports on 10.38.1.110 are in ignored states.
+</span><span style="color:#ffb964;">Not</span><span> shown: 1000 closed tcp ports (reset)
+</span><span>
+</span><span style="color:#ffb964;">Nmap</span><span> scan report for 10.38.1.111
+</span><span style="color:#ffb964;">Host</span><span> is up (0.00050s latency).
+</span><span style="color:#ffb964;">Not</span><span> shown: 997 filtered tcp ports (no-response)
+</span><span style="color:#ffb964;">PORT</span><span>    STATE  SERVICE
+</span><span style="color:#ffb964;">22/tcp</span><span>  closed ssh
+</span><span style="color:#ffb964;">80/tcp</span><span>  open   http
+</span><span style="color:#ffb964;">443/tcp</span><span> open   https
+</span><span style="color:#ffb964;">MAC</span><span> Address: 08:00:27:FE:07:51 (Oracle VirtualBox virtual NIC)
+</span><span>
+</span><span style="color:#ffb964;">Nmap</span><span> done: 11 IP addresses (2 hosts up) </span><span style="color:#ffb964;">scanned</span><span> in 32.14 seconds
+</span></code></pre>
+<p><strong>Nmap</strong> found the vulnerable machine and reported it with the IP address
+<code>10.38.1.111</code>.<br>
+Port <a href="https://www.iana.org/assignments/service-names-port-numbers/service-names-port-numbers.xhtml?search=80">80</a> and <a href="https://www.iana.org/assignments/service-names-port-numbers/service-names-port-numbers.xhtml?search=443">443</a>
+are well-known ports used to establish connection with <strong>web servers</strong>.<br>
+Looking up <code>10.38.1.111</code> in a web browser, we're presented with the clone of
+the promotion website of the <a href="https://www.imdb.com/title/tt4158110/">Mr. Robot TV series</a>.</p>
+<p><img src="https://www.dropbox.com/s/mh5v8lc88k9r8tx/fsociety.png?dl=1" alt="fsociety" /></p>
+<p>Checking the displayed commands won't get us anywhere close to the first flag.</p>
+<h2 id="enumeration">Enumeration</h2>
+<pre data-lang="sh" style="background-color:#151515;color:#e8e8d3;" class="language-sh "><code class="language-sh" data-lang="sh"><span style="color:#ffb964;">nmap
+</span><span>
+</span><span>
+</span></code></pre>
+
+        </div>
+
+        
+    </div>
+
+    </div>
+
+    <!-- FOOTER -->
+    <!--  -->
+    <!-- <footer class="footer"> -->
+    <!--     <div class="footer__inner"> -->
+    <!-- -->
+    <!--             <div class="copyright copyright--user">My custom&nbsp;<b>copyright</b></div> -->
+    <!--         -->
+    <!--     </div> -->
+    <!-- </footer> -->
+    <!--  -->
+
+</div>
+</body>
+
+</html>
