@@ -1,5 +1,5 @@
 base_url = "https://marcellbarsony.github.io/"
-title = "Page Title"
+title = "I hack things sometimes"
 
 # Sass
 compile_sass = true
@@ -8,8 +8,8 @@ compile_sass = true
 build_search_index = false
 
 # RSS
-generate_feed = false
-feed_filename = "atom.xml"
+# generate_feed = false
+# feed_filename = "atom.xml"
 
 # Tags
 taxonomies = [

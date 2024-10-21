@@ -12,8 +12,10 @@ tags = ["metasploitable"]
 
 ## Lab setup
 
-The virtual machines are placed onto the same isolated internal network where they can only communicate with each other.<br>
-On the isolated internal network, the VirtualBox DHCP server assigns IP addresses to the machines:
+The virtual machines are placed onto the same isolated internal network where
+they can only communicate with each other.<br>
+On the isolated internal network, the VirtualBox DHCP server assigns IP
+addresses to the machines:
 
 ```sh
 marci@arch$ vboxmanage dhcpserver add --network=intnet --server-ip=10.38.1.1 --lower-ip=10.38.1.110 --upper-ip=10.38.1.120 --netmask=255.255.255.0 --enable
@@ -21,7 +23,8 @@ marci@arch$ vboxmanage dhcpserver add --network=intnet --server-ip=10.38.1.1 --l
 
 The **Kali** machine received the IP address `10.38.1.110`.
 
-Launching **Mr. Robot**, we're presented with a login screen that cannot be bypassed as the login credentials aren't known.
+Launching **Mr. Robot**, we're presented with a login screen that cannot be
+bypassed as the login credentials aren't known.
 
 ![mr_robot](https://www.dropbox.com/s/rftjad3vikt9yyp/mr_robot.jpg?dl=1)
 
@@ -29,7 +32,6 @@ Launching **Mr. Robot**, we're presented with a login screen that cannot be bypa
 ### Nmap
 
 **Nmap** can be used to discover the vulnerable machine on the network:
-
 ```sh
 kali@kali$ nmap -sS -T4 10.38.1.110-120
 ```
@@ -53,9 +55,12 @@ MAC Address: 08:00:27:FE:07:51 (Oracle VirtualBox virtual NIC)
 Nmap done: 11 IP addresses (2 hosts up) scanned in 32.14 seconds
 ```
 
-**Nmap** found the vulnerable machine and reported it with the IP address `10.38.1.111`.<br>
-Port [80](https://www.iana.org/assignments/service-names-port-numbers/service-names-port-numbers.xhtml?search=80) and [443](https://www.iana.org/assignments/service-names-port-numbers/service-names-port-numbers.xhtml?search=443) are well-known ports used to establish connection with **web servers**.<br>
-Looking up `10.38.1.111` in a web browser, we're presented with the clone of the promotion website of the [Mr. Robot TV series](https://www.imdb.com/title/tt4158110/).
+**Nmap** found the vulnerable machine and reported it with the IP address
+`10.38.1.111`.<br>
+Port [80](https://www.iana.org/assignments/service-names-port-numbers/service-names-port-numbers.xhtml?search=80) and [443](https://www.iana.org/assignments/service-names-port-numbers/service-names-port-numbers.xhtml?search=443)
+are well-known ports used to establish connection with **web servers**.<br>
+Looking up `10.38.1.111` in a web browser, we're presented with the clone of
+the promotion website of the [Mr. Robot TV series](https://www.imdb.com/title/tt4158110/).
 
 ![fsociety](https://www.dropbox.com/s/mh5v8lc88k9r8tx/fsociety.png?dl=1)
 
