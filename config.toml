@@ -37,8 +37,7 @@ menu_items = [
     {name = "posts", url = "$BASE_URL"},
     {name = "tags", url = "$BASE_URL/tags"},
     {name = "archive", url = "$BASE_URL/archive"},
-    {name = "about", url = "$BASE_URL/about"},
-    # {name = "github", url = "https://github.com/pawroman/zola-theme-terminimal", newtab = true},
+    {name = "whoami", url = "$BASE_URL/whoami"},
 ]
 
 # Whether to show links to earlier and later (aka. higher/lower) posts

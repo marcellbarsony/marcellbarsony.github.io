@@ -1,6 +1,6 @@
 +++
-title = "About"
-path = "about"
+title = "whoami"
+path = "whoami"
 +++
 
 I am Marcell, IT Security Operations Engineer with more than 2 years of

@@ -9,23 +9,22 @@ tags = ["webapp", "portswigger", "burp-suite", "server-side", "access-control"]
 
 ![access-control](/pictures/articles/access-control/access-control.svg)
 
-<!-- Access control is the application of constraints on who or what is -->
-<!-- authorized to perform actions or access resources. -->
-<!-- In the context of web applications, access control is dependent on -->
-<!-- authentication and session management: -->
-
-- **Authentication** confirms that the user is who they say they are
-- **Session management** identifies if HTTP requests are made by the same user
-- **Access control** determines whether the user is authorized to carry out the
-  action that they are attempting to perform.
-
-<!-- Design and management of access controls is a complex and dynamic -->
-<!-- problem that applies business, organizational, -->
-<!-- and legal constraints to a technical implementation. -->
+Access Control vulnerabilities allow unauthorized users to access restricted
+resources or perform actions beyond their permitted scope. Such failures often
+result in unauthorized disclosure, modification, or deletion of data.
+Broken Access Control vulnerabilities currently hold the #1 spot on the
+[OWASP Top 10 list](https://owasp.org/www-project-top-ten/) (as of 2021).
 
 
 <!-- more -->
 
+
+In the context of web applications, access control relies on proper
+authentication and session management:
+- **Authentication** confirms that the user is who they say they are
+- **Session management** identifies if HTTP requests are made by the same user
+- **Access control** determines whether the user is authorized to carry out the
+  action that they are attempting to perform.
 
 ## Exploitation
 
@@ -37,7 +36,7 @@ content of the file.
 
 ![access-control](/pictures/articles/access-control/lab1.png)
 
-`robots.txt` implements the [Robots Exlusion Standard](https://en.wikipedia.org/wiki/Robots.txt)
+`robots.txt` implements the [Robots Exclusion Standard](https://en.wikipedia.org/wiki/Robots.txt)
 ([RFC 9309](https://www.rfc-editor.org/rfc/rfc9309.html)) by telling the
 search engine crawlers which URLs they can and can't access.
 
@@ -49,7 +48,7 @@ as `robots.txt` cannot be used to safeguard critical website functionality.
 ### [LAB 2 - Unprotected admin functionality with unpredictable URL](https://portswigger.net/web-security/learning-paths/server-side-vulnerabilities-apprentice/access-control-apprentice/access-control/lab-unprotected-admin-functionality-with-unpredictable-url)
 
 Some applications try to protect sensitive features with non-obvious URLs
-however, this approach, known as "security by obscurity", is not secure.
+however, this approach, known as "security by obscurity", is not secure at all.
 
 ![access-control](/pictures/articles/access-control/lab2.png)
 
@@ -77,12 +76,13 @@ Cookie: Admin=true
 https://insecure-website.com/login/home.jsp?admin=true
 ```
 
-Accessing the lab's `/admin` panel, the HTTP GET request sets the `Admin=false`
-cookie.
+Accessing the lab's `/admin` panel, the [HTTP GET request](https://developer.mozilla.org/en-US/docs/Web/HTTP/Methods/GET)
+sets the `Admin=false` cookie.
 
 ![access-control-request-parameter](/pictures/articles/access-control/lab3.png)
 
-Setting the cookie's value to `true` gives us access to the admin panel.
+Setting the cookie's value to `true` gives us unintended access to the admin
+panel.
 <!-- }}} -->
 
 <!-- LAB 4 {{{ -->
@@ -115,3 +115,13 @@ Capturing the HTTP response we can notice it contains an input field pre-filled
 with the administrator's password in clear text.
 ![access-control-request-parameter](/pictures/articles/access-control/lab5.png)
 <!-- }}} -->
+
+## Mitigation
+
+To remediate Broken Access Control vulnerabilities, developers should
+- implement proper authentication
+- ensure the principle of [Least Privilege](https://en.wikipedia.org/wiki/Principle_of_least_privilege)
+- use strong session management
+- regularly audit access control policies
+- conduct access control testing
+- implement [Role-Based Access Control (RBAC)](https://en.wikipedia.org/wiki/Role-based_access_control)

@@ -10,7 +10,7 @@ tags = ["webapp", "portswigger", "burp-suite", "server-side", "directory-travers
 ![directory-traversal](/pictures/articles/directory-traversal/directory-traversal.svg)
 
 
-Directory traversal (path traversal) vulnerabilities enable attackers to read
+Directory traversal (or path traversal) vulnerabilities enable attackers to read
 arbitrary files (e.g.: application source code, credentials and other  other
 sensitive data) on the web application server. These vulnerabilities exist when
 applications don't handle user-supplied input properly in the file paths. By
@@ -24,7 +24,9 @@ directories.
 
 ## Exploitation
 
-The example webshop application loads an image using the following HTML code:
+### [LAB 1 - File path traversal, simple case](https://portswigger.net/web-security/learning-paths/server-side-vulnerabilities-apprentice/path-traversal-apprentice/file-path-traversal/lab-simple)
+
+The example web shop application loads an image using the following HTML code:
 ```html
 <img src="/loadImage?filename=21.png">
 ```
@@ -32,8 +34,9 @@ The example webshop application loads an image using the following HTML code:
 The `loadImage` URL takes a `filename` parameter (`21.png`) and returns the
 contents of the specified file.
 
-With Burp Suite this HTTP GET request can be intercepted and modified to request
-the `/etc/passwd` file of the server.
+With Burp Suite this [HTTP GET request](https://developer.mozilla.org/en-US/docs/Web/HTTP/Methods/GET)
+can be intercepted and modified to retrieve the `/etc/passwd` file from the
+server.
 
 ![directory-traversal_burp](/pictures/articles/directory-traversal/directory-traversal_request.png)
 
@@ -51,7 +54,7 @@ such as
 ## Mitigation
 
 To mitigate such vulnerabilities, **developers should never blindly trust
-user-supplied inputs** that could potentially interact with the filesystem API,
+user-supplied inputs** that could potentially interact with the file system API,
 and must implement robust validation techniques such as
 - input sanitizing,
 - directory whitelisting,
