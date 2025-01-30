@@ -10,7 +10,7 @@ tags = ["webapp", "portswigger", "burp-suite", "server-side", "directory-travers
 ![directory-traversal](/pictures/articles/directory-traversal/directory-traversal.svg)
 
 
-Directory traversal (or path traversal) vulnerabilities enable attackers to read
+**Directory traversal** (or path traversal) vulnerabilities enable attackers to read
 arbitrary files (e.g.: application source code, credentials and other  other
 sensitive data) on the web application server. These vulnerabilities exist when
 applications don't handle user-supplied input properly in the file paths. By

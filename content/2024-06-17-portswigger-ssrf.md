@@ -28,41 +28,71 @@ Applications may be vulnerable to SSRF due to the following reasons:
 
 ## Exploitation
 
-<!-- LAB 1 {{{ -->
+<!-- LAB 1 {{{-->
 ### [LAB 1 - Basic SSRF against the local server](https://portswigger.net/web-security/learning-paths/server-side-vulnerabilities-apprentice/ssrf-apprentice/ssrf/lab-basic-ssrf-against-localhost)
 
-In this web app, we can utilize the `Check stock` feature to gather information
+In this web app, the `Check stock` feature can be utilized to gather information
 about the availability of a product (which is a Giant Enter Key in this case -
-very nice - however, I prefer the ANSI layout over the ISO).
+very nice, however, I prefer the ANSI layout over the ISO).
 
-![ssrf](/pictures/articles/server-side-request-forgery/ssrf-1.png)
+![ssrf](/pictures/articles/server-side-request-forgery/ssrf-lab1-1.png)
 
 By clicking on `Check stock` and intercepting the request with Burp Suite's
-proxy, we can notice that a `stockApi` request is being made to an encoded URL.
+proxy reveals that a `stockApi` request is being made to an encoded URL.
 
-![ssrf](/pictures/articles/server-side-request-forgery/ssrf-2.png)
+![ssrf](/pictures/articles/server-side-request-forgery/ssrf-lab1-2.png)
 
-Replacing this URL with `http://localhost/`, we can find ourselves on a hidden
-Admin panel however, we cannot perform any privileged actions here just yet.
-Once we hove over `Delete` next to Carlos's name we can observe the URL in the
-status bar.
+Replacing this URL with `http://localhost/`, the request can be redirected
+from its intended location to a hidden Admin panel however,
+privileged actions cannot be performed just yet. Hovering over
+`Delete` next to Carlos's name the URL in the status bar can be observed.
 
-![ssrf](/pictures/articles/server-side-request-forgery/ssrf-3.png)
+![ssrf](/pictures/articles/server-side-request-forgery/ssrf-lab1-3.png)
 
-We can now send this request to Burp Suite's Repeater and modify it to be
-`https://localhost/admin/delete?username=carlos`. We receive a [302 Found](https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/302)
-response which indicates a redirection to another location which can be followed
-with the `Follow redirection` button.
+Request can now be sent to Burp Suite's Repeater and modified to be
+`https://localhost/admin/delete?username=carlos`. A [302 Found](https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/302)
+response is returned, which indicates a redirection to another location which
+can be followed with the `Follow redirection` button.
 
-![ssrf](/pictures/articles/server-side-request-forgery/ssrf-4.png)
+![ssrf](/pictures/articles/server-side-request-forgery/ssrf-lab1-4.png)
 
-Finally, we receive a [401 Unauthorized](https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/401)
-status code because we're trying to reach the admin page from an outside
+The process concludes with a [401 Unauthorized](https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/401)
+status code, as access to the admin page is being attempted from an external
 perspective.
 
 ![ssrf](/pictures/articles/server-side-request-forgery/ssrf-5.png)
 
 Despite the error, the lab is now completed as Carlos's account has been
 deleted.
+<!-- }}} -->
+
+<!-- LAB 2 {{{-->
+### [LAB 2 - SSRF attacks against other back-end systems](https://portswigger.net/web-security/learning-paths/server-side-vulnerabilities-apprentice/ssrf-apprentice/ssrf/ssrf-attacks-against-other-back-end-systems)
+
+Once again, the stock-checking feature is retrieving product availability data
+from the backend. This `stockApi` request can be intercepted and modified
+using Burp Suite.
+
+![ssrf](/pictures/articles/server-side-request-forgery/ssrf-lab2-1.png)
+
+The well-known `192.168.0.x` private IP range (`1-255`) can be scanned with
+Burp Suite's Intruder to potentially discover other internal functionalities.
+
+![ssrf](/pictures/articles/server-side-request-forgery/ssrf-lab2-2.png)
+
+The [200 OK](https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/200)
+status code indicates a successful response from `192.168.0.85:8080/admin`.
+
+![ssrf](/pictures/articles/server-side-request-forgery/ssrf-lab2-3.png)
+
+Replacing `stockApi` the found address reveals the hidden administrator panel.
+
+![ssrf](/pictures/articles/server-side-request-forgery/ssrf-lab2-4.png)
+
+The lab now can be solved by making a request to
+`http://192.169.0.85:8080/admin/delete?username=carlos` that removes the user
+`carlos`.
+
+![ssrf](/pictures/articles/server-side-request-forgery/ssrf-lab2-5.png)
 
 <!-- }}} -->

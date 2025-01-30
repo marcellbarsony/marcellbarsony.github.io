@@ -9,7 +9,7 @@ tags = ["webapp", "portswigger", "burp-suite", "server-side", "access-control"]
 
 ![access-control](/pictures/articles/access-control/access-control.svg)
 
-Access Control vulnerabilities allow unauthorized users to access restricted
+**Access Control vulnerabilities** allow unauthorized users to access restricted
 resources or perform actions beyond their permitted scope. Such failures often
 result in unauthorized disclosure, modification, or deletion of data.
 Broken Access Control vulnerabilities currently hold the #1 spot on the
@@ -28,7 +28,7 @@ authentication and session management:
 
 ## Exploitation
 
-<!-- LAB 1 {{{ -->
+<!-- LAB 1 {{{-->
 ### [LAB 1 - Unprotected admin functionality](https://portswigger.net/web-security/learning-paths/server-side-vulnerabilities-apprentice/access-control-apprentice/access-control/lab-unprotected-admin-functionality)
 
 By appending `/robots.txt` to the end of the lab URL we can read the
@@ -44,7 +44,7 @@ In this case, the hidden and unprotected administrator panel is being exposed
 as `robots.txt` cannot be used to safeguard critical website functionality.
 <!-- }}} -->
 
-<!-- LAB 2 {{{ -->
+<!-- LAB 2 {{{-->
 ### [LAB 2 - Unprotected admin functionality with unpredictable URL](https://portswigger.net/web-security/learning-paths/server-side-vulnerabilities-apprentice/access-control-apprentice/access-control/lab-unprotected-admin-functionality-with-unpredictable-url)
 
 Some applications try to protect sensitive features with non-obvious URLs
@@ -59,7 +59,7 @@ By appending `/admin-kozui4` to the end of the lab URL we can access the hidden
 and unprotected administrator panel.
 <!-- }}} -->
 
-<!-- LAB 3 {{{ -->
+<!-- LAB 3 {{{-->
 ### [LAB 3 - User role controlled by request parameter](https://portswigger.net/web-security/learning-paths/server-side-vulnerabilities-apprentice/access-control-apprentice/access-control/lab-user-role-controlled-by-request-parameter)
 
 Applications may determine the user's access rights at login,
@@ -85,7 +85,7 @@ Setting the cookie's value to `true` gives us unintended access to the admin
 panel.
 <!-- }}} -->
 
-<!-- LAB 4 {{{ -->
+<!-- LAB 4 {{{-->
 ### [LAB 4 - User ID controlled by request parameter, with unpredictable user IDs](https://portswigger.net/web-security/learning-paths/server-side-vulnerabilities-apprentice/access-control-apprentice/access-control/lab-user-id-controlled-by-request-parameter-with-unpredictable-user-ids)
 
 While browsing the example blog we can stumble upon our victim's blog post
@@ -104,7 +104,7 @@ victim's secret API key.
 ![access-control-request-parameter](/pictures/articles/access-control/lab4-3.png)
 <!-- }}} -->
 
-<!-- LAB 5 {{{ -->
+<!-- LAB 5 {{{-->
 ### [LAB 5 - User ID controlled by request parameter with password disclosure](https://portswigger.net/web-security/learning-paths/server-side-vulnerabilities-apprentice/access-control-apprentice/access-control/lab-user-id-controlled-by-request-parameter-with-password-disclosure)
 
 After logging in to our user account, we can modify the `id` parameter in the
