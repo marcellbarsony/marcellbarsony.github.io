@@ -7,7 +7,6 @@ tags = ["webapp", "portswigger", "burp-suite", "server-side", "authentication",
 "mfa"]
 +++
 
-
 ![authentication-vulnerabilities](/pictures/articles/authentication-vulnerabilities/password-reset-poisoning.svg)
 
 **Authentication** is the process of verifying that a user is who they claim to be.
@@ -24,7 +23,6 @@ guess valid user credentials. These attacks are typically automated using
 word lists of usernames and passwords. Automating this process, especially using
 dedicated tools, potentially enables an attacker to make vast numbers of login
 attempts at high speed.
-
 
 ## Exploitation
 
