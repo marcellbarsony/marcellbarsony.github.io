@@ -6,7 +6,6 @@ date = 2024-06-17
 tags = ["webapp", "portswigger", "burp-suite", "server-side", "ssrf" ]
 +++
 
-
 ![ssrf](/pictures/articles/portswigger/server-side-request-forgery/server-side-request-forgery.svg)
 
 **Server-Side Request Forgery (SSRF)** allows an attacker to cause the

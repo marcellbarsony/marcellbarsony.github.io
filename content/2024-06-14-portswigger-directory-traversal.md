@@ -6,7 +6,7 @@ date = 2024-06-14
 tags = ["webapp", "portswigger", "burp-suite", "server-side", "directory-traversal", "path-traversal"]
 +++
 
-![directory-traversal](/pictures/articles/directory-traversal/directory-traversal.svg)
+![directory-traversal](/pictures/articles/portswigger/directory-traversal/directory-traversal.svg)
 
 **Directory traversal** (or path traversal) vulnerabilities enable attackers to read
 arbitrary files (e.g.: application source code, credentials and other  other

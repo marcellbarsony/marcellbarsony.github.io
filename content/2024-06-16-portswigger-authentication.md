@@ -7,12 +7,13 @@ tags = ["webapp", "portswigger", "burp-suite", "server-side", "authentication",
 "mfa"]
 +++
 
-![authentication-vulnerabilities](/pictures/articles/authentication-vulnerabilities/password-reset-poisoning.svg)
+![authentication-vulnerabilities](/pictures/articles/portswigger/authentication-vulnerabilities/password-reset-poisoning.svg)
+![authentication-vulnerabilities](/pictures/articles/portswigger/authentication-vulnerabilities/test.svg)
 
-**Authentication** is the process of verifying that a user is who they claim to be.
-Authentication vulnerabilities can allow attackers to gain access to sensitive
-data or functionality. They also expose additional attack surface for further
-exploits.
+**Authentication** is the process of verifying that a user is who they claim to
+be. Authentication vulnerabilities can allow attackers to gain access to
+sensitive data or functionality. They also expose additional attack surface for
+further exploits.
 
 <!-- more -->
 
@@ -30,5 +31,6 @@ attempts at high speed.
 
 
 ### [LAB 2 - 2FA simple bypass](https://portswigger.net/web-security/learning-paths/server-side-vulnerabilities-apprentice/authentication-apprentice/authentication/multi-factor/lab-2fa-simple-bypass)
+
 
 ## Mitigation

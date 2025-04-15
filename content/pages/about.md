@@ -3,7 +3,7 @@ title = "whoami"
 path = "whoami"
 +++
 
-I am Marcell, IT Security Operations Engineer with more than 2 years of
+I am Marcell, Senior IT Security Operations Engineer with 3 years of
 demonstrated international experience in IT Security (and 7 years in IT
 overall).
 
