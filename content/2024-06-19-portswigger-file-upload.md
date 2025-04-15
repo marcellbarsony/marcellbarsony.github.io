@@ -3,7 +3,7 @@ title = "File Upload vulnerabilities"
 date = 2024-06-19
 
 [taxonomies]
-tags = ["webapp", "portswigger", "burp-suite", "server-side", "file upload" ]
+tags = ["webapp", "portswigger", "burp-suite", "server-side", "file upload"]
 +++
 
 ![file-upload](/pictures/articles/portswigger/file-upload/file-upload.png)
@@ -58,7 +58,7 @@ By replacing the filename of the avatar from the previously captured
 
 ![file-upload](/pictures/articles/portswigger/file-upload/lab-1-5.png)
 
-The server runs the exploit and sends a response with carlos's credentials:
+The server runs the exploit and sends a response with `carlos`'s credentials:
 `sPOb66xdZJHNIi3hCreeg2QMM0eXGic2`.
 
 ![file-upload](/pictures/articles/portswigger/file-upload/lab-1-6.png)

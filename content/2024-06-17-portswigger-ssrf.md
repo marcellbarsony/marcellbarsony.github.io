@@ -44,7 +44,7 @@ proxy reveals that a `stockApi` request is being made to an encoded URL.
 Replacing this URL with `http://localhost/`, the request can be redirected
 from its intended location to a hidden Admin panel however,
 privileged actions cannot be performed just yet. Hovering over
-`Delete` next to Carlos's name the URL in the status bar can be observed.
+`Delete` next to `carlos`'s name the URL in the status bar can be observed.
 
 ![ssrf](/pictures/articles/portswigger/server-side-request-forgery/lab1-3.png)
 
@@ -61,7 +61,7 @@ perspective.
 
 ![ssrf](/pictures/articles/portswigger/server-side-request-forgery/lab1-5.png)
 
-Despite the error, the lab is now completed as Carlos's account has been
+Despite the error, the lab is now completed as `carlos`'s account has been
 deleted.
 <!-- }}} -->
 
@@ -72,21 +72,21 @@ Once again, the stock-checking feature is retrieving product availability data
 from the backend. This `stockApi` request can be intercepted and modified
 using Burp Suite.
 
-![ssrf](/pictures/articles/portswigger/server-side-request-forgery/ssrf-lab2-1.png)
+![ssrf](/pictures/articles/portswigger/server-side-request-forgery/lab2-1.png)
 
 The well-known `192.168.0.x` private IP range (`1-255`) can be scanned with
 Burp Suite's Intruder to potentially discover other internal functionalities.
 
-![ssrf](/pictures/articles/portswigger/server-side-request-forgery/ssrf-lab2-2.png)
+![ssrf](/pictures/articles/portswigger/server-side-request-forgery/lab2-2.png)
 
 The [200 OK](https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/200)
 status code indicates a successful response from `192.168.0.85:8080/admin`.
 
-![ssrf](/pictures/articles/portswigger/server-side-request-forgery/ssrf-lab2-3.png)
+![ssrf](/pictures/articles/portswigger/server-side-request-forgery/lab2-3.png)
 
 Replacing `stockApi` the found address reveals the hidden administrator panel.
 
-![ssrf](/pictures/articles/portswigger/server-side-request-forgery/ssrf-lab2-4.png)
+![ssrf](/pictures/articles/portswigger/server-side-request-forgery/lab2-4.png)
 
 The lab now can be solved by making a request to
 `http://192.169.0.85:8080/admin/delete?username=carlos` that removes the user
