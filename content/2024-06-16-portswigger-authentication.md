@@ -26,23 +26,28 @@ attempts at high speed.
 
 ## Exploitation
 
+<!-- LAB 1 {{{-->
 ### [LAB 1 - Username enumerating via different responses](https://portswigger.net/web-security/learning-paths/server-side-vulnerabilities-apprentice/authentication-apprentice/authentication/password-based/lab-username-enumeration-via-different-responses)
 
-
+The first step involves identifying how the login form works
+by capturing the HTTP request that is sent when credentials are submitted.
 
 ![auth](/pictures/articles/portswigger/authentication-vulnerabilities/lab-1-1.png)
 
-The captured request then can be sent to the Intruder to brute-force
-the credentials.
+The captured request then can be sent to the Intruder tool to perform
+a brute-force attack on the login funcitonality.
 
 ![auth](/pictures/articles/portswigger/authentication-vulnerabilities/lab-1-2.png)
 
-The username parameter can be set as a payload position by enclosing it in `§`.
+To target the `username` field, the parameter can be marked as a payload
+position by surrounding it with `§` symbols.
 
 ![auth](/pictures/articles/portswigger/authentication-vulnerabilities/lab-1-3.png)
 
-The payload can then be configured using a word list that Burp Suite's Intruder
-can iterate through. The word list in this case contains possible usernames.
+
+Next, a payload list is configured. In this case, a list of potential usernames
+is loaded into Intruder. The tool will iterate through each value and inject it
+into the defined payload position.
 
 ![auth](/pictures/articles/portswigger/authentication-vulnerabilities/lab-1-4.png)
 
@@ -64,8 +69,37 @@ It is now possible to log in to the account with the username `americas`
 and password `football`.
 
 ![auth](/pictures/articles/portswigger/authentication-vulnerabilities/lab-1-8.png)
+<!--}}}-->
 
+<!-- LAB 2 {{{-->
 ### [LAB 2 - 2FA simple bypass](https://portswigger.net/web-security/learning-paths/server-side-vulnerabilities-apprentice/authentication-apprentice/authentication/multi-factor/lab-2fa-simple-bypass)
 
+Accessing the provided user account (`wiener:peter`) allows for exploration
+and analysis of the web application’s functionality.
+
+![auth](/pictures/articles/portswigger/authentication-vulnerabilities/lab-2-1.png)
+
+After providing with the credentials, the system sends an e-mail
+containing a second-factor authentication code.
+
+![auth](/pictures/articles/portswigger/authentication-vulnerabilities/lab-2-2.png)
+
+This code must be entered to complete the two-factor authentication process.
+
+![auth](/pictures/articles/portswigger/authentication-vulnerabilities/lab-2-3.png)
+
+The URL `/my-account?id=wiener` is displayed after authentication,
+which indicates that the account is identified via a query parameter.<br>
+This behavior can potentially be leveraged to bypass
+the second-factor authentication.
+
+![auth](/pictures/articles/portswigger/authentication-vulnerabilities/lab-2-4.png)
+
+By changing the URL to `/my-account?id=carlos` it is possible to gain
+unauthorized access to `carlos`'s account as the web application does not
+implement proper checks for the second-factor authentication.
+
+![auth](/pictures/articles/portswigger/authentication-vulnerabilities/lab-2-5.png)
+<!--}}}-->
 
 ## Mitigation
