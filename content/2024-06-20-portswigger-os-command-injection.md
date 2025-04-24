@@ -41,9 +41,9 @@ The reason behind the pipe (`|`) symbol should be used instead of the ampersand
 executes, even if the command beforehand fails or has no meaningful output.
 <!-- }}} -->
 
-<!-- Mitigation {{{-->
 ## Mitigation
 
+<!-- Mitigation {{{-->
 1. Avoid Directly Executing User Input
 - Use safer alternatives like built-in APIs instead of system commands
 

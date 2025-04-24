@@ -103,3 +103,29 @@ implement proper checks for the second-factor authentication.
 <!--}}}-->
 
 ## Mitigation
+
+<!-- Mitigation {{{-->
+1. Implement strong password policies
+    - Enforce password complexity and length requirements
+    - Check against commonly used/breached passwords
+
+2. Multi-factor authentication
+    - Implement additional verification methods beyond passwords
+    - Include multiple options: Authenticator APP, biometrics, security keys
+
+3. Session management
+    - Generate secure, random session IDs
+    - Set appropriate timeouts and invalidate on logout
+
+4. Rate limiting and account lockout
+    - Limit failed login attempts
+    - Implement progressive delays between attempts
+
+5. Secure password storage
+    - Never store plain text passwords
+    - Use strong and modern hashing algorithms with proper salting
+
+6. HTTPS everywhere
+    - Encrypt all traffic to prevent credential interception
+    - Implement strict transport security headers
+<!-- }}} -->

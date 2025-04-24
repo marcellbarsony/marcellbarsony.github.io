@@ -73,7 +73,22 @@ and logged in as the `administrator` user.
 ![lab2-3](/pictures/articles/portswigger/sql-injection/lab-2-4.png)
 <!-- }}} -->
 
-<!-- Mitigation {{{-->
 ## Mitigation
 
+<!-- Mitigation {{{-->
+1. Use parameterized queries
+    - Never concatenate user input into queries
+    - Let database drivers handle parameter sanitization
+
+2. Input validation
+    - Validate type, length, format, and range of all inputs
+    - Whitelist acceptable characters instead of blacklisting unacceptable ones
+
+4. Least privilege database accounts
+    - Use database accounts with  minimal permissions needed for the application
+    - Avoid using admin accounts for application connections
+
+5. Escape special characters
+    - Use language/framework-specific escaping functions when parameterized
+    queries are not possible
 <!-- }}} -->

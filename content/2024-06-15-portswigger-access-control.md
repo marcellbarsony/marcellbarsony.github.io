@@ -90,14 +90,17 @@ titled "_Identity Theft_".
 
 Clicking on `carlos`'s username we can intercept their user GUID parameter
 from the HTTP GET request.
+
 ![access-control-request-parameter](/pictures/articles/portswigger/access-control/lab-4-1.png)
 
 By modifying the user GUID sent to the server during our own login,
 we can gain access to `carlos`'s account without knowing their credentials.
+
 ![access-control-request-parameter](/pictures/articles/portswigger/access-control/lab-4-2.png)
 
 This process results in a horizontal privilege escalation, compromising the
 victim's secret API key.
+
 ![access-control-request-parameter](/pictures/articles/portswigger/access-control/lab-4-3.png)
 <!-- }}} -->
 
@@ -110,6 +113,7 @@ can be modified from our username to `administrator`:<br>
 
 The captured HTTP response contains an input field pre-filled
 with the administrator's password in clear text.
+
 ![access-control-request-parameter](/pictures/articles/portswigger/access-control/lab-5.png)
 <!-- }}} -->
 
