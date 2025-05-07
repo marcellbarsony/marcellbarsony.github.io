@@ -84,7 +84,8 @@ status code indicates a successful response from `192.168.0.85:8080/admin`.
 
 ![ssrf](/pictures/articles/portswigger/server-side-request-forgery/lab-2-3.png)
 
-Replacing `stockApi` the found address reveals the hidden administrator panel.
+Replacing `stockApi` with the found address reveals the hidden administrator
+panel.
 
 ![ssrf](/pictures/articles/portswigger/server-side-request-forgery/lab-2-4.png)
 
