@@ -44,8 +44,8 @@ share named `backups`, which is publicly accessible.
 - `-L`: List available services
 - Additional backslashes are required to escape Windows's UNC path
 
-retrieved with the `get prod.dtsConfig` command.
 `backups` contains a configuration file named `prod.dtsConfig` that can be
+retrieved with the `get prod.dtsConfig` command.
 
 ![smbclient](/pictures/articles/htb/archetype/enum-03.png)
 
@@ -64,8 +64,9 @@ The discovered credentials can be used to connect and authenticate to the MSSQL
 server using the script `mssqlclient.py` from the [Impacket](https://github.com/fortra/impacket)
 collection.
 
-The command `SELECT is_srvrolemember('sysadmin');` indicates the assigned role
-on the server: `1` (`True`) means that the current login has `sysadmin` role.
+The command `SELECT is_srvrolemember('sysadmin');` indicates the role
+on the server: `1` (`True`) means that the current login has `sysadmin` role
+assigned.
 
 ![smbclient](/pictures/articles/htb/archetype/foothold-01.png)
 
@@ -172,5 +173,3 @@ from the administrator account's Desktop directory.
     - Restrict user and service account privileges
 
 <!-- }}} -->
-
-
