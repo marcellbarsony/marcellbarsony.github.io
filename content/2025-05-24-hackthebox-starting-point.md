@@ -98,7 +98,8 @@ RECONFIGURE;
 
 <!-- Reverse shell {{{-->
 
-After gaining command execution, a reverse shell can be spawned using [Netcat](https://github.com/int0x33/nc.exe).
+After gaining command execution, a reverse shell can be spawned using [Netcat](https://github.com/int0x33/nc.exe)
+so that the target machine initiates a connection back to the attacker machine.
 
 To upload `nc64.exe` to the target, the file must be served from the attacker
 machine via a simple HTTP server.
