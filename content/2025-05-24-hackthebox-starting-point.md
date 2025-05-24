@@ -148,11 +148,12 @@ PowerShell history file.
 ![privesc-01](/pictures/articles/htb/archetype/privesc-01.png)
 
 With the obtained administrator password, it is now possible to connect to the
-target machine using [PsExec](https://learn.microsoft.com/en-us/sysinternals/downloads/psexec)
-and obtain the [root flag](https://labs.hackthebox.com/achievement/machine/447801/287)
-from the administrator account's Desktop directory.
+target machine using [PsExec](https://learn.microsoft.com/en-us/sysinternals/downloads/psexec).
 
 ![root-flag](/pictures/articles/htb/archetype/root-flag-01.png)
+
+By obtaining the root flag from the administrator account's Desktop directory,
+the box is now [pwned](https://labs.hackthebox.com/achievement/machine/447801/287).
 
 <!-- }}} -->
 
