@@ -80,6 +80,7 @@ for security reasons.
 ![smbclient](/pictures/articles/htb/archetype/foothold-02.png)
 
 `xp_cmdshell` can be activated with the following set of commands.
+After activation, it enables code execution on the target machine.
 
 ```sh
 EXEC sp_configure 'show advanced options', 1;
@@ -89,8 +90,6 @@ EXEC sp_configure 'xp_cmdshell', 1;
 RECONFIGURE;
 ```
 
-It is now possible to execute commands on the target machine.
-
 ![smbclient](/pictures/articles/htb/archetype/foothold-03.png)
 
 <!-- }}} -->
@@ -98,6 +97,7 @@ It is now possible to execute commands on the target machine.
 ## Reverse shell
 
 <!-- Reverse shell {{{-->
+
 After gaining command execution, a reverse shell can be spawned using [Netcat](https://github.com/int0x33/nc.exe).
 
 To upload `nc64.exe` to the target, the file must be served from the attacker
