@@ -63,3 +63,7 @@ use_full_hack_font = false
 #
 # Note that the main (index) page only has the main title.
 page_titles = "main_only"
+
+og_image: "/pictures/articles/htb/archetype/cover.png"
+default_og_image: "/pictures/articles/htb/archetype/cover.png"
+
