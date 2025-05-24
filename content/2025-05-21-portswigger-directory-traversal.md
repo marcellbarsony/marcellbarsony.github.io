@@ -1,6 +1,6 @@
 +++
-title = "Directory traversal vulnerabilities"
-date = 2024-06-14
+title = "Portswigger - Directory traversal vulnerabilities"
+date = 2025-05-21
 
 [taxonomies]
 tags = ["webapp", "portswigger", "burp-suite", "server-side", "directory-traversal", "path-traversal"]

@@ -1,6 +1,6 @@
 +++
-title = "Server-Side Request Forgery [SSRF]"
-date = 2024-06-17
+title = "Portswigger - Server-Side Request Forgery [SSRF]"
+date = 2025-05-20
 
 [taxonomies]
 tags = ["webapp", "portswigger", "burp-suite", "server-side", "ssrf" ]

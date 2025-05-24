@@ -1,6 +1,6 @@
 +++
-title = "SQL injection"
-date = 2024-06-21
+title = "Portswigger - SQL injection"
+date = 2025-05-23
 
 [taxonomies]
 tags = ["webapp", "portswigger", "burp-suite", "server-side", "sql injection"]

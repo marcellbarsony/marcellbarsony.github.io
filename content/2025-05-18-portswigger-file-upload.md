@@ -1,6 +1,6 @@
 +++
-title = "File Upload vulnerabilities"
-date = 2024-06-19
+title = "Portswigger - File Upload vulnerabilities"
+date = 2025-05-18
 
 [taxonomies]
 tags = ["webapp", "portswigger", "burp-suite", "server-side", "file upload"]

@@ -1,6 +1,6 @@
 +++
-title = "OS command injection"
-date = 2024-06-20
+title = "Portswigger - OS command injection"
+date = 2025-05-22
 
 [taxonomies]
 tags = ["webapp", "portswigger", "burp-suite", "server-side", "os command injection"]
