@@ -6,7 +6,7 @@ date = 2025-05-24
 tags = ["hackthebox", "sql", "smb", "netcat", "reverse-shell", "privesc"]
 +++
 
-![archetype](/pictures/articles/htb/archetype/cover.png)
+[![Foo](/pictures/articles/htb/archetype/cover.png)](https://labs.hackthebox.com/achievement/machine/447801/287)
 
 Archetype is a Tier II Windows-based machine from Hack The Box's
 [Starting Point module](https://app.hackthebox.com/starting-point)
@@ -147,7 +147,8 @@ PowerShell history file.
 
 With the obtained administrator password, it is now possible to connect to the
 target machine using [PsExec](https://learn.microsoft.com/en-us/sysinternals/downloads/psexec)
-and obtain the root flag from the administrator account's Desktop directory.
+and obtain the [root flag](https://labs.hackthebox.com/achievement/machine/447801/287)
+from the administrator account's Desktop directory.
 
 ![root-flag](/pictures/articles/htb/archetype/root-flag-01.png)
 
@@ -171,3 +172,5 @@ and obtain the root flag from the administrator account's Desktop directory.
     - Restrict user and service account privileges
 
 <!-- }}} -->
+
+
