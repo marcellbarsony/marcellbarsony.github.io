@@ -46,7 +46,7 @@
                 {%- if page.higher %}
                     <span class="button previous">
                         <a href="{{ page.higher.permalink | safe }}">
-                            <span class="button__icon">󰄽</span>&nbsp;
+                            <span class="button__icon">‹</span>&nbsp;
                             <span class="button__text">{{ page.higher.title }}</span>
                         </a>
                     </span>
@@ -55,7 +55,7 @@
                     <span class="button next">
                         <a href="{{ page.lower.permalink | safe }}">
                             <span class="button__text">{{ page.lower.title }}</span>&nbsp;
-                            <span class="button__icon">󰄾</span>
+                            <span class="button__icon">›</span>
                         </a>
                     </span>
                 {% endif -%}
