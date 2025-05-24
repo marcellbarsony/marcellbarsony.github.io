@@ -3,10 +3,16 @@ title = "Hack The Box - Archetype"
 date = 2025-05-24
 
 [taxonomies]
-tags = ["hackthebox", "sql", "smbclient", "netcat", "reverse-shell" "privesc"]
+tags = ["hackthebox", "sql", "smb", "netcat", "reverse-shell", "privesc"]
 +++
 
 ![archetype](/pictures/articles/htb/archetype/cover.png)
+
+Archetype is a Tier II Windows-based machine from Hack The Box's
+[Starting Point module](https://app.hackthebox.com/starting-point)
+designed to teach key penetration testing techniques such as
+leveraging SMB to gain access, spawning a reverse shell and escalating
+privileges to complete the machine.
 
 
 <!-- more -->
@@ -105,20 +111,21 @@ the following PowerShell command via `xp_cmdshell`.
 
 The Netcat listener should be started to receive the incoming connection.
 
-![exec-nc64](/pictures/articles/htb/archetype/reverse-shell-03.png)
+![reverse-shell](/pictures/articles/htb/archetype/reverse-shell-03.png)
 
-After uploading, `nc64.exe` can be executed to bind to the Netcat listener.
+After uploading, `nc64.exe` can be executed so that it binds to
+the Netcat listener.
 
-![exec-nc64](/pictures/articles/htb/archetype/reverse-shell-04.png)
+![reverse-shell](/pictures/articles/htb/archetype/reverse-shell-04.png)
 
 Netcat has received the incoming connection and spawned
 an interactive reverse shell.
 
-![exec-nc64](/pictures/articles/htb/archetype/reverse-shell-05.png)
+![reverse-shell](/pictures/articles/htb/archetype/reverse-shell-05.png)
 
 The user flag can be found in the user's Desktop directory.
 
-![exec-nc64](/pictures/articles/htb/archetype/user-flag-01.png)
+![user-flag](/pictures/articles/htb/archetype/user-flag-01.png)
 
 <!-- }}} -->
 
@@ -134,8 +141,8 @@ PowerShell history file.
 ![privesc-01](/pictures/articles/htb/archetype/privesc-01.png)
 
 With the obtained administrator password, it is now possible to connect to the
-target machine using [PsExec](https://learn.microsoft.com/en-us/sysinternals/downloads/psexec).
-
+target machine using [PsExec](https://learn.microsoft.com/en-us/sysinternals/downloads/psexec)
+and obtain the root flag from the administrator account's Desktop directory.
 
 ![root-flag](/pictures/articles/htb/archetype/root-flag-01.png)
 
