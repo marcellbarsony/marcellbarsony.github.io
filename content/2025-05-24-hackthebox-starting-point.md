@@ -113,6 +113,11 @@ The Netcat listener should be started to receive the incoming connection.
 
 ![reverse-shell](/pictures/articles/htb/archetype/reverse-shell-03.png)
 
+- `l`: Listen mode
+- `v`: Verbose mode
+- `n`: No DNS resolution
+- `p`: Port number
+
 After uploading, `nc64.exe` can be executed so that it binds to
 the Netcat listener.
 
@@ -145,5 +150,24 @@ target machine using [PsExec](https://learn.microsoft.com/en-us/sysinternals/dow
 and obtain the root flag from the administrator account's Desktop directory.
 
 ![root-flag](/pictures/articles/htb/archetype/root-flag-01.png)
+
+<!-- }}} -->
+
+## Mitigation
+
+<!-- Mitigation {{{-->
+
+1. Disable SMB shares
+    - Restrict SMB shares such as `ADMIN$` and `C$`
+
+2. Disable `xp_cmdshell`
+    - Use `sp_configure` to make sure it remains disabled
+
+3. Enforce strong password
+    - Ensure service accounts (e.g., `sql_svc`) have a strong password
+    - Avoid storing credentials in clear text
+
+4. Implement least privilege
+    - Restrict user and service account privileges
 
 <!-- }}} -->
