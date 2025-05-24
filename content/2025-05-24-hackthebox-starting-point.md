@@ -71,7 +71,7 @@ assigned.
 ![smbclient](/pictures/articles/htb/archetype/foothold-01.png)
 
 `xp_cmdshell` allows the execution of Windows command shell commands directly
-from the SQL Server environment. 
+from the SQL Server environment.
 
 Issuing the command `EXEC xp_cmdshell 'net user';` helps determine whether
 `xp_cmdshell` is enabled, as this feature is disabled by default
@@ -167,8 +167,8 @@ the box is now [pwned](https://labs.hackthebox.com/achievement/machine/447801/28
 2. Disable `xp_cmdshell`
     - Use `sp_configure` to make sure it remains disabled
 
-3. Enforce strong password
-    - Ensure service accounts (e.g., `sql_svc`) have a strong password
+3. Enforce strong password policy
+    - Ensure service accounts (e.g., `sql_svc`) have strong and unique passwords
     - Avoid storing credentials in clear text
 
 4. Implement least privilege
