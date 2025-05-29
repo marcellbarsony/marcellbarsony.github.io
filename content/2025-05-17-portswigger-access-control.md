@@ -14,7 +14,9 @@ result in unauthorized disclosure, modification, or deletion of data.
 Broken Access Control vulnerabilities currently hold the #1 spot on the
 [OWASP Top 10 list](https://owasp.org/www-project-top-ten/) (as of 2021).
 
+
 <!-- more -->
+
 
 In the context of web applications, access control relies on proper
 authentication and session management:

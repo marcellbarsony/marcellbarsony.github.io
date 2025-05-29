@@ -3,10 +3,10 @@ title = "Hack The Box - Archetype"
 date = 2025-05-24
 
 [taxonomies]
-tags = ["hackthebox", "sql", "smb", "netcat", "reverse-shell", "privesc"]
+tags = ["hackthebox", "sql", "smb", "reverse-shell", "privesc"]
 +++
 
-[![Foo](/pictures/articles/htb/archetype/cover.png)](https://labs.hackthebox.com/achievement/machine/447801/287)
+[![Cover](/pictures/articles/htb/archetype/cover.png)](https://labs.hackthebox.com/achievement/machine/447801/287)
 
 Archetype is a Tier 2 Windows-based machine from Hack The Box's
 [Starting Point module](https://app.hackthebox.com/starting-point),
@@ -136,9 +136,9 @@ The user flag can be found in the user's Desktop directory.
 
 <!-- }}} -->
 
-## Privilege escalation
+## Privilege Escalation
 
-<!-- Privilege escalation {{{-->
+<!-- Privilege Escalation {{{-->
 
 Privilege escalation is required to gain a higher level of control over the
 system. Since the currently logged-in user account is also a service account,

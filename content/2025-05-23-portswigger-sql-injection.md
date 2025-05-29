@@ -13,7 +13,9 @@ with the queries that an application makes to its database. This might allow an
 attacker to view, modify or delete sensitive data they are not authorized to
 access.
 
+
 <!-- more -->
+
 
 SQL injections can be detected manually using test patterns against application
 entry points:

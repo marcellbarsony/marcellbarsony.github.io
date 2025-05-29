@@ -14,7 +14,9 @@ server-side application to make an HTTP requests to an unintended, arbitrary
 spot on the [OWASP Top 10 list](https://owasp.org/www-project-top-ten/)
 (as of 2021).
 
+
 <!-- more -->
+
 
 Applications may be vulnerable to SSRF due to the following reasons:
 - The access control check might be implemented in a component that sits in

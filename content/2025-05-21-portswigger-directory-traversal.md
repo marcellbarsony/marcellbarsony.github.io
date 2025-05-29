@@ -16,7 +16,9 @@ modifying the client's request, attackers can trick the web application into
 accessing files outside its intended location by basically hitchhiking through
 directories.
 
+
 <!-- more -->
+
 
 ## Exploitation
 

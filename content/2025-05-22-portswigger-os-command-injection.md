@@ -15,7 +15,9 @@ improperly passes unsanitized to system functions like `exec()`, `system()`,
 `popen()`, or relies on shell commands for functionality
 without proper input validation.
 
+
 <!-- more -->
+
 
 ## Exploitation
 

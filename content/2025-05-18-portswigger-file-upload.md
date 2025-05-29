@@ -14,7 +14,9 @@ This includes insufficient checks on the file's contents, type or size.
 Once uploaded, these files may be executed, potentially causing havoc on the
 web server and on its underlying infrastructure.
 
+
 <!-- more -->
+
 
 The impact of this vulnerability largely depends on the following two key
 factors:
