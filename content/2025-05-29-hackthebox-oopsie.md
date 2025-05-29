@@ -6,7 +6,7 @@ date = 2025-05-29
 tags = ["hackthebox", "idor", "reverse-shell", "suid", "privesc"]
 +++
 
-[![TODO](/pictures/articles/htb/archetype/cover.png)](https://labs.hackthebox.com/achievement/machine/447801/287)
+[![TODO](/pictures/articles/htb/oopsie/00-cover.png)](https://labs.hackthebox.com/achievement/machine/447801/288)
 
 
 **Oopsie** is a Linux (Ubuntu) box created to teach the impact of Information
@@ -232,7 +232,7 @@ The contents of the file cannot be viewed with `cat` so I opened it with
 ![test](/pictures/articles/htb/oopsie/32-root-flag.png)
 
 By obtaining the root flag the machine is
-[pwned](https://www.hackthebox.com/achievement/machine/447801/288)
+[pwned](https://www.hackthebox.com/achievement/machine/447801/288).
 
 <!-- }}} -->
 

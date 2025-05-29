@@ -20,8 +20,10 @@ ethical hacking, and looking for new opportunities in the field.
 
 [E-mail](mailto:marcellbarsony@protonmail.com)
 
+[LinkedIn](https://linkedin.com/in/marcellbarsony)
+
 [GitHub](https://github.com/marcellbarsony)
 
-[LinkedIn](https://linkedin.com/in/marcellbarsony) _(login required)_
+[Twitch](https://twitch.tv/MarciPwns)
 
 ![avatar](/pictures/avatar.png)
