@@ -8,11 +8,9 @@ tags = ["hackthebox", "sql", "smb", "reverse-shell", "privesc"]
 
 [![Cover](/pictures/articles/htb/archetype/cover.png)](https://labs.hackthebox.com/achievement/machine/447801/287)
 
-Archetype is a Tier 2 Windows-based machine from Hack The Box's
-[Starting Point module](https://app.hackthebox.com/starting-point),
-designed to teach key penetration testing techniques such as
-leveraging SMB to gain access, spawning a reverse shell and escalating
-privileges to complete the machine.
+Archetype is a Tier 2 Windows-based machine designed to teach key penetration
+testing techniques such as leveraging SMB to gain access, spawning a reverse
+shell and escalating privileges to complete the machine.
 
 
 <!-- more -->
