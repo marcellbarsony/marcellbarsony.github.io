@@ -1,6 +1,6 @@
 +++
 title = "Hack The Box - Oopsie"
-date = 2025-05-26
+date = 2025-05-29
 
 [taxonomies]
 tags = ["hackthebox", "idor", "reverse-shell", "suid", "privesc"]
@@ -230,6 +230,9 @@ The contents of the file cannot be viewed with `cat` so I opened it with
 [vim](https://www.vim.org/).
 
 ![test](/pictures/articles/htb/oopsie/32-root-flag.png)
+
+By obtaining the root flag the machine is
+[pwned](https://www.hackthebox.com/achievement/machine/447801/288)
 
 <!-- }}} -->
 
