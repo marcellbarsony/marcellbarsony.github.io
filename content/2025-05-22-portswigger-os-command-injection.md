@@ -38,9 +38,10 @@ the user context in which the server executes commands.
 
 ![os-command-injection](/pictures/articles/portswigger/os-command-injection/lab-1-2.png)
 
-The reason behind the pipe (`|`) symbol should be used instead of the ampersand
-(`&`) is that `whoami` doesn't accept anything in standard input yet still
-executes, even if the command beforehand fails or has no meaningful output.
+The reason behind why the pipe (`|`) symbol should be used instead of the
+ampersand (`&`) is that `whoami` doesn't accept anything in standard input yet
+still executes, even if the command beforehand fails or has no meaningful
+output.
 <!-- }}} -->
 
 ## Mitigation
