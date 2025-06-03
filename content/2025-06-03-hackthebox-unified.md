@@ -3,16 +3,16 @@ title = "HackTheBox - Unified"
 date = 2025-06-03
 
 [taxonomies]
-tags = ["HackTheBox", "log4j", "mongodb", "reverse shell", "privesc"]
+tags = ["hackthebox", "log4j", "mongodb", "reverse shell", "privesc"]
 +++
 
 [![TODO](/pictures/articles/htb/unified/00-cover.png)](https://www.hackthebox.com/achievement/machine/447801/441)
 
-
-Unified is introducing the exploitation of one of the biggest vulnerabilities of
-2021, [Log4Shell](https://en.wikipedia.org/wiki/Log4Shell), also known as Log4j.
-This box demonstrates how to exploit Log4j in the widely used UniFi network
-monitoring system to gain reverse shell by manipulating a POST header.
+**Unified** is introducing the exploitation of one of the biggest
+vulnerabilities of 2021, [Log4Shell](https://en.wikipedia.org/wiki/Log4Shell),
+also known as Log4j. This box demonstrates how to exploit Log4j in the widely
+used UniFi network monitoring system to gain reverse shell by manipulating
+a POST header.
 
 
 <!-- more -->

@@ -8,7 +8,6 @@ tags = ["hackthebox", "idor", "reverse shell", "suid", "privesc"]
 
 [![TODO](/pictures/articles/htb/oopsie/00-cover.png)](https://labs.hackthebox.com/achievement/machine/447801/288)
 
-
 **Oopsie** is a Linux (Ubuntu) box created to teach the impact of Information
 Disclosure and [Broken Access Control](https://owasp.org/Top10/A01_2021-Broken_Access_Control/)
 vulnerabilities and chain together multiple vulnerabilities to escalate

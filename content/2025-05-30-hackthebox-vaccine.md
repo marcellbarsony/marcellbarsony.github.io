@@ -8,10 +8,10 @@ tags = ["hackthebox", "ftp", "sql", "sql injection", "reverse shell", "privesc"]
 
 [![TODO](/pictures/articles/htb/vaccine/00-cover.png)](https://www.hackthebox.com/achievement/machine/447801/289)
 
-Vaccine is a Linux machine built to demonstrate the importance of enumeration,
-and the dangers of chaining multiple vulnerabilities together such as SQL
-injection, password hash cracking, anonymous guest access and session cookie
-stealing.
+**Vaccine** is a Linux machine built to demonstrate the importance
+of enumeration, and the dangers of chaining multiple vulnerabilities together
+such as SQL injection, password hash cracking, anonymous guest access
+and session cookie stealing.
 
 
 <!-- more -->
