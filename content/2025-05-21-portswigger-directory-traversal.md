@@ -3,7 +3,7 @@ title = "Portswigger - Directory traversal vulnerabilities"
 date = 2025-05-21
 
 [taxonomies]
-tags = ["webapp", "portswigger", "burp-suite", "server-side", "directory-traversal", "path-traversal"]
+tags = ["webapp", "portswigger", "burp suite", "server-side", "directory traversal", "path traversal"]
 +++
 
 ![directory-traversal](/pictures/articles/portswigger/directory-traversal/directory-traversal.svg)

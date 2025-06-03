@@ -3,7 +3,7 @@ title = "Portswigger - Access control vulnerabilities"
 date = 2025-05-17
 
 [taxonomies]
-tags = ["webapp", "portswigger", "burp-suite", "server-side", "access-control"]
+tags = ["webapp", "portswigger", "burp suite", "server-side", "access control"]
 +++
 
 ![access-control](/pictures/articles/portswigger/access-control/access-control.svg)

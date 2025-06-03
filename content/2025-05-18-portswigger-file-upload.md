@@ -3,7 +3,7 @@ title = "Portswigger - File Upload vulnerabilities"
 date = 2025-05-18
 
 [taxonomies]
-tags = ["webapp", "portswigger", "burp-suite", "server-side", "file upload"]
+tags = ["webapp", "portswigger", "burp suite", "server-side", "file upload"]
 +++
 
 ![file-upload](/pictures/articles/portswigger/file-upload/file-upload.png)
@@ -67,7 +67,7 @@ The server runs the exploit and sends a response with `carlos`'s credentials:
 <!-- }}} -->
 
 <!-- LAB 2 {{{-->
-### [LAB 2 - Web shell upload via Content-Type restriction bypass](https://portswigger.net/web-security/learning-paths/server-side-vulnerabilities-apprentice/file-upload-apprentice/file-upload/lab-file-upload-web-shell-upload-via-content-type-restriction-bypass)
+<!-- ### [LAB 2 - Web shell upload via Content-Type restriction bypass](https://portswigger.net/web-security/learning-paths/server-side-vulnerabilities-apprentice/file-upload-apprentice/file-upload/lab-file-upload-web-shell-upload-via-content-type-restriction-bypass) -->
 
 
 <!-- }}} -->

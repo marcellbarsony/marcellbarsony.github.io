@@ -3,7 +3,7 @@ title = "Portswigger - Authentication vulnerabilities"
 date = 2025-05-19
 
 [taxonomies]
-tags = ["webapp", "portswigger", "burp-suite", "server-side", "authentication",
+tags = ["webapp", "portswigger", "burp suite", "server-side", "authentication",
 "mfa"]
 +++
 

@@ -3,7 +3,7 @@ title = "Portswigger - Server-Side Request Forgery [SSRF]"
 date = 2025-05-20
 
 [taxonomies]
-tags = ["webapp", "portswigger", "burp-suite", "server-side", "ssrf" ]
+tags = ["webapp", "portswigger", "burp suite", "server-side", "ssrf" ]
 +++
 
 ![ssrf](/pictures/articles/portswigger/server-side-request-forgery/server-side-request-forgery.svg)

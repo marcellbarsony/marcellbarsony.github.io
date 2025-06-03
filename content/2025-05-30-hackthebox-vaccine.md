@@ -3,7 +3,7 @@ title = "Hack The Box - Vaccine"
 date = 2025-05-30
 
 [taxonomies]
-tags = ["hackthebox", "FTP", "SQL", "sql-injection", "reverse-shell", "privesc"]
+tags = ["hackthebox", "ftp", "sql", "sql injection", "reverse shell", "privesc"]
 +++
 
 [![TODO](/pictures/articles/htb/vaccine/00-cover.png)](https://www.hackthebox.com/achievement/machine/447801/289)

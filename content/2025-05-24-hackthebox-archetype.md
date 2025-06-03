@@ -3,7 +3,7 @@ title = "Hack The Box - Archetype"
 date = 2025-05-24
 
 [taxonomies]
-tags = ["hackthebox", "sql", "smb", "reverse-shell", "privesc"]
+tags = ["hackthebox", "sql", "smb", "reverse shell", "privesc"]
 +++
 
 [![Cover](/pictures/articles/htb/archetype/cover.png)](https://labs.hackthebox.com/achievement/machine/447801/287)

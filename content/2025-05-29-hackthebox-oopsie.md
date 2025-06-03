@@ -3,7 +3,7 @@ title = "Hack The Box - Oopsie"
 date = 2025-05-29
 
 [taxonomies]
-tags = ["hackthebox", "idor", "reverse-shell", "suid", "privesc"]
+tags = ["hackthebox", "idor", "reverse shell", "suid", "privesc"]
 +++
 
 [![TODO](/pictures/articles/htb/oopsie/00-cover.png)](https://labs.hackthebox.com/achievement/machine/447801/288)

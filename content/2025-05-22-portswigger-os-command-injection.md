@@ -3,7 +3,7 @@ title = "Portswigger - OS command injection"
 date = 2025-05-22
 
 [taxonomies]
-tags = ["webapp", "portswigger", "burp-suite", "server-side", "os command injection"]
+tags = ["webapp", "portswigger", "burp suite", "server-side", "os command injection"]
 +++
 
 ![os-command-injection](/pictures/articles/portswigger/os-command-injection/os-command-injection.svg)
