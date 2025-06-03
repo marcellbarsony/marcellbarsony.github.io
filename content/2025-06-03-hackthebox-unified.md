@@ -3,7 +3,7 @@ title = "HackTheBox - Unified"
 date = 2025-06-03
 
 [taxonomies]
-tags = ["HackTheBox", "Log4j", "MongoDB"]
+tags = ["HackTheBox", "Log4j", "MongoDB", "reverse-shell", "privesc"]
 +++
 
 [![TODO](/pictures/articles/htb/unified/00-cover.png)](https://www.hackthebox.com/achievement/machine/447801/441)
