@@ -3,14 +3,14 @@ title = "TryHackMe - Lesson Learned?"
 date = 2025-06-04
 
 [taxonomies]
-tags = ["tryhackme", "sqli", "hydra"]
+tags = ["tryhackme", "sql injection", "hydra"]
 +++
 
 ![TODO](/pictures/articles/thm/lesson-learned/00-cover.png)
 
-**Lesson Learned** is teaching a valuable lesson about which SQL queries
-not to use when trying to bypass a simple login form. It also shows how improper
-handling of login responses and unsanitized SQL queries could lead to
+**Lesson Learned** is teaching a valuable lesson about which SQL queries should
+not be used  when trying to bypass a simple login form. It also shows how
+improper handling of login responses and unsanitized SQL queries may lead to
 unauthorized access or potential loss of data.
 
 
