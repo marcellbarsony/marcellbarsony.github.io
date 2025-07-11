@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title>I hack things sometimes</title>
+    
+    <meta http-equiv="content-type" content="text/html; charset=utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
+    <meta name="robots" content="noodp"/>
+
+    <link rel="stylesheet" href="https://marcellbarsony.github.io/style.css">
+
+    <link rel="stylesheet" href="https://marcellbarsony.github.io/color/blue.css">
+    <link rel="stylesheet" href="https://marcellbarsony.github.io/font-hack-subset.css">
+
+    <meta name="description" content="">
+
+    <meta property="og:description" content="">
+    <meta property="og:title" content="I hack things sometimes">
+    <meta property="og:type" content="article">
+    <meta property="og:url" content="https://marcellbarsony.github.io/portswigger-ssrf/">
+
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:description" content="">
+    <meta name="twitter:title" content="I hack things sometimes">
+    <meta property="twitter:domain" content="marcellbarsony.github.io&#x2F;">
+    <meta property="twitter:url" content="https://marcellbarsony.github.io/portswigger-ssrf/">
+
+    </head>
+
+<body class="">
+<div class="container">
+    <!-- HEADER -->
+    
+    <header class="header">
+        <!-- LOGO -->
+        <!-- <div class="header__inner"> -->
+        <!--     <div class="header__logo"> -->
+        <!-- -->
+        <!--              -->
+        <!--         -->
+        <!--         <a href="https://marcellbarsony.github.io/" style="text-decoration: none;"> -->
+        <!--             <div class="logo"> -->
+        <!--                -->
+        <!-- -->
+        <!--                     | | | | | | | | | | -->
+        <!--                 -->
+        <!--                  -->
+        <!--             </div> -->
+        <!--         </a> -->
+        <!--     </div> -->
+        <!-- </div> -->
+
+        
+        
+                <nav class="menu">
+            <ul class="menu__inner">
+                <li class="active"><a href="https://marcellbarsony.github.io/">posts</a></li>
+            
+                <li><a href="https://marcellbarsony.github.io//tags">tags</a></li>
+            
+                <li><a href="https://marcellbarsony.github.io//archive">archive</a></li>
+            
+                <li><a href="https://marcellbarsony.github.io//whoami">whoami</a></li>
+            </ul>
+        </nav>
+    
+    
+        
+    </header>
+    
+
+    <div class="content">
+        
+    <div class="post">
+        
+    <h1 class="post-title"><a href="https://marcellbarsony.github.io/portswigger-ssrf/">Portswigger - Server-Side Request Forgery [SSRF]</a></h1>
+    <div class="post-meta-inline">
+        
+    <span class="post-date">
+            2025-05-20
+        </span>
+
+    </div>
+
+    
+        <span class="post-tags-inline">
+                ::
+                <a class="post-tag" href="https://marcellbarsony.github.io/tags/webapp/">webapp</a>&nbsp;::
+            
+                <a class="post-tag" href="https://marcellbarsony.github.io/tags/portswigger/">portswigger</a>&nbsp;::
+            
+                <a class="post-tag" href="https://marcellbarsony.github.io/tags/burp-suite/">burp suite</a>&nbsp;::
+            
+                <a class="post-tag" href="https://marcellbarsony.github.io/tags/server-side/">server-side</a>&nbsp;::
+            
+                <a class="post-tag" href="https://marcellbarsony.github.io/tags/ssrf/">ssrf</a>&nbsp;::
+            
+        </span>
+    
+
+        <div class="post-content">
+            <p><img src="/pictures/articles/portswigger/server-side-request-forgery/server-side-request-forgery.svg" alt="ssrf" /></p>
+<p><strong>Server-Side Request Forgery (SSRF)</strong> allows an attacker to cause the
+server-side application to make an HTTP requests to an unintended, arbitrary
+(internal or external) location. SSRF vulnerabilities currently hold the #10
+spot on the <a href="https://owasp.org/www-project-top-ten/">OWASP Top 10 list</a>
+(as of 2021).</p>
+<span id="continue-reading"></span>
+<p>Applications may be vulnerable to SSRF due to the following reasons:</p>
+<ul>
+<li>The access control check might be implemented in a component that sits in
+front of the server.</li>
+<li>The application might allow administrative access without logging in to any
+user coming from a local machine: this assumes that only a trusted user would
+come directly from the server.</li>
+<li>The administrative interface might listen to the main application on a
+different port: this might not be reachable by regular users.</li>
+</ul>
+<h2 id="exploitation">Exploitation</h2>
+<!-- LAB 1 {{{-->
+<h3 id="lab-1-basic-ssrf-against-the-local-server"><a href="https://portswigger.net/web-security/learning-paths/server-side-vulnerabilities-apprentice/ssrf-apprentice/ssrf/lab-basic-ssrf-against-localhost">LAB 1 - Basic SSRF against the local server</a></h3>
+<p>In this web app, the <code>Check stock</code> feature can be utilized to gather information
+about the availability of a product (which is a Giant Enter Key in this case -
+very nice, however, I prefer the ANSI layout over the ISO).</p>
+<p><img src="/pictures/articles/portswigger/server-side-request-forgery/lab-1-1.png" alt="ssrf" /></p>
+<p>By clicking on <code>Check stock</code> and intercepting the request with Burp Suite's
+proxy reveals that a <code>stockApi</code> request is being made to an encoded URL.</p>
+<p><img src="/pictures/articles/portswigger/server-side-request-forgery/lab-1-2.png" alt="ssrf" /></p>
+<p>Replacing this URL with <code>http://localhost/</code>, the request can be redirected
+from its intended location to a hidden Admin panel however,
+privileged actions cannot be performed just yet. Hovering over
+<code>Delete</code> next to <code>carlos</code>'s name the URL in the status bar can be observed.</p>
+<p><img src="/pictures/articles/portswigger/server-side-request-forgery/lab-1-3.png" alt="ssrf" /></p>
+<p>Request can now be sent to Burp Suite's Repeater and modified to be
+<code>https://localhost/admin/delete?username=carlos</code>. A <a href="https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/302">302 Found</a>
+response is returned, which indicates a redirection to another location which
+can be followed with the <code>Follow redirection</code> button.</p>
+<p><img src="/pictures/articles/portswigger/server-side-request-forgery/lab-1-4.png" alt="ssrf" /></p>
+<p>The process concludes with a <a href="https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/401">401 Unauthorized</a>
+status code, as access to the admin page is being attempted from an external
+perspective.</p>
+<p><img src="/pictures/articles/portswigger/server-side-request-forgery/lab-1-5.png" alt="ssrf" /></p>
+<p>Despite the error, the lab is now completed as <code>carlos</code>'s account has been
+deleted.</p>
+<!-- }}} -->
+<!-- LAB 2 {{{-->
+<h3 id="lab-2-ssrf-attacks-against-other-back-end-systems"><a href="https://portswigger.net/web-security/learning-paths/server-side-vulnerabilities-apprentice/ssrf-apprentice/ssrf/ssrf-attacks-against-other-back-end-systems">LAB 2 - SSRF attacks against other back-end systems</a></h3>
+<p>Once again, the stock-checking feature is retrieving product availability data
+from the backend. This <code>stockApi</code> request can be intercepted and modified
+using Burp Suite.</p>
+<p><img src="/pictures/articles/portswigger/server-side-request-forgery/lab-2-1.png" alt="ssrf" /></p>
+<p>The well-known <code>192.168.0.x</code> private IP range (<code>1-255</code>) can be scanned with
+Burp Suite's Intruder to potentially discover other internal functionalities.</p>
+<p><img src="/pictures/articles/portswigger/server-side-request-forgery/lab-2-2.png" alt="ssrf" /></p>
+<p>The <a href="https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/200">200 OK</a>
+status code indicates a successful response from <code>192.168.0.85:8080/admin</code>.</p>
+<p><img src="/pictures/articles/portswigger/server-side-request-forgery/lab-2-3.png" alt="ssrf" /></p>
+<p>Replacing <code>stockApi</code> with the found address reveals the hidden administrator
+panel.</p>
+<p><img src="/pictures/articles/portswigger/server-side-request-forgery/lab-2-4.png" alt="ssrf" /></p>
+<p>The lab now can be solved by making a request to
+<code>http://192.169.0.85:8080/admin/delete?username=carlos</code> that removes the user
+<code>carlos</code>.</p>
+<!-- }}} -->
+<h2 id="mitigation">Mitigation</h2>
+<p>To avoid <strong>Server-Side Request Forgery</strong> vulnerabilities,
+developers should implement the following security measures:</p>
+<ol>
+<li>
+<p>Input Validation &amp; Allowlist</p>
+<ul>
+<li>Only allow requests to explicitly approved domains or IPs</li>
+<li>Block user input from directly controlling request URLs</li>
+</ul>
+</li>
+<li>
+<p>Network Restrictions:</p>
+<ul>
+<li>Restrict outbound requests from the server to internal or private networks</li>
+<li>Use firewall rules or network policies to prevent access
+to internal services</li>
+</ul>
+</li>
+<li>
+<p>URL Parsing &amp; Validation:</p>
+<ul>
+<li>Parse and normalize URLs before making requests
+to avoid bypass techniques</li>
+</ul>
+</li>
+<li>
+<p>Enforce Least Privilege:</p>
+<ul>
+<li>Run services with minimal network permissions
+to prevent unauthorized internal access</li>
+</ul>
+</li>
+<li>
+<p>Monitor &amp; Log Requests:</p>
+<ul>
+<li>Implement logging and anomaly detection for unusual outbound requests</li>
+</ul>
+</li>
+</ol>
+
+        </div>
+
+        
+        <div class="pagination">
+            <div class="pagination__title">
+                <hr />
+            </div>
+            <div class="pagination__buttons">
+                    <span class="button previous">
+                        <a href="https://marcellbarsony.github.io/portswigger-authentication/">
+                            <span class="button__icon">‹</span>&nbsp;
+                            <span class="button__text">Portswigger - Authentication vulnerabilities</span>
+                        </a>
+                    </span>
+                
+                
+                    <span class="button next">
+                        <a href="https://marcellbarsony.github.io/portswigger-directory-traversal/">
+                            <span class="button__text">Portswigger - Directory traversal vulnerabilities</span>&nbsp;
+                    <span class="button__icon">❯</span>
+                        </a>
+                    </span>
+                </div>
+        </div>
+    
+    </div>
+
+    </div>
+
+    <!-- FOOTER -->
+    <!--  -->
+    <!-- <footer class="footer"> -->
+    <!--     <div class="footer__inner"> -->
+    <!-- -->
+    <!--             <div class="copyright copyright--user">My custom&nbsp;<b>copyright</b></div> -->
+    <!--         -->
+    <!--     </div> -->
+    <!-- </footer> -->
+    <!--  -->
+
+</div>
+</body>
+
+</html>

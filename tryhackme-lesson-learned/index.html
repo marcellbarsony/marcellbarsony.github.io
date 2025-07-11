@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title>I hack things sometimes</title>
+    
+    <meta http-equiv="content-type" content="text/html; charset=utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
+    <meta name="robots" content="noodp"/>
+
+    <link rel="stylesheet" href="https://marcellbarsony.github.io/style.css">
+
+    <link rel="stylesheet" href="https://marcellbarsony.github.io/color/blue.css">
+    <link rel="stylesheet" href="https://marcellbarsony.github.io/font-hack-subset.css">
+
+    <meta name="description" content="">
+
+    <meta property="og:description" content="">
+    <meta property="og:title" content="I hack things sometimes">
+    <meta property="og:type" content="article">
+    <meta property="og:url" content="https://marcellbarsony.github.io/tryhackme-lesson-learned/">
+
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:description" content="">
+    <meta name="twitter:title" content="I hack things sometimes">
+    <meta property="twitter:domain" content="marcellbarsony.github.io&#x2F;">
+    <meta property="twitter:url" content="https://marcellbarsony.github.io/tryhackme-lesson-learned/">
+
+    </head>
+
+<body class="">
+<div class="container">
+    <!-- HEADER -->
+    
+    <header class="header">
+        <!-- LOGO -->
+        <!-- <div class="header__inner"> -->
+        <!--     <div class="header__logo"> -->
+        <!-- -->
+        <!--              -->
+        <!--         -->
+        <!--         <a href="https://marcellbarsony.github.io/" style="text-decoration: none;"> -->
+        <!--             <div class="logo"> -->
+        <!--                -->
+        <!-- -->
+        <!--                     | | | | | | | | | | -->
+        <!--                 -->
+        <!--                  -->
+        <!--             </div> -->
+        <!--         </a> -->
+        <!--     </div> -->
+        <!-- </div> -->
+
+        
+        
+                <nav class="menu">
+            <ul class="menu__inner">
+                <li class="active"><a href="https://marcellbarsony.github.io/">posts</a></li>
+            
+                <li><a href="https://marcellbarsony.github.io//tags">tags</a></li>
+            
+                <li><a href="https://marcellbarsony.github.io//archive">archive</a></li>
+            
+                <li><a href="https://marcellbarsony.github.io//whoami">whoami</a></li>
+            </ul>
+        </nav>
+    
+    
+        
+    </header>
+    
+
+    <div class="content">
+        
+    <div class="post">
+        
+    <h1 class="post-title"><a href="https://marcellbarsony.github.io/tryhackme-lesson-learned/">TryHackMe - Lesson Learned?</a></h1>
+    <div class="post-meta-inline">
+        
+    <span class="post-date">
+            2025-06-04
+        </span>
+
+    </div>
+
+    
+        <span class="post-tags-inline">
+                ::
+                <a class="post-tag" href="https://marcellbarsony.github.io/tags/tryhackme/">tryhackme</a>&nbsp;::
+            
+                <a class="post-tag" href="https://marcellbarsony.github.io/tags/sql-injection/">sql injection</a>&nbsp;::
+            
+                <a class="post-tag" href="https://marcellbarsony.github.io/tags/hydra/">hydra</a>&nbsp;::
+            
+        </span>
+    
+
+        <div class="post-content">
+            <p><img src="/pictures/articles/thm/lesson-learned/00-cover.png" alt="TODO" /></p>
+<p><strong>Lesson Learned</strong> is teaching a valuable lesson about which SQL queries should
+not be used  when trying to bypass a simple login form. It also shows how
+improper handling of login responses and unsanitized SQL queries may lead to
+unauthorized access or potential loss of data.</p>
+<span id="continue-reading"></span><h1 id="enumeration">Enumeration</h1>
+<!-- Enumeration {{{-->
+<p>The nmap scan shows that only ports 22 (SSH) and 80 (HTTP) are open
+on the target machine.</p>
+<p><img src="/pictures/articles/thm/lesson-learned/01-nmap.png" alt="nmap" /></p>
+<p>Visiting the website presents a login form and as the room description states,
+there aren't any hidden pages, nor rabbit holes available to exploit further.</p>
+<p>When attempting to use well-known default credentials, such as <code>admin/admin</code>,
+the error message reveals whether the username, the password,
+or both are incorrect.</p>
+<p><img src="/pictures/articles/thm/lesson-learned/02-login.png" alt="login" /></p>
+<p>Intercepting the login POST request with Burp Suite shows the parameters used to
+send the credentials to the server for validation.</p>
+<p><img src="/pictures/articles/thm/lesson-learned/03-request.png" alt="request" /></p>
+<!-- }}} -->
+<h1 id="exploitation">Exploitation</h1>
+<!-- Exploitation {{{-->
+<p>Since the login form is specifying whether or not the username is correct,
+it is possible to perform a brute-force attack with
+<a href="https://github.com/vanhauser-thc/thc-hydra">hydra</a>
+to find some common ones.</p>
+<p><img src="/pictures/articles/thm/lesson-learned/04-hydra.png" alt="hydra" /></p>
+<ul>
+<li><code>-L</code>: Specify wordlist file</li>
+<li><code>-p</code>: Default password to try</li>
+<li><code>http-post-form</code>: Protocol to be used</li>
+</ul>
+<p>Hydra has identified some possible usernames,
+and the response from the login form confirms that these usernames exist.</p>
+<p><img src="/pictures/articles/thm/lesson-learned/05-username.png" alt="username" /></p>
+<p>It may be now possible to bypass the login with a simple SQL injection.</p>
+<p><img src="/pictures/articles/thm/lesson-learned/06-sqli.png" alt="sqli" /></p>
+<p>With this simple payload the flag is now presented for this room.</p>
+<p><img src="/pictures/articles/thm/lesson-learned/07-flag.png" alt="flag" /></p>
+<p>However, the message accompanying the flag advises against using certain SQL
+injection queries.</p>
+<p><img src="/pictures/articles/thm/lesson-learned/08-lesson.png" alt="lesson" /></p>
+<p>The injection now made it to a <code>DELETE</code> query and deleted the entire
+SQL database from the server.</p>
+<p><img src="/pictures/articles/thm/lesson-learned/09-lesson-1.png" alt="lesson" /></p>
+<!-- }}} -->
+<h1 id="mitigation">Mitigation</h1>
+<!-- Mitigation {{{-->
+<ol>
+<li>
+<p>Error messages</p>
+<ul>
+<li>Avoid too detailed error messages that could disclose too much information
+to a potential attacker</li>
+</ul>
+</li>
+<li>
+<p>Input validation</p>
+<ul>
+<li>Implement input validation and sanitization</li>
+<li>Use parameterized queries to prevent SQL injection</li>
+</ul>
+</li>
+<li>
+<p>Principle of least privilege</p>
+<ul>
+<li>Ensure the database user cannot issue <code>DELETE</code> or <code>DROP</code></li>
+</ul>
+</li>
+</ol>
+<!-- }}} -->
+
+        </div>
+
+        
+        <div class="pagination">
+            <div class="pagination__title">
+                <hr />
+            </div>
+            <div class="pagination__buttons">
+                    <span class="button previous">
+                        <a href="https://marcellbarsony.github.io/hackthebox-unified/">
+                            <span class="button__icon">‹</span>&nbsp;
+                            <span class="button__text">HackTheBox - Unified</span>
+                        </a>
+                    </span>
+                
+                
+                    <span class="button next">
+                        <a href="https://marcellbarsony.github.io/tryhackme-billing/">
+                            <span class="button__text">TryHackMe - Billing</span>&nbsp;
+                    <span class="button__icon">❯</span>
+                        </a>
+                    </span>
+                </div>
+        </div>
+    
+    </div>
+
+    </div>
+
+    <!-- FOOTER -->
+    <!--  -->
+    <!-- <footer class="footer"> -->
+    <!--     <div class="footer__inner"> -->
+    <!-- -->
+    <!--             <div class="copyright copyright--user">My custom&nbsp;<b>copyright</b></div> -->
+    <!--         -->
+    <!--     </div> -->
+    <!-- </footer> -->
+    <!--  -->
+
+</div>
+</body>
+
+</html>

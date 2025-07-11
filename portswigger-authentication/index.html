@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title>I hack things sometimes</title>
+    
+    <meta http-equiv="content-type" content="text/html; charset=utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
+    <meta name="robots" content="noodp"/>
+
+    <link rel="stylesheet" href="https://marcellbarsony.github.io/style.css">
+
+    <link rel="stylesheet" href="https://marcellbarsony.github.io/color/blue.css">
+    <link rel="stylesheet" href="https://marcellbarsony.github.io/font-hack-subset.css">
+
+    <meta name="description" content="">
+
+    <meta property="og:description" content="">
+    <meta property="og:title" content="I hack things sometimes">
+    <meta property="og:type" content="article">
+    <meta property="og:url" content="https://marcellbarsony.github.io/portswigger-authentication/">
+
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:description" content="">
+    <meta name="twitter:title" content="I hack things sometimes">
+    <meta property="twitter:domain" content="marcellbarsony.github.io&#x2F;">
+    <meta property="twitter:url" content="https://marcellbarsony.github.io/portswigger-authentication/">
+
+    </head>
+
+<body class="">
+<div class="container">
+    <!-- HEADER -->
+    
+    <header class="header">
+        <!-- LOGO -->
+        <!-- <div class="header__inner"> -->
+        <!--     <div class="header__logo"> -->
+        <!-- -->
+        <!--              -->
+        <!--         -->
+        <!--         <a href="https://marcellbarsony.github.io/" style="text-decoration: none;"> -->
+        <!--             <div class="logo"> -->
+        <!--                -->
+        <!-- -->
+        <!--                     | | | | | | | | | | -->
+        <!--                 -->
+        <!--                  -->
+        <!--             </div> -->
+        <!--         </a> -->
+        <!--     </div> -->
+        <!-- </div> -->
+
+        
+        
+                <nav class="menu">
+            <ul class="menu__inner">
+                <li class="active"><a href="https://marcellbarsony.github.io/">posts</a></li>
+            
+                <li><a href="https://marcellbarsony.github.io//tags">tags</a></li>
+            
+                <li><a href="https://marcellbarsony.github.io//archive">archive</a></li>
+            
+                <li><a href="https://marcellbarsony.github.io//whoami">whoami</a></li>
+            </ul>
+        </nav>
+    
+    
+        
+    </header>
+    
+
+    <div class="content">
+        
+    <div class="post">
+        
+    <h1 class="post-title"><a href="https://marcellbarsony.github.io/portswigger-authentication/">Portswigger - Authentication vulnerabilities</a></h1>
+    <div class="post-meta-inline">
+        
+    <span class="post-date">
+            2025-05-19
+        </span>
+
+    </div>
+
+    
+        <span class="post-tags-inline">
+                ::
+                <a class="post-tag" href="https://marcellbarsony.github.io/tags/webapp/">webapp</a>&nbsp;::
+            
+                <a class="post-tag" href="https://marcellbarsony.github.io/tags/portswigger/">portswigger</a>&nbsp;::
+            
+                <a class="post-tag" href="https://marcellbarsony.github.io/tags/burp-suite/">burp suite</a>&nbsp;::
+            
+                <a class="post-tag" href="https://marcellbarsony.github.io/tags/server-side/">server-side</a>&nbsp;::
+            
+                <a class="post-tag" href="https://marcellbarsony.github.io/tags/authentication/">authentication</a>&nbsp;::
+            
+                <a class="post-tag" href="https://marcellbarsony.github.io/tags/mfa/">mfa</a>&nbsp;::
+            
+        </span>
+    
+
+        <div class="post-content">
+            <p><img src="/pictures/articles/portswigger/authentication-vulnerabilities/password-reset-poisoning.svg" alt="authentication-vulnerabilities" /></p>
+<p><strong>Authentication</strong> is the process of verifying that a user is who they claim to
+be. Authentication vulnerabilities can allow attackers to gain access to
+sensitive data or functionality. They also expose additional attack surface for
+further exploits.</p>
+<span id="continue-reading"></span><h2 id="brute-force-attacks">Brute-force attacks</h2>
+<p>A brute-force attack is when an attacker uses a system of trial and error to
+guess valid user credentials. These attacks are typically automated using
+word lists of usernames and passwords. Automating this process, especially using
+dedicated tools, potentially enables an attacker to make vast numbers of login
+attempts at high speed.</p>
+<h2 id="exploitation">Exploitation</h2>
+<!-- LAB 1 {{{-->
+<h3 id="lab-1-username-enumerating-via-different-responses"><a href="https://portswigger.net/web-security/learning-paths/server-side-vulnerabilities-apprentice/authentication-apprentice/authentication/password-based/lab-username-enumeration-via-different-responses">LAB 1 - Username enumerating via different responses</a></h3>
+<p>The first step involves identifying how the login form works
+by capturing the HTTP request that is sent when credentials are submitted.</p>
+<p><img src="/pictures/articles/portswigger/authentication-vulnerabilities/lab-1-1.png" alt="auth" /></p>
+<p>The captured request then can be sent to the Intruder tool to perform
+a brute-force attack on the login funcitonality.</p>
+<p><img src="/pictures/articles/portswigger/authentication-vulnerabilities/lab-1-2.png" alt="auth" /></p>
+<p>To target the <code>username</code> field, the parameter can be marked as a payload
+position by surrounding it with <code>§</code> symbols.</p>
+<p><img src="/pictures/articles/portswigger/authentication-vulnerabilities/lab-1-3.png" alt="auth" /></p>
+<p>Next, a payload list is configured. In this case, a list of potential usernames
+is loaded into Intruder. The tool will iterate through each value and inject it
+into the defined payload position.</p>
+<p><img src="/pictures/articles/portswigger/authentication-vulnerabilities/lab-1-4.png" alt="auth" /></p>
+<p>The difference in response length suggests that one of the usernames is
+returning a different response: <code>Incorrect password</code></p>
+<p><img src="/pictures/articles/portswigger/authentication-vulnerabilities/lab-1-5.png" alt="auth" /></p>
+<p>A similar approach can be used to identify the corresponding password.</p>
+<p><img src="/pictures/articles/portswigger/authentication-vulnerabilities/lab-1-6.png" alt="auth" /></p>
+<p>The response status code <a href="https://developer.mozilla.org/en-US/docs/Web/HTTP/Reference/Status/302">302 Found</a>
+indicates that the login attempt was successful.</p>
+<p><img src="/pictures/articles/portswigger/authentication-vulnerabilities/lab-1-7.png" alt="auth" /></p>
+<p>It is now possible to log in to the account with the username <code>americas</code>
+and password <code>football</code>.</p>
+<p><img src="/pictures/articles/portswigger/authentication-vulnerabilities/lab-1-8.png" alt="auth" /></p>
+<!--}}}-->
+<!-- LAB 2 {{{-->
+<h3 id="lab-2-2fa-simple-bypass"><a href="https://portswigger.net/web-security/learning-paths/server-side-vulnerabilities-apprentice/authentication-apprentice/authentication/multi-factor/lab-2fa-simple-bypass">LAB 2 - 2FA simple bypass</a></h3>
+<p>Accessing the provided user account (<code>wiener:peter</code>) allows for exploration
+and analysis of the web application’s functionality.</p>
+<p><img src="/pictures/articles/portswigger/authentication-vulnerabilities/lab-2-1.png" alt="auth" /></p>
+<p>After providing with the credentials, the system sends an e-mail
+containing a second-factor authentication code.</p>
+<p><img src="/pictures/articles/portswigger/authentication-vulnerabilities/lab-2-2.png" alt="auth" /></p>
+<p>This code must be entered to complete the two-factor authentication process.</p>
+<p><img src="/pictures/articles/portswigger/authentication-vulnerabilities/lab-2-3.png" alt="auth" /></p>
+<p>The URL <code>/my-account?id=wiener</code> is displayed after authentication,
+which indicates that the account is identified via a query parameter.<br>
+This behavior can potentially be leveraged to bypass
+the second-factor authentication.</p>
+<p><img src="/pictures/articles/portswigger/authentication-vulnerabilities/lab-2-4.png" alt="auth" /></p>
+<p>By changing the URL to <code>/my-account?id=carlos</code> it is possible to gain
+unauthorized access to <code>carlos</code>'s account as the web application does not
+implement proper checks for the second-factor authentication.</p>
+<p><img src="/pictures/articles/portswigger/authentication-vulnerabilities/lab-2-5.png" alt="auth" /></p>
+<!--}}}-->
+<h2 id="mitigation">Mitigation</h2>
+<!-- Mitigation {{{-->
+<ol>
+<li>
+<p>Implement strong password policies</p>
+<ul>
+<li>Enforce password complexity and length requirements</li>
+<li>Check against commonly used/breached passwords</li>
+</ul>
+</li>
+<li>
+<p>Multi-factor authentication</p>
+<ul>
+<li>Implement additional verification methods beyond passwords</li>
+<li>Include multiple options: Authenticator APP, biometrics, security keys</li>
+</ul>
+</li>
+<li>
+<p>Session management</p>
+<ul>
+<li>Generate secure, random session IDs</li>
+<li>Set appropriate timeouts and invalidate on logout</li>
+</ul>
+</li>
+<li>
+<p>Rate limiting and account lockout</p>
+<ul>
+<li>Limit failed login attempts</li>
+<li>Implement progressive delays between attempts</li>
+</ul>
+</li>
+<li>
+<p>Secure password storage</p>
+<ul>
+<li>Never store plain text passwords</li>
+<li>Use strong and modern hashing algorithms with proper salting</li>
+</ul>
+</li>
+<li>
+<p>HTTPS everywhere</p>
+<ul>
+<li>Encrypt all traffic to prevent credential interception</li>
+<li>Implement strict transport security headers</li>
+</ul>
+</li>
+</ol>
+<!-- }}} -->
+
+        </div>
+
+        
+        <div class="pagination">
+            <div class="pagination__title">
+                <hr />
+            </div>
+            <div class="pagination__buttons">
+                    <span class="button previous">
+                        <a href="https://marcellbarsony.github.io/portswigger-file-upload/">
+                            <span class="button__icon">‹</span>&nbsp;
+                            <span class="button__text">Portswigger - File Upload vulnerabilities</span>
+                        </a>
+                    </span>
+                
+                
+                    <span class="button next">
+                        <a href="https://marcellbarsony.github.io/portswigger-ssrf/">
+                            <span class="button__text">Portswigger - Server-Side Request Forgery [SSRF]</span>&nbsp;
+                    <span class="button__icon">❯</span>
+                        </a>
+                    </span>
+                </div>
+        </div>
+    
+    </div>
+
+    </div>
+
+    <!-- FOOTER -->
+    <!--  -->
+    <!-- <footer class="footer"> -->
+    <!--     <div class="footer__inner"> -->
+    <!-- -->
+    <!--             <div class="copyright copyright--user">My custom&nbsp;<b>copyright</b></div> -->
+    <!--         -->
+    <!--     </div> -->
+    <!-- </footer> -->
+    <!--  -->
+
+</div>
+</body>
+
+</html>

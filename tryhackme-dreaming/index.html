@@ -1,0 +1,287 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title>I hack things sometimes</title>
+    
+    <meta http-equiv="content-type" content="text/html; charset=utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
+    <meta name="robots" content="noodp"/>
+
+    <link rel="stylesheet" href="https://marcellbarsony.github.io/style.css">
+
+    <link rel="stylesheet" href="https://marcellbarsony.github.io/color/blue.css">
+    <link rel="stylesheet" href="https://marcellbarsony.github.io/font-hack-subset.css">
+
+    <meta name="description" content="">
+
+    <meta property="og:description" content="">
+    <meta property="og:title" content="I hack things sometimes">
+    <meta property="og:type" content="article">
+    <meta property="og:url" content="https://marcellbarsony.github.io/tryhackme-dreaming/">
+
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:description" content="">
+    <meta name="twitter:title" content="I hack things sometimes">
+    <meta property="twitter:domain" content="marcellbarsony.github.io&#x2F;">
+    <meta property="twitter:url" content="https://marcellbarsony.github.io/tryhackme-dreaming/">
+
+    </head>
+
+<body class="">
+<div class="container">
+    <!-- HEADER -->
+    
+    <header class="header">
+        <!-- LOGO -->
+        <!-- <div class="header__inner"> -->
+        <!--     <div class="header__logo"> -->
+        <!-- -->
+        <!--              -->
+        <!--         -->
+        <!--         <a href="https://marcellbarsony.github.io/" style="text-decoration: none;"> -->
+        <!--             <div class="logo"> -->
+        <!--                -->
+        <!-- -->
+        <!--                     | | | | | | | | | | -->
+        <!--                 -->
+        <!--                  -->
+        <!--             </div> -->
+        <!--         </a> -->
+        <!--     </div> -->
+        <!-- </div> -->
+
+        
+        
+                <nav class="menu">
+            <ul class="menu__inner">
+                <li class="active"><a href="https://marcellbarsony.github.io/">posts</a></li>
+            
+                <li><a href="https://marcellbarsony.github.io//tags">tags</a></li>
+            
+                <li><a href="https://marcellbarsony.github.io//archive">archive</a></li>
+            
+                <li><a href="https://marcellbarsony.github.io//whoami">whoami</a></li>
+            </ul>
+        </nav>
+    
+    
+        
+    </header>
+    
+
+    <div class="content">
+        
+    <div class="post">
+        
+    <h1 class="post-title"><a href="https://marcellbarsony.github.io/tryhackme-dreaming/">TryHackMe - Dreaming</a></h1>
+    <div class="post-meta-inline">
+        
+    <span class="post-date">
+            2025-06-24
+        </span>
+
+    </div>
+
+    
+        <span class="post-tags-inline">
+                ::
+                <a class="post-tag" href="https://marcellbarsony.github.io/tags/tryhackme/">tryhackme</a>&nbsp;::
+            
+                <a class="post-tag" href="https://marcellbarsony.github.io/tags/file-upload/">file-upload</a>&nbsp;::
+            
+                <a class="post-tag" href="https://marcellbarsony.github.io/tags/privesc/">privesc</a>&nbsp;::
+            
+                <a class="post-tag" href="https://marcellbarsony.github.io/tags/reverse-shell/">reverse-shell</a>&nbsp;::
+            
+                <a class="post-tag" href="https://marcellbarsony.github.io/tags/sql/">sql</a>&nbsp;::
+            
+        </span>
+    
+
+        <div class="post-content">
+            <p><img src="/pictures/articles/thm/dreaming/00-cover.png" alt="TODO" /></p>
+<p><strong>Dreaming</strong> - inspired by <em>The Sandman</em> comic book - is a Pluck CMS-based
+machine that shows how weak credentials and an unpatched file upload
+vulnerability can be chained to gain remote command execution. It also
+highlights how improper sudo permissions and insecure coding practices - such as
+storing plaintext credentials - can lead to privilege escalation and full system
+compromise.</p>
+<span id="continue-reading"></span><h1 id="enumeration">Enumeration</h1>
+<!-- Enumeration {{{-->
+<p>Nmap shows that the following ports are open on the target machine:</p>
+<ul>
+<li>22 - OpenSSH</li>
+<li>80 - Apache HTTP Server</li>
+</ul>
+<p><img src="/pictures/articles/thm/dreaming/01-nmap.png" alt="a" /></p>
+<p>The site hosted on port <code>80</code> only displays the default Apache 2 page.</p>
+<p><img src="/pictures/articles/thm/dreaming/02-default-page.png" alt="a" /></p>
+<p>Fuzzing directories with gobuster results in a hit that can be further
+investigated.</p>
+<p><img src="/pictures/articles/thm/dreaming/03-gobuster.png" alt="a" /></p>
+<p>The directory structure reveals the CMS used on the web application.</p>
+<p><img src="/pictures/articles/thm/dreaming/04-webapp.png" alt="a" /></p>
+<p>Searching for information on the version number of the CMS leads to a
+<strong>file upload remote code execution</strong> vulnerability
+(<a href="https://www.exploit-db.com/exploits/49909">CVE-202029607</a>).</p>
+<p><img src="/pictures/articles/thm/dreaming/05-dreaming.png" alt="a" /></p>
+<!-- }}} -->
+<h1 id="exploitation">Exploitation</h1>
+<!-- Exploitation {{{-->
+<!-- Lucien {{{-->
+<h2 id="lucien">Lucien</h2>
+<p>Clicking on <code>admin</code> directs to the Pluck login page, but the password is
+currently unknown.</p>
+<p><img src="/pictures/articles/thm/dreaming/06-login.png" alt="a" /></p>
+<p>After some guessing, it is possible to gain access to the administrator panel
+with the password <code>password</code>.</p>
+<p><img src="/pictures/articles/thm/dreaming/07-pluck.png" alt="a" /></p>
+<p>To leverage the aforementioned CVE, a reverse-shell can be uploaded to initiate
+a connection back to the attacker machine once called with the magnifying glass
+icon.</p>
+<p><img src="/pictures/articles/thm/dreaming/08-file-upload.png" alt="a" /></p>
+<p>The reverse-shell connection is captured by netcat on port <code>1234</code> as expected.</p>
+<p><img src="/pictures/articles/thm/dreaming/09-reverse-shell.png" alt="a" /></p>
+<p>Once the connection is established, the spawned shell can be upgraded to an
+interactive shell.</p>
+<p><img src="/pictures/articles/thm/dreaming/10-interactive-shell.png" alt="a" /></p>
+<p>Investigating the <code>/etc/passwd</code> file reveals three users of interest: <code>lucien</code>,
+<code>death</code> and <code>morpheus</code>.</p>
+<p><img src="/pictures/articles/thm/dreaming/11-whoami.png" alt="a" /></p>
+<p>To enumerate the machine further <a href="https://github.com/peass-ng/PEASS-ng">LinPEAS</a>
+can be utilized.</p>
+<p><img src="/pictures/articles/thm/dreaming/12-linpeas.png" alt="a" /></p>
+<p>LinPEAS has found a couple unexpected files in the <code>/root</code> directory.</p>
+<p><img src="/pictures/articles/thm/dreaming/13-linpeas-root.png" alt="a" /></p>
+<p>A local instance of MySQL is running on port <code>3306</code>.</p>
+<p><img src="/pictures/articles/thm/dreaming/14-linpeas-ports.png" alt="a" /></p>
+<p><img src="/pictures/articles/thm/dreaming/15-linpeas-users.png" alt="a" /></p>
+<p>In the web server's directory, there is an interesting file called <code>pass.php</code>
+which contains a string of random characters that looks like a hash.</p>
+<p><img src="/pictures/articles/thm/dreaming/16-hash.png" alt="a" /></p>
+<p>After checking it with <code>hashid</code>, it appears to be a <code>SHA-512</code> hash.</p>
+<p><img src="/pictures/articles/thm/dreaming/17-hash-id.png" alt="a" /></p>
+<p>Running it through <code>hashcat</code> against a wordlist uncovers the password to be
+<code>password</code>.</p>
+<p><img src="/pictures/articles/thm/dreaming/18-hash-crack.png" alt="a" /></p>
+<p>The <code>/opt</code> directory also contains some unusual files that should be
+investigated further.</p>
+<p><img src="/pictures/articles/thm/dreaming/19-opts.png" alt="a" /></p>
+<p><code>test.py</code> discloses <code>lucien</code>'s password in plain text.</p>
+<p><img src="/pictures/articles/thm/dreaming/20-lucien-pass.png" alt="a" /></p>
+<p>It is now possible to change the current user and authenticate as <code>lucien</code>.</p>
+<p><img src="/pictures/articles/thm/dreaming/21-su-lucien.png" alt="a" /></p>
+<p>The file <code>lucien_flag.txt</code> in the user's home directory contains the first flag.</p>
+<p><img src="/pictures/articles/thm/dreaming/22-lucien-flag.png" alt="a" /></p>
+<!-- }}} -->
+<!-- Death {{{-->
+<h2 id="death">Death</h2>
+<p>The command <code>sudo -l</code> shows that <code>lucien</code> should be able to run <code>getDreams.py</code>
+from <code>death</code>'s home directory.</p>
+<p><img src="/pictures/articles/thm/dreaming/23-sudo-l.png" alt="a" /></p>
+<p>It is indeed possible to run the Python script, but its behavior cannot be
+leveraged just yet.</p>
+<p><img src="/pictures/articles/thm/dreaming/24-getdreams.png" alt="a" /></p>
+<p><code>lucien</code>'s <code>.bash-history</code> file discloses a MySQL password.</p>
+<p><img src="/pictures/articles/thm/dreaming/25-bash-history.png" alt="a" /></p>
+<p><img src="/pictures/articles/thm/dreaming/26-bash-history-2.png" alt="a" /></p>
+<p>The found passsword can be used to authenticate as <code>lucien</code>to the local MySQL
+instance running on the server.</p>
+<p><img src="/pictures/articles/thm/dreaming/27-mysql.png" alt="a" /></p>
+<p>The database shows the same records as the output from the previously run
+script.</p>
+<p><img src="/pictures/articles/thm/dreaming/28-mysql-show.png" alt="a" /></p>
+<p>It is possible to inject a custom record to copy an instance of <code>/bin/bash</code> to a
+temporary directory and make it executable.</p>
+<p><img src="/pictures/articles/thm/dreaming/29-mysql-insert.png" alt="a" /></p>
+<p>When the script is executed again from <code>death</code>'s directory, it spawns a shell
+under the name of <code>death</code>.</p>
+<p><img src="/pictures/articles/thm/dreaming/30-getdreams.png" alt="a" /></p>
+<p><code>death</code>'s flag can be found in <code>death_flag.txt</code> in its home directory.</p>
+<p><img src="/pictures/articles/thm/dreaming/31-death-flag.png" alt="a" /></p>
+<!-- }}} -->
+<!-- }}} -->
+<h1 id="mitigation">Mitigation</h1>
+<!-- Mitigation {{{-->
+<ol>
+<li>
+<p>Apply patches to known CVEs</p>
+<ul>
+<li>Regularly audit, update and patch critical CMS platforms such as Pluck</li>
+</ul>
+</li>
+<li>
+<p>Sanitize file uploads</p>
+<ul>
+<li>Implement strict file type validation, remove executable permissions on
+uploaded files, and store uploads outside the web root</li>
+</ul>
+</li>
+<li>
+<p>Restrict sudo permissions</p>
+<ul>
+<li>Limit the use of <code>sudo</code> to essential commands, and avoid allowing users to
+execute scripts owned by higher-privileged accounts</li>
+</ul>
+</li>
+<li>
+<p>Secure database access</p>
+<ul>
+<li>Bind MySQL to localhost only, enforce strong authentication and validate
+user input to prevent SQL injection</li>
+</ul>
+</li>
+<li>
+<p>Audit files for secrets</p>
+<ul>
+<li>Avoid storing plaintext credentials in scripts or history files.</li>
+</ul>
+</li>
+</ol>
+<!-- }}} -->
+
+        </div>
+
+        
+        <div class="pagination">
+            <div class="pagination__title">
+                <hr />
+            </div>
+            <div class="pagination__buttons">
+                    <span class="button previous">
+                        <a href="https://marcellbarsony.github.io/tryhackme-billing/">
+                            <span class="button__icon">‹</span>&nbsp;
+                            <span class="button__text">TryHackMe - Billing</span>
+                        </a>
+                    </span>
+                
+                
+                    <span class="button next">
+                        <a href="https://marcellbarsony.github.io/tryhackme-basic-pentesting/">
+                            <span class="button__text">TryHackMe - Basic Pentesting</span>&nbsp;
+                    <span class="button__icon">❯</span>
+                        </a>
+                    </span>
+                </div>
+        </div>
+    
+    </div>
+
+    </div>
+
+    <!-- FOOTER -->
+    <!--  -->
+    <!-- <footer class="footer"> -->
+    <!--     <div class="footer__inner"> -->
+    <!-- -->
+    <!--             <div class="copyright copyright--user">My custom&nbsp;<b>copyright</b></div> -->
+    <!--         -->
+    <!--     </div> -->
+    <!-- </footer> -->
+    <!--  -->
+
+</div>
+</body>
+
+</html>

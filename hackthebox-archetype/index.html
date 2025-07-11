@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title>I hack things sometimes</title>
+    
+    <meta http-equiv="content-type" content="text/html; charset=utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
+    <meta name="robots" content="noodp"/>
+
+    <link rel="stylesheet" href="https://marcellbarsony.github.io/style.css">
+
+    <link rel="stylesheet" href="https://marcellbarsony.github.io/color/blue.css">
+    <link rel="stylesheet" href="https://marcellbarsony.github.io/font-hack-subset.css">
+
+    <meta name="description" content="">
+
+    <meta property="og:description" content="">
+    <meta property="og:title" content="I hack things sometimes">
+    <meta property="og:type" content="article">
+    <meta property="og:url" content="https://marcellbarsony.github.io/hackthebox-archetype/">
+
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:description" content="">
+    <meta name="twitter:title" content="I hack things sometimes">
+    <meta property="twitter:domain" content="marcellbarsony.github.io&#x2F;">
+    <meta property="twitter:url" content="https://marcellbarsony.github.io/hackthebox-archetype/">
+
+    </head>
+
+<body class="">
+<div class="container">
+    <!-- HEADER -->
+    
+    <header class="header">
+        <!-- LOGO -->
+        <!-- <div class="header__inner"> -->
+        <!--     <div class="header__logo"> -->
+        <!-- -->
+        <!--              -->
+        <!--         -->
+        <!--         <a href="https://marcellbarsony.github.io/" style="text-decoration: none;"> -->
+        <!--             <div class="logo"> -->
+        <!--                -->
+        <!-- -->
+        <!--                     | | | | | | | | | | -->
+        <!--                 -->
+        <!--                  -->
+        <!--             </div> -->
+        <!--         </a> -->
+        <!--     </div> -->
+        <!-- </div> -->
+
+        
+        
+                <nav class="menu">
+            <ul class="menu__inner">
+                <li class="active"><a href="https://marcellbarsony.github.io/">posts</a></li>
+            
+                <li><a href="https://marcellbarsony.github.io//tags">tags</a></li>
+            
+                <li><a href="https://marcellbarsony.github.io//archive">archive</a></li>
+            
+                <li><a href="https://marcellbarsony.github.io//whoami">whoami</a></li>
+            </ul>
+        </nav>
+    
+    
+        
+    </header>
+    
+
+    <div class="content">
+        
+    <div class="post">
+        
+    <h1 class="post-title"><a href="https://marcellbarsony.github.io/hackthebox-archetype/">Hack The Box - Archetype</a></h1>
+    <div class="post-meta-inline">
+        
+    <span class="post-date">
+            2025-05-24
+        </span>
+
+    </div>
+
+    
+        <span class="post-tags-inline">
+                ::
+                <a class="post-tag" href="https://marcellbarsony.github.io/tags/hackthebox/">hackthebox</a>&nbsp;::
+            
+                <a class="post-tag" href="https://marcellbarsony.github.io/tags/starting-point/">starting point</a>&nbsp;::
+            
+                <a class="post-tag" href="https://marcellbarsony.github.io/tags/sql/">sql</a>&nbsp;::
+            
+                <a class="post-tag" href="https://marcellbarsony.github.io/tags/smb/">smb</a>&nbsp;::
+            
+                <a class="post-tag" href="https://marcellbarsony.github.io/tags/reverse-shell/">reverse shell</a>&nbsp;::
+            
+                <a class="post-tag" href="https://marcellbarsony.github.io/tags/privesc/">privesc</a>&nbsp;::
+            
+        </span>
+    
+
+        <div class="post-content">
+            <p><a href="https://labs.hackthebox.com/achievement/machine/447801/287"><img src="/pictures/articles/htb/archetype/cover.png" alt="Cover" /></a></p>
+<p><strong>Archetype</strong> is a Windows-based machine designed to teach key penetration
+testing techniques such as leveraging SMB to gain access, spawning a reverse
+shell and escalating privileges to complete the machine.</p>
+<span id="continue-reading"></span><h1 id="enumeration">Enumeration</h1>
+<!-- Enumeration {{{-->
+<p>Scanning <strong>Archetype</strong> [10.129.213.185] with <a href="https://nmap.org/">nmap</a> reveals
+that the target (<a href="https://www.microsoft.com/en-us/evalcenter/evaluate-windows-server-2019">Windows Server 2019</a>)
+is running an <a href="https://www.microsoft.com/en-us/sql-server/sql-server-2017">SQL server</a>
+on port 1433.</p>
+<p><img src="/pictures/articles/htb/archetype/enum-01.png" alt="nmap-scan" /></p>
+<ul>
+<li><code>-sC</code>: Script scan</li>
+<li><code>-sV</code>: Version detection</li>
+</ul>
+<p>The open <a href="https://en.wikipedia.org/wiki/Server_Message_Block">SMB</a> port can be
+enumerated further with <a href="https://www.samba.org/samba/docs/current/man-html/smbclient.1">smbclient</a>,
+which locates the shares <code>ADMIN$</code> and <code>C$</code>. Unfortunately, they cannot be
+accessed as they require elevated privileges however, there is an additional
+share named <code>backups</code>, which is publicly accessible.</p>
+<p><img src="/pictures/articles/htb/archetype/enum-02.png" alt="smbclient" /></p>
+<ul>
+<li><code>-N</code>: Suppress password prompt</li>
+<li><code>-L</code>: List available services</li>
+<li>Additional backslashes are required to escape Windows's UNC path</li>
+</ul>
+<p><code>backups</code> contains a configuration file named <code>prod.dtsConfig</code> that can be
+retrieved with the <code>get prod.dtsConfig</code> command.</p>
+<p><img src="/pictures/articles/htb/archetype/enum-03.png" alt="smbclient" /></p>
+<p>The contents of the file discloses the user <code>sql_svc</code> and the
+corresponding unencrypted (plain-text) password <code>M3g4c0rp123</code>.</p>
+<p><img src="/pictures/articles/htb/archetype/enum-04.png" alt="smbclient" /></p>
+<!-- }}} -->
+<h1 id="foothold">Foothold</h1>
+<!-- Foothold {{{-->
+<p>The discovered credentials can be used to connect and authenticate to the MSSQL
+server using the script <code>mssqlclient.py</code> from the <a href="https://github.com/fortra/impacket">Impacket</a>
+collection.</p>
+<p>The command <code>SELECT is_srvrolemember('sysadmin');</code> indicates the role
+on the server: <code>1</code> (<code>True</code>) means that the current login has <code>sysadmin</code> role
+assigned.</p>
+<p><img src="/pictures/articles/htb/archetype/foothold-01.png" alt="smbclient" /></p>
+<p><code>xp_cmdshell</code> allows the execution of Windows command shell commands directly
+from the SQL Server environment.</p>
+<p>Issuing the command <code>EXEC xp_cmdshell 'net user';</code> helps determine whether
+<code>xp_cmdshell</code> is enabled, as this feature is disabled by default
+for security reasons.</p>
+<p><img src="/pictures/articles/htb/archetype/foothold-02.png" alt="smbclient" /></p>
+<p><code>xp_cmdshell</code> can be activated with the following set of commands.
+After activation, it enables code execution on the target machine.</p>
+<pre data-lang="sh" style="background-color:#151515;color:#e8e8d3;" class="language-sh "><code class="language-sh" data-lang="sh"><span style="color:#ffb964;">EXEC</span><span> sp_configure </span><span style="color:#556633;">&#39;</span><span style="color:#99ad6a;">show advanced options</span><span style="color:#556633;">&#39;</span><span>, 1;
+</span><span style="color:#ffb964;">RECONFIGURE</span><span>;
+</span><span style="color:#ffb964;">sp_configure</span><span>;
+</span><span style="color:#ffb964;">EXEC</span><span> sp_configure </span><span style="color:#556633;">&#39;</span><span style="color:#99ad6a;">xp_cmdshell</span><span style="color:#556633;">&#39;</span><span>, 1;
+</span><span style="color:#ffb964;">RECONFIGURE</span><span>;
+</span></code></pre>
+<p><img src="/pictures/articles/htb/archetype/foothold-03.png" alt="smbclient" /></p>
+<!-- }}} -->
+<h1 id="reverse-shell">Reverse shell</h1>
+<!-- Reverse shell {{{-->
+<p>After gaining command execution, a reverse shell can be spawned using <a href="https://github.com/int0x33/nc.exe">Netcat</a>
+so that the target machine initiates a connection back to the attacker machine.</p>
+<p>To upload <code>nc64.exe</code> to the target, the file must be served from the attacker
+machine via a simple HTTP server.</p>
+<p><img src="/pictures/articles/htb/archetype/reverse-shell-01.png" alt="http-server" /></p>
+<p>The file can be retrieved from the attacker's machine by issuing
+the following PowerShell command via <code>xp_cmdshell</code>.</p>
+<p><img src="/pictures/articles/htb/archetype/reverse-shell-02.png" alt="get-nc64" /></p>
+<p>The Netcat listener should be started to receive the incoming connection.</p>
+<p><img src="/pictures/articles/htb/archetype/reverse-shell-03.png" alt="reverse-shell" /></p>
+<ul>
+<li><code>l</code>: Listen mode</li>
+<li><code>v</code>: Verbose mode</li>
+<li><code>n</code>: No DNS resolution</li>
+<li><code>p</code>: Port number</li>
+</ul>
+<p>After uploading, <code>nc64.exe</code> can be executed so that it binds to
+the Netcat listener.</p>
+<p><img src="/pictures/articles/htb/archetype/reverse-shell-04.png" alt="reverse-shell" /></p>
+<p>Netcat has received the incoming connection and spawned
+an interactive reverse shell.</p>
+<p><img src="/pictures/articles/htb/archetype/reverse-shell-05.png" alt="reverse-shell" /></p>
+<p>The user flag can be found in the user's Desktop directory.</p>
+<p><img src="/pictures/articles/htb/archetype/user-flag-01.png" alt="user-flag" /></p>
+<!-- }}} -->
+<h1 id="privilege-escalation">Privilege Escalation</h1>
+<!-- Privilege Escalation {{{-->
+<p>Privilege escalation is required to gain a higher level of control over the
+system. Since the currently logged-in user account is also a service account,
+it may be worth checking for its previously executed commands stored in the
+PowerShell history file.</p>
+<p><img src="/pictures/articles/htb/archetype/privesc-01.png" alt="privesc-01" /></p>
+<p>With the obtained administrator password, it is now possible to connect to the
+target machine using <a href="https://learn.microsoft.com/en-us/sysinternals/downloads/psexec">PsExec</a>.</p>
+<p><img src="/pictures/articles/htb/archetype/root-flag-01.png" alt="root-flag" /></p>
+<p>By obtaining the root flag from the administrator account's Desktop directory,
+the box is now <a href="https://labs.hackthebox.com/achievement/machine/447801/287">pwned</a>.</p>
+<!-- }}} -->
+<h1 id="mitigation">Mitigation</h1>
+<!-- Mitigation {{{-->
+<ol>
+<li>
+<p>Disable SMB shares</p>
+<ul>
+<li>Restrict SMB shares such as <code>ADMIN$</code> and <code>C$</code></li>
+</ul>
+</li>
+<li>
+<p>Disable <code>xp_cmdshell</code></p>
+<ul>
+<li>Use <code>sp_configure</code> to make sure it remains disabled</li>
+</ul>
+</li>
+<li>
+<p>Enforce strong password policy</p>
+<ul>
+<li>Ensure service accounts (e.g., <code>sql_svc</code>) have strong and unique passwords</li>
+<li>Avoid storing credentials in clear text</li>
+</ul>
+</li>
+<li>
+<p>Implement least privilege</p>
+<ul>
+<li>Restrict user and service account privileges</li>
+</ul>
+</li>
+</ol>
+<!-- }}} -->
+
+        </div>
+
+        
+        <div class="pagination">
+            <div class="pagination__title">
+                <hr />
+            </div>
+            <div class="pagination__buttons">
+                    <span class="button previous">
+                        <a href="https://marcellbarsony.github.io/portswigger-sql-injection/">
+                            <span class="button__icon">‹</span>&nbsp;
+                            <span class="button__text">Portswigger - SQL injection</span>
+                        </a>
+                    </span>
+                
+                
+                    <span class="button next">
+                        <a href="https://marcellbarsony.github.io/hackthebox-oopsie/">
+                            <span class="button__text">Hack The Box - Oopsie</span>&nbsp;
+                    <span class="button__icon">❯</span>
+                        </a>
+                    </span>
+                </div>
+        </div>
+    
+    </div>
+
+    </div>
+
+    <!-- FOOTER -->
+    <!--  -->
+    <!-- <footer class="footer"> -->
+    <!--     <div class="footer__inner"> -->
+    <!-- -->
+    <!--             <div class="copyright copyright--user">My custom&nbsp;<b>copyright</b></div> -->
+    <!--         -->
+    <!--     </div> -->
+    <!-- </footer> -->
+    <!--  -->
+
+</div>
+</body>
+
+</html>
