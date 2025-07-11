@@ -17,7 +17,7 @@ privileges on the target system.
 <!-- more -->
 
 
-## Enumeration
+# Enumeration
 
 <!-- Enumeration {{{-->
 
@@ -80,7 +80,7 @@ uploading a reverse shell that could potentially be exploited.
 
 <!-- }}} -->
 
-## Reverse shell
+# Reverse shell
 
 <!-- Reverse shell {{{-->
 
@@ -131,7 +131,7 @@ utilized to create an interactive shell.
 
 <!-- }}} -->
 
-## Lateral movement
+# Lateral movement
 
 <!-- Lateral movement {{{-->
 

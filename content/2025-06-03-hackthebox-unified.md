@@ -18,7 +18,7 @@ a POST header.
 <!-- more -->
 
 
-## Enumeration
+# Enumeration
 
 <!-- Enumeration {{{-->
 The nmap scan shows that port `8080` is running a `http-open-proxy` that is
@@ -38,7 +38,7 @@ also known as **Log4j**.
 
 <!-- }}} -->
 
-## Exploitation
+# Exploitation
 
 <!-- Exploitation {{{-->
 
@@ -111,7 +111,7 @@ The user flag can be found in `/home/michael/user.txt`.
 
 <!-- }}} -->
 
-## Privilege escalation
+# Privilege escalation
 
 <!-- Privilege escalation {{{-->
 
@@ -161,7 +161,7 @@ With the `root` flag, the machine is now [pwned](https://www.hackthebox.com/achi
 
 <!-- }}} -->
 
-## Mitigation
+# Mitigation
 
 <!-- Mitigation {{{-->
 1. Update the Log4j library

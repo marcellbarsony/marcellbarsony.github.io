@@ -23,7 +23,7 @@ entry points:
 - `OR 1=1` and `OR 1=2` - Boolean conditions
 - Payloads to trigger time delays when executed
 
-## Exploitation
+# Exploitation
 
 <!-- LAB 1 {{{-->
 ### [LAB 1 - SQL injection vulnerability in WHERE clause allowing retrieval of hidden data](https://portswigger.net/web-security/learning-paths/server-side-vulnerabilities-apprentice/sql-injection-apprentice/sql-injection/lab-retrieve-hidden-data)
@@ -75,7 +75,7 @@ and logged in as the `administrator` user.
 ![lab2-3](/pictures/articles/portswigger/sql-injection/lab-2-4.png)
 <!-- }}} -->
 
-## Mitigation
+# Mitigation
 
 <!-- Mitigation {{{-->
 1. Use parameterized queries

@@ -15,9 +15,11 @@ highlights how improper sudo permissions and insecure coding practices - such as
 storing plaintext credentials - can lead to privilege escalation and full system
 compromise.
 
+
 <!-- more -->
 
-## Enumeration
+
+# Enumeration
 
 <!-- Enumeration {{{-->
 
@@ -181,7 +183,7 @@ under the name of `death`.
 
 <!-- }}} -->
 
-## Mitigation
+# Mitigation
 
 <!-- Mitigation {{{-->
 

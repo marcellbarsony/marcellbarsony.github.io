@@ -17,7 +17,7 @@ root access.
 <!-- more -->
 
 
-## Enumeration
+# Enumeration
 
 <!-- Enumeration {{{-->
 
@@ -75,7 +75,7 @@ The user flag can be retrieved from `/home/magnus/user.txt`.
 
 <!-- }}} -->
 
-## Privilege escalation
+# Privilege escalation
 
 <!-- Privilege escalation {{{-->
 
@@ -162,7 +162,7 @@ The root flag can be read from `/root/root.txt`.
 
 <!-- }}} -->
 
-## Mitigation
+# Mitigation
 
 <!-- Mitigation {{{-->
 

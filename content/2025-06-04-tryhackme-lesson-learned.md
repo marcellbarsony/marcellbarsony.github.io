@@ -17,7 +17,7 @@ unauthorized access or potential loss of data.
 <!-- more -->
 
 
-## Enumeration
+# Enumeration
 
 <!-- Enumeration {{{-->
 
@@ -42,7 +42,7 @@ send the credentials to the server for validation.
 
 <!-- }}} -->
 
-## Exploitation
+# Exploitation
 
 <!-- Exploitation {{{-->
 
@@ -82,7 +82,7 @@ SQL database from the server.
 
 <!-- }}} -->
 
-## Mitigation
+# Mitigation
 
 <!-- Mitigation {{{-->
 1. Error messages

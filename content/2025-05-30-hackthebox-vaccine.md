@@ -17,7 +17,7 @@ and session cookie stealing.
 <!-- more -->
 
 
-## Enumeration
+# Enumeration
 
 <!-- Enumeration {{{-->
 
@@ -100,7 +100,7 @@ It is now possible to log in to the website and enumerate its dashboard.
 
 <!-- }}} -->
 
-## Foothold
+# Foothold
 
 <!-- Foothold {{{-->
 
@@ -163,7 +163,7 @@ be utilized to look around on the system and retrieve the user flag.
 
 <!-- }}} -->
 
-## Privilege escalation
+# Privilege escalation
 
 <!-- Privilege escalation {{{-->
 
@@ -203,7 +203,7 @@ By achieving root privileges, the machine is
 
 <!-- }}} -->
 
-## Mitigation
+# Mitigation
 
 <!-- Mitigation {{{-->
 

@@ -16,7 +16,7 @@ shell and escalating privileges to complete the machine.
 <!-- more -->
 
 
-## Enumeration
+# Enumeration
 
 <!-- Enumeration {{{-->
 
@@ -54,7 +54,7 @@ corresponding unencrypted (plain-text) password `M3g4c0rp123`.
 
 <!-- }}} -->
 
-## Foothold
+# Foothold
 
 <!-- Foothold {{{-->
 
@@ -92,7 +92,7 @@ RECONFIGURE;
 
 <!-- }}} -->
 
-## Reverse shell
+# Reverse shell
 
 <!-- Reverse shell {{{-->
 
@@ -134,7 +134,7 @@ The user flag can be found in the user's Desktop directory.
 
 <!-- }}} -->
 
-## Privilege Escalation
+# Privilege Escalation
 
 <!-- Privilege Escalation {{{-->
 
@@ -155,7 +155,7 @@ the box is now [pwned](https://labs.hackthebox.com/achievement/machine/447801/28
 
 <!-- }}} -->
 
-## Mitigation
+# Mitigation
 
 <!-- Mitigation {{{-->
 
