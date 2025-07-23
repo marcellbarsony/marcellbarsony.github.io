@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title>I hack things sometimes</title>
+    
+    <meta http-equiv="content-type" content="text/html; charset=utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
+    <meta name="robots" content="noodp"/>
+
+    <link rel="stylesheet" href="https://marcellbarsony.github.io/style.css">
+
+    <link rel="stylesheet" href="https://marcellbarsony.github.io/color/blue.css">
+    <link rel="stylesheet" href="https://marcellbarsony.github.io/font-hack-subset.css">
+
+    <meta name="description" content="">
+
+    <meta property="og:description" content="">
+    <meta property="og:title" content="I hack things sometimes">
+    <meta property="og:type" content="article">
+    <meta property="og:url" content="https://marcellbarsony.github.io/portswigger-sql-injection/">
+
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:description" content="">
+    <meta name="twitter:title" content="I hack things sometimes">
+    <meta property="twitter:domain" content="marcellbarsony.github.io&#x2F;">
+    <meta property="twitter:url" content="https://marcellbarsony.github.io/portswigger-sql-injection/">
+
+    </head>
+
+<body class="">
+<div class="container">
+    <!-- HEADER -->
+    
+    <header class="header">
+        <!-- LOGO -->
+        <!-- <div class="header__inner"> -->
+        <!--     <div class="header__logo"> -->
+        <!-- -->
+        <!--              -->
+        <!--         -->
+        <!--         <a href="https://marcellbarsony.github.io/" style="text-decoration: none;"> -->
+        <!--             <div class="logo"> -->
+        <!--                -->
+        <!-- -->
+        <!--                     | | | | | | | | | | -->
+        <!--                 -->
+        <!--                  -->
+        <!--             </div> -->
+        <!--         </a> -->
+        <!--     </div> -->
+        <!-- </div> -->
+
+        
+        
+                <nav class="menu">
+            <ul class="menu__inner">
+                <li class="active"><a href="https://marcellbarsony.github.io/">posts</a></li>
+            
+                <li><a href="https://marcellbarsony.github.io//tags">tags</a></li>
+            
+                <li><a href="https://marcellbarsony.github.io//archive">archive</a></li>
+            
+                <li><a href="https://marcellbarsony.github.io//whoami">whoami</a></li>
+            </ul>
+        </nav>
+    
+    
+        
+    </header>
+    
+
+    <div class="content">
+        
+    <div class="post">
+        
+    <h1 class="post-title"><a href="https://marcellbarsony.github.io/portswigger-sql-injection/">Portswigger - SQL injection</a></h1>
+    <div class="post-meta-inline">
+        
+    <span class="post-date">
+            2025-05-23
+        </span>
+
+    </div>
+
+    
+        <span class="post-tags-inline">
+                ::
+                <a class="post-tag" href="https://marcellbarsony.github.io/tags/webapp/">webapp</a>&nbsp;::
+            
+                <a class="post-tag" href="https://marcellbarsony.github.io/tags/portswigger/">portswigger</a>&nbsp;::
+            
+                <a class="post-tag" href="https://marcellbarsony.github.io/tags/burp-suite/">burp-suite</a>&nbsp;::
+            
+                <a class="post-tag" href="https://marcellbarsony.github.io/tags/server-side/">server-side</a>&nbsp;::
+            
+                <a class="post-tag" href="https://marcellbarsony.github.io/tags/sql-injection/">sql injection</a>&nbsp;::
+            
+        </span>
+    
+
+        <div class="post-content">
+            <p><img src="/pictures/articles/portswigger/sql-injection/sql-injection.svg" alt="sql-injection" /></p>
+<p><strong>SQL injection (SQLi)</strong> is a vulnerability that allows an attacker to interfere
+with the queries that an application makes to its database. This might allow an
+attacker to view, modify or delete sensitive data they are not authorized to
+access.</p>
+<span id="continue-reading"></span>
+<p>SQL injections can be detected manually using test patterns against application
+entry points:</p>
+<ul>
+<li><code>'</code> - Single quote character</li>
+<li><code>OR 1=1</code> and <code>OR 1=2</code> - Boolean conditions</li>
+<li>Payloads to trigger time delays when executed</li>
+</ul>
+<h1 id="exploitation">Exploitation</h1>
+<!-- LAB 1 {{{-->
+<h3 id="lab-1-sql-injection-vulnerability-in-where-clause-allowing-retrieval-of-hidden-data"><a href="https://portswigger.net/web-security/learning-paths/server-side-vulnerabilities-apprentice/sql-injection-apprentice/sql-injection/lab-retrieve-hidden-data">LAB 1 - SQL injection vulnerability in WHERE clause allowing retrieval of hidden data</a></h3>
+<p>With the filters on the webshop's header, it is possible
+to narrow down the list of products currently offered.</p>
+<p><img src="/pictures/articles/portswigger/sql-injection/lab-1-1.png" alt="lab1-1" /></p>
+<p>The request header  <code>GET /filter?category=Pets HTTP/2</code> may be vulnerable
+to SQL injection if the category parameter is directly used in an SQL query
+without proper sanitization or parameterization.</p>
+<p><img src="/pictures/articles/portswigger/sql-injection/lab-1-2.png" alt="lab1-2" /></p>
+<p>Giving it the value <code>'+OR_1=1</code> the product category filter can be
+modified to inject an SQL query that evaluates to <code>true</code> and comments out
+(disregards) whatever is following the statement.</p>
+<p><img src="/pictures/articles/portswigger/sql-injection/lab-1-3.png" alt="lab1-3" /></p>
+<ul>
+<li><code>'</code> - Closes a string prematurely</li>
+<li><code>+</code> - Includes the rest of the injection</li>
+<li><code>OR</code> - Combines multiple conditions in a <code>WHERE</code> clause</li>
+<li><code>1=1</code> - Evaluates to <code>true</code></li>
+<li><code>--</code> - Disregards the rest of the query</li>
+</ul>
+<!-- }}} -->
+<!-- LAB 2 {{{-->
+<h3 id="lab-2-sql-injection-vulnerability-allowing-login-bypass"><a href="https://portswigger.net/web-security/learning-paths/server-side-vulnerabilities-apprentice/sql-injection-apprentice/sql-injection/lab-login-bypass">LAB 2 - SQL injection vulnerability allowing login bypass</a></h3>
+<p>The webshop has a login functionality that may worth investigating more closely.</p>
+<p><img src="/pictures/articles/portswigger/sql-injection/lab-2-1.png" alt="lab2-1" /></p>
+<p>The intercepted POST request submits the credentials as parameters
+for the application that will check them with an SQL query.</p>
+<p><img src="/pictures/articles/portswigger/sql-injection/lab-2-2.png" alt="lab2-2" /></p>
+<p>By modifying the parameters, it is possible to make the application disregard
+the part of the query that would check for a valid password.</p>
+<p><img src="/pictures/articles/portswigger/sql-injection/lab-2-3.png" alt="lab2-3" /></p>
+<p>The application has performed the check as expected,
+and logged in as the <code>administrator</code> user.</p>
+<p><img src="/pictures/articles/portswigger/sql-injection/lab-2-4.png" alt="lab2-3" /></p>
+<!-- }}} -->
+<h1 id="mitigation">Mitigation</h1>
+<!-- Mitigation {{{-->
+<ol>
+<li>
+<p>Use parameterized queries</p>
+<ul>
+<li>Never concatenate user input into queries</li>
+<li>Let database drivers handle parameter sanitization</li>
+</ul>
+</li>
+<li>
+<p>Input validation</p>
+<ul>
+<li>Validate type, length, format, and range of all inputs</li>
+<li>Whitelist acceptable characters instead of blacklisting unacceptable ones</li>
+</ul>
+</li>
+<li>
+<p>Least privilege database accounts</p>
+<ul>
+<li>Use database accounts with  minimal permissions needed for the application</li>
+<li>Avoid using admin accounts for application connections</li>
+</ul>
+</li>
+<li>
+<p>Escape special characters</p>
+<ul>
+<li>Use language/framework-specific escaping functions when parameterized
+queries are not possible</li>
+</ul>
+</li>
+</ol>
+<!-- }}} -->
+
+        </div>
+
+        
+        <div class="pagination">
+            <div class="pagination__title">
+                <hr />
+            </div>
+            <div class="pagination__buttons">
+                    <span class="button previous">
+                        <a href="https://marcellbarsony.github.io/portswigger-os-command-injection/">
+                            <span class="button__icon">‹</span>&nbsp;
+                            <span class="button__text">Portswigger - OS command injection</span>
+                        </a>
+                    </span>
+                
+                
+                    <span class="button next">
+                        <a href="https://marcellbarsony.github.io/hackthebox-archetype/">
+                            <span class="button__text">Hack The Box - Archetype</span>&nbsp;
+                    <span class="button__icon">❯</span>
+                        </a>
+                    </span>
+                </div>
+        </div>
+    
+    </div>
+
+    </div>
+
+    <!-- FOOTER -->
+    <!--  -->
+    <!-- <footer class="footer"> -->
+    <!--     <div class="footer__inner"> -->
+    <!-- -->
+    <!--             <div class="copyright copyright--user">My custom&nbsp;<b>copyright</b></div> -->
+    <!--         -->
+    <!--     </div> -->
+    <!-- </footer> -->
+    <!--  -->
+
+</div>
+</body>
+
+</html>

@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title>I hack things sometimes</title>
+    
+    <meta http-equiv="content-type" content="text/html; charset=utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
+    <meta name="robots" content="noodp"/>
+
+    <link rel="stylesheet" href="https://marcellbarsony.github.io/style.css">
+
+    <link rel="stylesheet" href="https://marcellbarsony.github.io/color/blue.css">
+    <link rel="stylesheet" href="https://marcellbarsony.github.io/font-hack-subset.css">
+
+    <meta name="description" content="">
+
+    <meta property="og:description" content="">
+    <meta property="og:title" content="I hack things sometimes">
+    <meta property="og:type" content="article">
+    <meta property="og:url" content="https://marcellbarsony.github.io/hackthebox-unified/">
+
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:description" content="">
+    <meta name="twitter:title" content="I hack things sometimes">
+    <meta property="twitter:domain" content="marcellbarsony.github.io&#x2F;">
+    <meta property="twitter:url" content="https://marcellbarsony.github.io/hackthebox-unified/">
+
+    </head>
+
+<body class="">
+<div class="container">
+    <!-- HEADER -->
+    
+    <header class="header">
+        <!-- LOGO -->
+        <!-- <div class="header__inner"> -->
+        <!--     <div class="header__logo"> -->
+        <!-- -->
+        <!--              -->
+        <!--         -->
+        <!--         <a href="https://marcellbarsony.github.io/" style="text-decoration: none;"> -->
+        <!--             <div class="logo"> -->
+        <!--                -->
+        <!-- -->
+        <!--                     | | | | | | | | | | -->
+        <!--                 -->
+        <!--                  -->
+        <!--             </div> -->
+        <!--         </a> -->
+        <!--     </div> -->
+        <!-- </div> -->
+
+        
+        
+                <nav class="menu">
+            <ul class="menu__inner">
+                <li class="active"><a href="https://marcellbarsony.github.io/">posts</a></li>
+            
+                <li><a href="https://marcellbarsony.github.io//tags">tags</a></li>
+            
+                <li><a href="https://marcellbarsony.github.io//archive">archive</a></li>
+            
+                <li><a href="https://marcellbarsony.github.io//whoami">whoami</a></li>
+            </ul>
+        </nav>
+    
+    
+        
+    </header>
+    
+
+    <div class="content">
+        
+    <div class="post">
+        
+    <h1 class="post-title"><a href="https://marcellbarsony.github.io/hackthebox-unified/">HackTheBox - Unified</a></h1>
+    <div class="post-meta-inline">
+        
+    <span class="post-date">
+            2025-06-03
+        </span>
+
+    </div>
+
+    
+        <span class="post-tags-inline">
+                ::
+                <a class="post-tag" href="https://marcellbarsony.github.io/tags/hackthebox/">hackthebox</a>&nbsp;::
+            
+                <a class="post-tag" href="https://marcellbarsony.github.io/tags/starting-point/">starting point</a>&nbsp;::
+            
+                <a class="post-tag" href="https://marcellbarsony.github.io/tags/log4j/">log4j</a>&nbsp;::
+            
+                <a class="post-tag" href="https://marcellbarsony.github.io/tags/mongodb/">mongodb</a>&nbsp;::
+            
+                <a class="post-tag" href="https://marcellbarsony.github.io/tags/reverse-shell/">reverse shell</a>&nbsp;::
+            
+                <a class="post-tag" href="https://marcellbarsony.github.io/tags/privesc/">privesc</a>&nbsp;::
+            
+        </span>
+    
+
+        <div class="post-content">
+            <p><a href="https://www.hackthebox.com/achievement/machine/447801/441"><img src="/pictures/articles/htb/unified/00-cover.png" alt="TODO" /></a></p>
+<p><strong>Unified</strong> is introducing the exploitation of one of the biggest
+vulnerabilities of 2021, <a href="https://en.wikipedia.org/wiki/Log4Shell">Log4Shell</a>,
+also known as Log4j. This box demonstrates how to exploit Log4j in the widely
+used UniFi network monitoring system to gain reverse shell by manipulating
+a POST header.</p>
+<span id="continue-reading"></span><h1 id="enumeration">Enumeration</h1>
+<!-- Enumeration {{{-->
+<p>The nmap scan shows that port <code>8080</code> is running a <code>http-open-proxy</code> that is
+redirecting incoming requests to port <code>8443</code>.</p>
+<p><img src="/pictures/articles/htb/unified/01-nmap.png" alt="nmap" /></p>
+<p>Visiting webpage at <code>https://10.129.43.28:8443</code> displays the login page of the
+<strong>UniFi Network Application</strong>, along with its version number <code>6.4.54</code>,
+developed by <a href="https://ui.com/download/unifi">Ubiquiti</a>.</p>
+<p>Googling its version number reveals that this specific version if vulnerable to
+<strong>Log4Shell</strong> (<a href="https://nvd.nist.gov/vuln/detail/CVE-2021-44228">CVE-2021-44228</a>),
+also known as <strong>Log4j</strong>.</p>
+<p><img src="/pictures/articles/htb/unified/02-website.png" alt="website" /></p>
+<!-- }}} -->
+<h1 id="exploitation">Exploitation</h1>
+<!-- Exploitation {{{-->
+<p>According to the article, the login POST request needs to be intercepted,
+so that it can be modified and the malicious payload can be added.</p>
+<p><img src="/pictures/articles/htb/unified/03-login-request.png" alt="website" /></p>
+<p>The value of the <code>remember</code> parameter should be enclosed in quotation marks
+(<code>&quot;</code>) to ensure it is parsed as a string, rather than as a JSON object.</p>
+<p><img src="/pictures/articles/htb/unified/04-payload.png" alt="payload" /></p>
+<p>The response contains <code>api.errInvalidPayload</code> however, despite the error
+message, the payload is successfully executed.</p>
+<p><img src="/pictures/articles/htb/unified/05-response.png" alt="response" /></p>
+<p><code>tcpdump</code> confirms that the connection was indeed received on port <code>389</code> (LDAP).</p>
+<p><img src="/pictures/articles/htb/unified/06-tcpdump.png" alt="tcpdump" /></p>
+<p>Prior to crafting the payload, I have installed <code>Open-JDK</code> by issuing
+<code>sudo apt install openjdk-11-jdk -y</code> and maven with
+<code>sudo apt-get install maven</code>.</p>
+<p>Then, I have cloned and built the package. The build process will create a file
+called <code>RogueJndi-1.1.jar</code> in the <code>rogue-jndi/target</code> directory.</p>
+<pre data-lang="sh" style="background-color:#151515;color:#e8e8d3;" class="language-sh "><code class="language-sh" data-lang="sh"><span style="color:#ffb964;">git</span><span> clone https://github.com/veracode-research/rogue-jndi
+</span><span>cd rogue-jndi
+</span><span style="color:#ffb964;">mvn</span><span> package
+</span></code></pre>
+<p>The payload will be responsible for creating a shell on the target system
+and will be <a href="https://en.wikipedia.org/wiki/Base64">Base64 encoded</a>.</p>
+<p><img src="/pictures/articles/htb/unified/07-payload-encode.png" alt="payload-encode" /></p>
+<p>The payload should be then passed to Rogue-JNDI, along with a chosen port
+(<code>1234</code>), and the IP address of the attacker machine (<code>--hostname</code>).</p>
+<p>The server is now listening on port <code>1389</code> to the incoming connection.</p>
+<p><img src="/pictures/articles/htb/unified/08-rogue-jndi.png" alt="rogue-jndi" /></p>
+<p>To capture the reverse shell, a <code>netcat</code> listener should be opened listening on
+port <code>1234</code>, as defined in the payload.</p>
+<p><img src="/pictures/articles/htb/unified/09-netcat.png" alt="netcat" /></p>
+<p>Now, the payload should be modified include port <code>1389</code>
+in Burp Suite's Repeater.</p>
+<p><img src="/pictures/articles/htb/unified/10-execute.png" alt="execute" /></p>
+<p>Upon receiving the incoming connection, the <code>netcat</code> listener spawns
+a reverse shell, which can be upgraded to an interactive shell with
+<code>script /dev/null -c bash</code>.</p>
+<p><img src="/pictures/articles/htb/unified/11-interactive-shell.png" alt="interactive-shell" /></p>
+<p>The currently authenticated user is <code>unifi</code> with <code>uid=999</code>.</p>
+<p><img src="/pictures/articles/htb/unified/12-user-enumeration.png" alt="user-enumeration" /></p>
+<p>The user flag can be found in <code>/home/michael/user.txt</code>.</p>
+<p><img src="/pictures/articles/htb/unified/13-user-flag.png" alt="user-flag" /></p>
+<!-- }}} -->
+<h1 id="privilege-escalation">Privilege escalation</h1>
+<!-- Privilege escalation {{{-->
+<p>After a bit of searching on the internet, MongoDB is being used by UniFi to
+store and share the SSH secrets between appliances. MongoDB is indeed running on
+the system on port <code>27117</code>.</p>
+<p><img src="/pictures/articles/htb/unified/14-mongo.png" alt="mongo" /></p>
+<p>With the <code>mongo</code> command line utility the hash of the <code>administrator</code>'s password
+can be revealed in the <code>x_shadow</code> variable.</p>
+<p><img src="/pictures/articles/htb/unified/15-admin.png" alt="admin" /></p>
+<p>This discovered hash can be replaced, but prior to that,
+a new password (<code>pass1234</code>) must be created and hashed.</p>
+<p><img src="/pictures/articles/htb/unified/16-pass-hash.png" alt="pass-hash" /></p>
+<p>The current hash can be replaced using the following <code>mongo</code> command.</p>
+<p><img src="/pictures/articles/htb/unified/17-update-pass-hash.png" alt="update-pass-hash" /></p>
+<p>With the new password hash in place, it is now possible to authenticate to the
+UniFi Network Application.</p>
+<p><img src="/pictures/articles/htb/unified/18-login.png" alt="login" /></p>
+<p>The authentication is successful, and the dashboard is displayed.</p>
+<p><img src="/pictures/articles/htb/unified/19-dashboard.png" alt="dashboard" /></p>
+<p>Under settings, the password for the SSH connection can be read in plain text.</p>
+<p><img src="/pictures/articles/htb/unified/20-passwd.png" alt="passwd" /></p>
+<p>With the found password it is now possible to authenticate to the target
+via SSH.</p>
+<p><img src="/pictures/articles/htb/unified/21-ssh.png" alt="ssh" /></p>
+<p>The <code>root</code> flag can be found in the home directory of the <code>root</code> user.</p>
+<p><img src="/pictures/articles/htb/unified/22-root-flag.png" alt="root-flag" /></p>
+<p>With the <code>root</code> flag, the machine is now <a href="https://www.hackthebox.com/achievement/machine/447801/441">pwned</a>.</p>
+<!-- }}} -->
+<h1 id="mitigation">Mitigation</h1>
+<!-- Mitigation {{{-->
+<ol>
+<li>
+<p>Update the Log4j library</p>
+<ul>
+<li>Upgrade to the latest possible version of Log4j, where the vulnerability
+has been fixed</li>
+</ul>
+</li>
+<li>
+<p>Network segmentation</p>
+<ul>
+<li>Limit the exposure of critical services to trusted networks (e.g., VPN)
+only</li>
+</ul>
+</li>
+<li>
+<p>Web Application Firewall</p>
+<ul>
+<li>Implement a WAF to block malicious payloads attempting JNDI injection</li>
+</ul>
+</li>
+<li>
+<p>Secure MongoDB access</p>
+<ul>
+<li>Require authentication for MongoDB and restrict remote access</li>
+</ul>
+</li>
+<li>
+<p>Limit privileges</p>
+<ul>
+<li>Run services with the least privilege necessary</li>
+</ul>
+</li>
+</ol>
+<!-- }}} -->
+
+        </div>
+
+        
+        <div class="pagination">
+            <div class="pagination__title">
+                <hr />
+            </div>
+            <div class="pagination__buttons">
+                    <span class="button previous">
+                        <a href="https://marcellbarsony.github.io/hackthebox-vaccine/">
+                            <span class="button__icon">‹</span>&nbsp;
+                            <span class="button__text">Hack The Box - Vaccine</span>
+                        </a>
+                    </span>
+                
+                
+                    <span class="button next">
+                        <a href="https://marcellbarsony.github.io/tryhackme-lesson-learned/">
+                            <span class="button__text">TryHackMe - Lesson Learned?</span>&nbsp;
+                    <span class="button__icon">❯</span>
+                        </a>
+                    </span>
+                </div>
+        </div>
+    
+    </div>
+
+    </div>
+
+    <!-- FOOTER -->
+    <!--  -->
+    <!-- <footer class="footer"> -->
+    <!--     <div class="footer__inner"> -->
+    <!-- -->
+    <!--             <div class="copyright copyright--user">My custom&nbsp;<b>copyright</b></div> -->
+    <!--         -->
+    <!--     </div> -->
+    <!-- </footer> -->
+    <!--  -->
+
+</div>
+</body>
+
+</html>

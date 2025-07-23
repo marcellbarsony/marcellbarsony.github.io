@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title>I hack things sometimes</title>
+    
+    <meta http-equiv="content-type" content="text/html; charset=utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
+    <meta name="robots" content="noodp"/>
+
+    <link rel="stylesheet" href="https://marcellbarsony.github.io/style.css">
+
+    <link rel="stylesheet" href="https://marcellbarsony.github.io/color/blue.css">
+    <link rel="stylesheet" href="https://marcellbarsony.github.io/font-hack-subset.css">
+
+    <meta name="description" content="">
+
+    <meta property="og:description" content="">
+    <meta property="og:title" content="I hack things sometimes">
+    <meta property="og:type" content="article">
+    <meta property="og:url" content="https://marcellbarsony.github.io/portswigger-access-control/">
+
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:description" content="">
+    <meta name="twitter:title" content="I hack things sometimes">
+    <meta property="twitter:domain" content="marcellbarsony.github.io&#x2F;">
+    <meta property="twitter:url" content="https://marcellbarsony.github.io/portswigger-access-control/">
+
+    </head>
+
+<body class="">
+<div class="container">
+    <!-- HEADER -->
+    
+    <header class="header">
+        <!-- LOGO -->
+        <!-- <div class="header__inner"> -->
+        <!--     <div class="header__logo"> -->
+        <!-- -->
+        <!--              -->
+        <!--         -->
+        <!--         <a href="https://marcellbarsony.github.io/" style="text-decoration: none;"> -->
+        <!--             <div class="logo"> -->
+        <!--                -->
+        <!-- -->
+        <!--                     | | | | | | | | | | -->
+        <!--                 -->
+        <!--                  -->
+        <!--             </div> -->
+        <!--         </a> -->
+        <!--     </div> -->
+        <!-- </div> -->
+
+        
+        
+                <nav class="menu">
+            <ul class="menu__inner">
+                <li class="active"><a href="https://marcellbarsony.github.io/">posts</a></li>
+            
+                <li><a href="https://marcellbarsony.github.io//tags">tags</a></li>
+            
+                <li><a href="https://marcellbarsony.github.io//archive">archive</a></li>
+            
+                <li><a href="https://marcellbarsony.github.io//whoami">whoami</a></li>
+            </ul>
+        </nav>
+    
+    
+        
+    </header>
+    
+
+    <div class="content">
+        
+    <div class="post">
+        
+    <h1 class="post-title"><a href="https://marcellbarsony.github.io/portswigger-access-control/">Portswigger - Access control vulnerabilities</a></h1>
+    <div class="post-meta-inline">
+        
+    <span class="post-date">
+            2025-05-17
+        </span>
+
+    </div>
+
+    
+        <span class="post-tags-inline">
+                ::
+                <a class="post-tag" href="https://marcellbarsony.github.io/tags/webapp/">webapp</a>&nbsp;::
+            
+                <a class="post-tag" href="https://marcellbarsony.github.io/tags/portswigger/">portswigger</a>&nbsp;::
+            
+                <a class="post-tag" href="https://marcellbarsony.github.io/tags/burp-suite/">burp suite</a>&nbsp;::
+            
+                <a class="post-tag" href="https://marcellbarsony.github.io/tags/server-side/">server-side</a>&nbsp;::
+            
+                <a class="post-tag" href="https://marcellbarsony.github.io/tags/access-control/">access control</a>&nbsp;::
+            
+        </span>
+    
+
+        <div class="post-content">
+            <p><img src="/pictures/articles/portswigger/access-control/access-control.svg" alt="access-control" /></p>
+<p><strong>Access Control vulnerabilities</strong> allow unauthorized users to access restricted
+resources or perform actions beyond their permitted scope. Such failures often
+result in unauthorized disclosure, modification, or deletion of data.
+Broken Access Control vulnerabilities currently hold the #1 spot on the
+<a href="https://owasp.org/www-project-top-ten/">OWASP Top 10 list</a> (as of 2021).</p>
+<span id="continue-reading"></span>
+<p>In the context of web applications, access control relies on proper
+authentication and session management:</p>
+<ul>
+<li><strong>Authentication</strong> confirms that the user is who they say they are</li>
+<li><strong>Session management</strong> identifies if HTTP requests are made by the same user</li>
+<li><strong>Access control</strong> determines whether the user is authorized to carry out the
+action that they are attempting to perform.</li>
+</ul>
+<h2 id="exploitation">Exploitation</h2>
+<!-- LAB 1 {{{-->
+<h3 id="lab-1-unprotected-admin-functionality"><a href="https://portswigger.net/web-security/learning-paths/server-side-vulnerabilities-apprentice/access-control-apprentice/access-control/lab-unprotected-admin-functionality">LAB 1 - Unprotected admin functionality</a></h3>
+<p>By appending <code>/robots.txt</code> to the end of the lab URL we can read the
+content of the file.</p>
+<p><img src="/pictures/articles/portswigger/access-control/lab-1.png" alt="access-control" /></p>
+<p><code>robots.txt</code> implements the <a href="https://en.wikipedia.org/wiki/Robots.txt">Robots Exclusion Standard</a>
+(<a href="https://www.rfc-editor.org/rfc/rfc9309.html">RFC 9309</a>) by telling the
+search engine crawlers which URLs they can and can't access.</p>
+<p>In this case, the hidden and unprotected administrator panel is being exposed
+as <code>robots.txt</code> cannot be used to safeguard critical website functionality.</p>
+<!-- }}} -->
+<!-- LAB 2 {{{-->
+<h3 id="lab-2-unprotected-admin-functionality-with-unpredictable-url"><a href="https://portswigger.net/web-security/learning-paths/server-side-vulnerabilities-apprentice/access-control-apprentice/access-control/lab-unprotected-admin-functionality-with-unpredictable-url">LAB 2 - Unprotected admin functionality with unpredictable URL</a></h3>
+<p>Some applications try to protect sensitive features with non-obvious URLs
+however, this approach, known as &quot;security by obscurity&quot;, is not secure at all.</p>
+<p><img src="/pictures/articles/portswigger/access-control/lab-2.png" alt="access-control" /></p>
+<p>The webpage's source code contains a script that adds a link to the UI if the
+user is an administrator.</p>
+<p>By appending <code>/admin-kozui4</code> to the end of the lab URL we can access the hidden
+and unprotected administrator panel.</p>
+<!-- }}} -->
+<!-- LAB 3 {{{-->
+<h3 id="lab-3-user-role-controlled-by-request-parameter"><a href="https://portswigger.net/web-security/learning-paths/server-side-vulnerabilities-apprentice/access-control-apprentice/access-control/lab-user-role-controlled-by-request-parameter">LAB 3 - User role controlled by request parameter</a></h3>
+<p>Applications may determine the user's access rights at login,
+and then store this information in a user-controllable location, that could be:</p>
+<pre data-lang="sh" style="background-color:#151515;color:#e8e8d3;" class="language-sh "><code class="language-sh" data-lang="sh"><span style="color:#888888;"># Hidden field
+</span><span>&lt;input </span><span style="color:#ffb964;">type</span><span>=</span><span style="color:#556633;">&quot;</span><span style="color:#99ad6a;">hidden</span><span style="color:#556633;">&quot; </span><span style="color:#ffb964;">name</span><span>=</span><span style="color:#556633;">&quot;</span><span style="color:#99ad6a;">access_level</span><span style="color:#556633;">&quot; </span><span style="color:#ffb964;">value</span><span>=</span><span style="color:#556633;">&quot;</span><span style="color:#99ad6a;">admin</span><span style="color:#556633;">&quot;</span><span>&gt;
+</span><span>
+</span><span style="color:#888888;"># Cookie
+</span><span style="color:#ffb964;">Cookie:</span><span> Admin=true
+</span><span>
+</span><span style="color:#888888;"># Preset query string parameter
+</span><span style="color:#ffb964;">https://insecure-website.com/login/home.jsp?admin</span><span>=</span><span style="color:#99ad6a;">true
+</span></code></pre>
+<p>Accessing the lab's <code>/admin</code> panel, the <a href="https://developer.mozilla.org/en-US/docs/Web/HTTP/Methods/GET">HTTP GET request</a>
+sets the <code>Admin=false</code> cookie.</p>
+<p><img src="/pictures/articles/portswigger/access-control/lab-3.png" alt="access-control-request-parameter" /></p>
+<p>Setting the cookie's value to <code>true</code> gives us unintended access to the admin
+panel.</p>
+<!-- }}} -->
+<!-- LAB 4 {{{-->
+<h3 id="lab-4-user-id-controlled-by-request-parameter-with-unpredictable-user-ids"><a href="https://portswigger.net/web-security/learning-paths/server-side-vulnerabilities-apprentice/access-control-apprentice/access-control/lab-user-id-controlled-by-request-parameter-with-unpredictable-user-ids">LAB 4 - User ID controlled by request parameter, with unpredictable user IDs</a></h3>
+<p>While browsing the example blog we can stumble upon our victim's blog post
+titled &quot;<em>Identity Theft</em>&quot;.</p>
+<p>Clicking on <code>carlos</code>'s username we can intercept their user GUID parameter
+from the HTTP GET request.</p>
+<p><img src="/pictures/articles/portswigger/access-control/lab-4-1.png" alt="access-control-request-parameter" /></p>
+<p>By modifying the user GUID sent to the server during our own login,
+we can gain access to <code>carlos</code>'s account without knowing their credentials.</p>
+<p><img src="/pictures/articles/portswigger/access-control/lab-4-2.png" alt="access-control-request-parameter" /></p>
+<p>This process results in a horizontal privilege escalation, compromising the
+victim's secret API key.</p>
+<p><img src="/pictures/articles/portswigger/access-control/lab-4-3.png" alt="access-control-request-parameter" /></p>
+<!-- }}} -->
+<!-- LAB 5 {{{-->
+<h3 id="lab-5-user-id-controlled-by-request-parameter-with-password-disclosure"><a href="https://portswigger.net/web-security/learning-paths/server-side-vulnerabilities-apprentice/access-control-apprentice/access-control/lab-user-id-controlled-by-request-parameter-with-password-disclosure">LAB 5 - User ID controlled by request parameter with password disclosure</a></h3>
+<p>After logging in to our user account, the <code>id</code> parameter in the URL
+can be modified from our username to <code>administrator</code>:<br>
+<code>/my-account?id=administrator</code></p>
+<p>The captured HTTP response contains an input field pre-filled
+with the administrator's password in clear text.</p>
+<p><img src="/pictures/articles/portswigger/access-control/lab-5.png" alt="access-control-request-parameter" /></p>
+<!-- }}} -->
+<h2 id="mitigation">Mitigation</h2>
+<p>To remediate Broken Access Control vulnerabilities, developers should</p>
+<ul>
+<li>implement proper authentication</li>
+<li>ensure the principle of <a href="https://en.wikipedia.org/wiki/Principle_of_least_privilege">Least Privilege</a></li>
+<li>use strong session management</li>
+<li>regularly audit access control policies</li>
+<li>conduct access control testing</li>
+<li>implement <a href="https://en.wikipedia.org/wiki/Role-based_access_control">Role-Based Access Control (RBAC)</a></li>
+</ul>
+
+        </div>
+
+        
+        <div class="pagination">
+            <div class="pagination__title">
+                <hr />
+            </div>
+            <div class="pagination__buttons">
+                
+                    <span class="button next">
+                        <a href="https://marcellbarsony.github.io/portswigger-file-upload/">
+                            <span class="button__text">Portswigger - File Upload vulnerabilities</span>&nbsp;
+                    <span class="button__icon">❯</span>
+                        </a>
+                    </span>
+                </div>
+        </div>
+    
+    </div>
+
+    </div>
+
+    <!-- FOOTER -->
+    <!--  -->
+    <!-- <footer class="footer"> -->
+    <!--     <div class="footer__inner"> -->
+    <!-- -->
+    <!--             <div class="copyright copyright--user">My custom&nbsp;<b>copyright</b></div> -->
+    <!--         -->
+    <!--     </div> -->
+    <!-- </footer> -->
+    <!--  -->
+
+</div>
+</body>
+
+</html>

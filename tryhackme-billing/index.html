@@ -1,0 +1,291 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title>I hack things sometimes</title>
+    
+    <meta http-equiv="content-type" content="text/html; charset=utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
+    <meta name="robots" content="noodp"/>
+
+    <link rel="stylesheet" href="https://marcellbarsony.github.io/style.css">
+
+    <link rel="stylesheet" href="https://marcellbarsony.github.io/color/blue.css">
+    <link rel="stylesheet" href="https://marcellbarsony.github.io/font-hack-subset.css">
+
+    <meta name="description" content="">
+
+    <meta property="og:description" content="">
+    <meta property="og:title" content="I hack things sometimes">
+    <meta property="og:type" content="article">
+    <meta property="og:url" content="https://marcellbarsony.github.io/tryhackme-billing/">
+
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:description" content="">
+    <meta name="twitter:title" content="I hack things sometimes">
+    <meta property="twitter:domain" content="marcellbarsony.github.io&#x2F;">
+    <meta property="twitter:url" content="https://marcellbarsony.github.io/tryhackme-billing/">
+
+    </head>
+
+<body class="">
+<div class="container">
+    <!-- HEADER -->
+    
+    <header class="header">
+        <!-- LOGO -->
+        <!-- <div class="header__inner"> -->
+        <!--     <div class="header__logo"> -->
+        <!-- -->
+        <!--              -->
+        <!--         -->
+        <!--         <a href="https://marcellbarsony.github.io/" style="text-decoration: none;"> -->
+        <!--             <div class="logo"> -->
+        <!--                -->
+        <!-- -->
+        <!--                     | | | | | | | | | | -->
+        <!--                 -->
+        <!--                  -->
+        <!--             </div> -->
+        <!--         </a> -->
+        <!--     </div> -->
+        <!-- </div> -->
+
+        
+        
+                <nav class="menu">
+            <ul class="menu__inner">
+                <li class="active"><a href="https://marcellbarsony.github.io/">posts</a></li>
+            
+                <li><a href="https://marcellbarsony.github.io//tags">tags</a></li>
+            
+                <li><a href="https://marcellbarsony.github.io//archive">archive</a></li>
+            
+                <li><a href="https://marcellbarsony.github.io//whoami">whoami</a></li>
+            </ul>
+        </nav>
+    
+    
+        
+    </header>
+    
+
+    <div class="content">
+        
+    <div class="post">
+        
+    <h1 class="post-title"><a href="https://marcellbarsony.github.io/tryhackme-billing/">TryHackMe - Billing</a></h1>
+    <div class="post-meta-inline">
+        
+    <span class="post-date">
+            2025-06-06
+        </span>
+
+    </div>
+
+    
+        <span class="post-tags-inline">
+                ::
+                <a class="post-tag" href="https://marcellbarsony.github.io/tags/tryhackme/">tryhackme</a>&nbsp;::
+            
+                <a class="post-tag" href="https://marcellbarsony.github.io/tags/metasploit/">metasploit</a>&nbsp;::
+            
+                <a class="post-tag" href="https://marcellbarsony.github.io/tags/reverse-shell/">reverse shell</a>&nbsp;::
+            
+                <a class="post-tag" href="https://marcellbarsony.github.io/tags/suid/">suid</a>&nbsp;::
+            
+                <a class="post-tag" href="https://marcellbarsony.github.io/tags/privesc/">privesc</a>&nbsp;::
+            
+        </span>
+    
+
+        <div class="post-content">
+            <p><img src="/pictures/articles/thm/billing/00-cover.png" alt="TODO" /></p>
+<p><strong>Billing</strong> demonstrates how an unpatched vulnerability in MagnusBilling
+can esaily be exxloited to gain remote command execution. This vulnerable machine
+also highlights how a misconfigured instance of Fail2Ban can be used to gain
+root access.</p>
+<span id="continue-reading"></span><h1 id="enumeration">Enumeration</h1>
+<!-- Enumeration {{{-->
+<p>The nmap scan shows that the following ports are open on the target machine:</p>
+<ul>
+<li>22 - OpenSSH</li>
+<li>80 - Apache HTTP Server</li>
+<li>3306 - MySQL (MariaDB)</li>
+</ul>
+<p><img src="/pictures/articles/thm/billing/01-nmap.png" alt="nmap" /></p>
+<p>The default script scan also reveals one disallowed entry in <code>robots.txt</code>.
+When checking it out, a login page is being presented.</p>
+<p><img src="/pictures/articles/thm/billing/02-website.png" alt="website" /></p>
+<p>Poking around on the login page doesn't bring any success, but searching for the
+software (<a href="https://www.magnusbilling.org/">MagnusBilling</a>) being hosted
+reveals that it has a <a href="https://www.rapid7.com/db/modules/exploit/linux/http/magnusbilling_unauth_rce_cve_2023_30258/">vulnerability</a>
+that could potentially be exploited to gain remote command execution.</p>
+<!-- }}} -->
+<h1 id="exploitation">Exploitation</h1>
+<!-- Exploitation {{{-->
+<p>The exploit for (<a href="https://nvd.nist.gov/vuln/detail/CVE-2023-30258">CVE-2023-30258</a>)
+is present in the <a href="https://github.com/rapid7/metasploit-framework">Metasploit Framework</a>.</p>
+<p><img src="/pictures/articles/thm/billing/03-msfconsole.png" alt="site" /></p>
+<p>Searching for <code>magnus</code> gives a result as expected.</p>
+<p><img src="/pictures/articles/thm/billing/04-msf-search.png" alt="msf-search" /></p>
+<p>The local (LHOST) and the remote hosts (RHOST) should be configured to the
+corresponding IPs of the attacking and the target machines.</p>
+<p><img src="/pictures/articles/thm/billing/05-msf-conf.png" alt="msf-conf" /></p>
+<p>Launching the exploit spawns a meterpreter shell on the system allowing commands
+to be executed remotely.</p>
+<p><img src="/pictures/articles/thm/billing/06-msf-run.png" alt="msf-run" /></p>
+<p>The current session runs in the name of the user <code>asterisk</code> with the <code>uid</code> of
+1001.</p>
+<p><img src="/pictures/articles/thm/billing/07-msf-shell.png" alt="msf-shell" /></p>
+<p>The user flag can be retrieved from <code>/home/magnus/user.txt</code>.</p>
+<p><img src="/pictures/articles/thm/billing/08-user-flag.png" alt="user-flag" /></p>
+<!-- }}} -->
+<h1 id="privilege-escalation">Privilege escalation</h1>
+<!-- Privilege escalation {{{-->
+<p>To spawn a proper reverse shell, a netcat listener should be set up to listen to
+the incoming connection on an arbitrary port - <code>1234</code> in this case.</p>
+<p><img src="/pictures/articles/thm/billing/09-nc-listen.png" alt="nc-listen" /></p>
+<p>Connection can be initiated from the target machine back to the attacker.</p>
+<p><img src="/pictures/articles/thm/billing/10-connect.png" alt="connect" /></p>
+<p>Upon capturing the connection, the simple shell can be upgraded to an
+interactive one.</p>
+<p>Spawn a Bash shell using python:</p>
+<pre data-lang="sh" style="background-color:#151515;color:#e8e8d3;" class="language-sh "><code class="language-sh" data-lang="sh"><span style="color:#ffb964;">python3 -c </span><span style="color:#556633;">&#39;</span><span style="color:#99ad6a;">import pty; pty.spawn(&quot;/bin/bash&quot;)</span><span style="color:#556633;">&#39;
+</span></code></pre>
+<p>Set the terminal's type to <code>xterm</code> by setting the <code>TERM</code> environment variable:</p>
+<pre data-lang="sh" style="background-color:#151515;color:#e8e8d3;" class="language-sh "><code class="language-sh" data-lang="sh"><span style="color:#8fbfdc;">export </span><span style="color:#ffb964;">TERM</span><span>=</span><span style="color:#99ad6a;">xterm
+</span></code></pre>
+<p>Suspend the current process with <code>Ctrl + Z</code>.</p>
+<p>Modify the terminal's settings:</p>
+<pre data-lang="sh" style="background-color:#151515;color:#e8e8d3;" class="language-sh "><code class="language-sh" data-lang="sh"><span style="color:#ffb964;">stty</span><span> raw</span><span style="color:#ffb964;"> -echo</span><span>; fg
+</span></code></pre>
+<ul>
+<li><code>raw</code>: Make the terminal work in raw mode to send everything directly to the
+shell.</li>
+<li><code>-echo</code>: Turn off echoing input characters, so typed characters aren't shown
+on the screen.</li>
+<li><code>fg</code>: Bring back the previously suspended process to the foreground.</li>
+</ul>
+<p><img src="/pictures/articles/thm/billing/11-interactive-shell.png" alt="interactive-shell" /></p>
+<p>Issuing <code>sudo -l</code> reveals that it is possible to execute
+<code>/usr/bin/fail2ban-client</code> as the <code>root</code> user.</p>
+<p><img src="/pictures/articles/thm/billing/12-sudo-l.png" alt="sudo-l" /></p>
+<p><a href="https://juggernaut-sec.com/fail2ban-lpe/">Juggernaut-Sec's article</a> discloses
+how Fail2Ban's configuration files could be used to elevate privileges on the
+system.</p>
+<p>As the first step, the aforementioned files should be copied to a temporary
+directory.</p>
+<p><img src="/pictures/articles/thm/billing/13-f2b-conf.png" alt="f2b-conf" /></p>
+<p>Then, the custom configuration files need to be set up in a way, to execute
+a custom action when triggered.</p>
+<p><img src="/pictures/articles/thm/billing/14-f2b-exploit.png" alt="f2b-exploit" /></p>
+<ul>
+<li>
+<p>Create a shell script in <code>/tmp/script</code></p>
+</li>
+<li>
+<p>Copy <code>/bin/bash</code> to <code>/tmp/bash</code> and set the <code>setuid</code> bit</p>
+</li>
+<li>
+<p>Create a custom definition for Fail2Ban</p>
+</li>
+<li>
+<p><code>actionstart</code> triggers <code>/tmp/script</code> upon a failed login attempt</p>
+</li>
+<li>
+<p>Add a custom jail configuration to Fail2Ban</p>
+</li>
+<li>
+<p>Tells Fail2Ban to use the custom action (<code>/tmp/script</code>)</p>
+</li>
+<li>
+<p>Create an empty filter for the custom jail to trigger the jail</p>
+</li>
+</ul>
+<p>Once the exploit has been set up, the Fail2Ban should be called to restart the
+service with the custom configuration.</p>
+<p><img src="/pictures/articles/thm/billing/15-f2b-svc-restart.png" alt="f2b-restart" /></p>
+<p>After calling the service, the SUID binary created at <code>/tmp/bash</code> should be
+executed with the <code>-p</code> flag.</p>
+<p><img src="/pictures/articles/thm/billing/16-root.png" alt="root" /></p>
+<p>The root flag can be read from <code>/root/root.txt</code>.</p>
+<p><img src="/pictures/articles/thm/billing/17-root-flag.png" alt="root-flag" /></p>
+<!-- }}} -->
+<h1 id="mitigation">Mitigation</h1>
+<!-- Mitigation {{{-->
+<ol>
+<li>
+<p>Update MagnusBilling</p>
+<ul>
+<li>Apply security patches to the vulnerable software to address the RCE
+vulnerability</li>
+</ul>
+</li>
+<li>
+<p>Limit Fail2Ban configuration</p>
+<ul>
+<li>Ensure that Fail2Ban configuration files are not writeable by unauthorized
+users</li>
+</ul>
+</li>
+<li>
+<p>Limit SUID binaries</p>
+<ul>
+<li>Prevent unnecessary binaries from having the SUID bit set.</li>
+<li>Implement file integrity monitoring to detect changes to SUID binaries</li>
+</ul>
+</li>
+<li>
+<p>Limit Sudo permissions</p>
+<ul>
+<li>Restrict the usage of <code>sudo</code> to the necessary commands only</li>
+</ul>
+</li>
+</ol>
+<!-- }}} -->
+
+        </div>
+
+        
+        <div class="pagination">
+            <div class="pagination__title">
+                <hr />
+            </div>
+            <div class="pagination__buttons">
+                    <span class="button previous">
+                        <a href="https://marcellbarsony.github.io/tryhackme-lesson-learned/">
+                            <span class="button__icon">‹</span>&nbsp;
+                            <span class="button__text">TryHackMe - Lesson Learned?</span>
+                        </a>
+                    </span>
+                
+                
+                    <span class="button next">
+                        <a href="https://marcellbarsony.github.io/tryhackme-dreaming/">
+                            <span class="button__text">TryHackMe - Dreaming</span>&nbsp;
+                    <span class="button__icon">❯</span>
+                        </a>
+                    </span>
+                </div>
+        </div>
+    
+    </div>
+
+    </div>
+
+    <!-- FOOTER -->
+    <!--  -->
+    <!-- <footer class="footer"> -->
+    <!--     <div class="footer__inner"> -->
+    <!-- -->
+    <!--             <div class="copyright copyright--user">My custom&nbsp;<b>copyright</b></div> -->
+    <!--         -->
+    <!--     </div> -->
+    <!-- </footer> -->
+    <!--  -->
+
+</div>
+</body>
+
+</html>

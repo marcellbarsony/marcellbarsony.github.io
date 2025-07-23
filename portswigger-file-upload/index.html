@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title>I hack things sometimes</title>
+    
+    <meta http-equiv="content-type" content="text/html; charset=utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
+    <meta name="robots" content="noodp"/>
+
+    <link rel="stylesheet" href="https://marcellbarsony.github.io/style.css">
+
+    <link rel="stylesheet" href="https://marcellbarsony.github.io/color/blue.css">
+    <link rel="stylesheet" href="https://marcellbarsony.github.io/font-hack-subset.css">
+
+    <meta name="description" content="">
+
+    <meta property="og:description" content="">
+    <meta property="og:title" content="I hack things sometimes">
+    <meta property="og:type" content="article">
+    <meta property="og:url" content="https://marcellbarsony.github.io/portswigger-file-upload/">
+
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:description" content="">
+    <meta name="twitter:title" content="I hack things sometimes">
+    <meta property="twitter:domain" content="marcellbarsony.github.io&#x2F;">
+    <meta property="twitter:url" content="https://marcellbarsony.github.io/portswigger-file-upload/">
+
+    </head>
+
+<body class="">
+<div class="container">
+    <!-- HEADER -->
+    
+    <header class="header">
+        <!-- LOGO -->
+        <!-- <div class="header__inner"> -->
+        <!--     <div class="header__logo"> -->
+        <!-- -->
+        <!--              -->
+        <!--         -->
+        <!--         <a href="https://marcellbarsony.github.io/" style="text-decoration: none;"> -->
+        <!--             <div class="logo"> -->
+        <!--                -->
+        <!-- -->
+        <!--                     | | | | | | | | | | -->
+        <!--                 -->
+        <!--                  -->
+        <!--             </div> -->
+        <!--         </a> -->
+        <!--     </div> -->
+        <!-- </div> -->
+
+        
+        
+                <nav class="menu">
+            <ul class="menu__inner">
+                <li class="active"><a href="https://marcellbarsony.github.io/">posts</a></li>
+            
+                <li><a href="https://marcellbarsony.github.io//tags">tags</a></li>
+            
+                <li><a href="https://marcellbarsony.github.io//archive">archive</a></li>
+            
+                <li><a href="https://marcellbarsony.github.io//whoami">whoami</a></li>
+            </ul>
+        </nav>
+    
+    
+        
+    </header>
+    
+
+    <div class="content">
+        
+    <div class="post">
+        
+    <h1 class="post-title"><a href="https://marcellbarsony.github.io/portswigger-file-upload/">Portswigger - File Upload vulnerabilities</a></h1>
+    <div class="post-meta-inline">
+        
+    <span class="post-date">
+            2025-05-18
+        </span>
+
+    </div>
+
+    
+        <span class="post-tags-inline">
+                ::
+                <a class="post-tag" href="https://marcellbarsony.github.io/tags/webapp/">webapp</a>&nbsp;::
+            
+                <a class="post-tag" href="https://marcellbarsony.github.io/tags/portswigger/">portswigger</a>&nbsp;::
+            
+                <a class="post-tag" href="https://marcellbarsony.github.io/tags/burp-suite/">burp suite</a>&nbsp;::
+            
+                <a class="post-tag" href="https://marcellbarsony.github.io/tags/server-side/">server-side</a>&nbsp;::
+            
+                <a class="post-tag" href="https://marcellbarsony.github.io/tags/file-upload/">file upload</a>&nbsp;::
+            
+        </span>
+    
+
+        <div class="post-content">
+            <p><img src="/pictures/articles/portswigger/file-upload/file-upload.png" alt="file-upload" /></p>
+<p><strong>File Upload vulnerabilities</strong> occur when an attacker can upload arbitrary
+malicious files to a web server without proper validation.
+This includes insufficient checks on the file's contents, type or size.
+Once uploaded, these files may be executed, potentially causing havoc on the
+web server and on its underlying infrastructure.</p>
+<span id="continue-reading"></span>
+<p>The impact of this vulnerability largely depends on the following two key
+factors:</p>
+<ul>
+<li>Which aspects of the file are not properly validated
+(e.g., contents, type, size, etc.)</li>
+<li>The restrictions applied after the file has been uploaded</li>
+</ul>
+<h2 id="exploitation">Exploitation</h2>
+<!-- LAB 1 {{{-->
+<h3 id="lab-1-remote-code-execution-via-web-shell-upload"><a href="https://portswigger.net/web-security/learning-paths/file-upload-vulnerabilities/exploiting-unrestricted-file-uploads-to-deploy-a-web-shell/file-upload/lab-file-upload-remote-code-execution-via-web-shell-upload">LAB 1 - Remote code execution via web shell upload</a></h3>
+<p>With the credentials <code>wiener:peter</code> we can log in to our own account
+and on our profile there is a feature to upload an avatar.</p>
+<p><img src="/pictures/articles/portswigger/file-upload/lab-1-1.png" alt="file-upload" /></p>
+<p>Once the arbitrary avatar is uploaded, it is possible to intercept the
+requests our browser sends to the server to fetch the picture.</p>
+<p>Intercepting these HTTP <code>GET</code> requests, it's possible to filter them down
+to Image MIME types.</p>
+<p><img src="/pictures/articles/portswigger/file-upload/lab-1-2.png" alt="file-upload" /></p>
+<p>After pinpointing out the responsible request, it could be sent to the Repeater
+so that it can be modified to suit our needs later on.</p>
+<p><img src="/pictures/articles/portswigger/file-upload/lab-1-3.png" alt="file-upload" /></p>
+<p>Due to the absence of proper validation, arbitrary malicious files
+can also be uploaded using the same website functionality.</p>
+<p>Instead of a picture, the following PHP one-liner can also be uploaded
+that will retrieve the target's secret from their home directory:</p>
+<p><img src="/pictures/articles/portswigger/file-upload/lab-1-4.png" alt="file-upload" /></p>
+<p>By replacing the filename of the avatar from the previously captured
+<code>GET</code> request, the content of the malicious script can now be invoked.</p>
+<p><img src="/pictures/articles/portswigger/file-upload/lab-1-5.png" alt="file-upload" /></p>
+<p>The server runs the exploit and sends a response with <code>carlos</code>'s credentials:
+<code>sPOb66xdZJHNIi3hCreeg2QMM0eXGic2</code>.</p>
+<p><img src="/pictures/articles/portswigger/file-upload/lab-1-6.png" alt="file-upload" /></p>
+<!-- }}} -->
+<!-- LAB 2 {{{-->
+<!-- ### [LAB 2 - Web shell upload via Content-Type restriction bypass](https://portswigger.net/web-security/learning-paths/server-side-vulnerabilities-apprentice/file-upload-apprentice/file-upload/lab-file-upload-web-shell-upload-via-content-type-restriction-bypass) -->
+<!-- }}} -->
+<!-- Mitigation {{{-->
+<h2 id="mitigation">Mitigation</h2>
+<ol>
+<li>
+<p>Input Validation &amp; Restriction</p>
+<ul>
+<li>Allow only specific file types and extensions based on a strict allowlist</li>
+<li>Validate file MIME types and magic bytes
+instead of relying solely on extensions</li>
+<li>Reject files with double extensions (e.g., file.php.jpg).</li>
+</ul>
+</li>
+<li>
+<p>Storage &amp; Execution Restrictions</p>
+<ul>
+<li>Never store uploaded files in a web-accessible directory
+(e.g., inside public_html)</li>
+<li>Store files outside the web root or use a cloud storage service</li>
+<li>Disable execution permissions on upload directories
+to prevent running malicious scripts</li>
+</ul>
+</li>
+<li>
+<p>File Size &amp; Content Limitations</p>
+<ul>
+<li>Set maximum file size limits to prevent denial-of-service attacks</li>
+<li>Restrict file uploads by user role or authentication level</li>
+</ul>
+</li>
+<li>
+<p>Secure File Naming &amp; Path Handling</p>
+<ul>
+<li>Generate random file names instead of using user-supplied names
+to prevent overwriting files</li>
+<li>Remove or sanitize metadata from uploaded files
+to prevent information leaks</li>
+<li>Prevent directory traversal attacks by sanitizing file paths</li>
+</ul>
+</li>
+<li>
+<p>Content-Type &amp; Headers Validation</p>
+<ul>
+<li>Validate <code>Content-Type</code> headers and enforce strict response headers</li>
+<li>Use Content-Disposition: attachment to prevent files
+from executing in the browser</li>
+</ul>
+</li>
+<li>
+<p>Implement Strong Authentication &amp; Authorization</p>
+<ul>
+<li>Require authentication before allowing uploads</li>
+<li>Implement role-based access control (RBAC) to restrict upload permissions</li>
+</ul>
+</li>
+<li>
+<p>Log &amp; Monitor File Uploads</p>
+<ul>
+<li>Log all upload attempts, including IP addresses, file names, and users</li>
+<li>Implement alerts for suspicious file types or excessive upload attempts</li>
+</ul>
+</li>
+</ol>
+<!-- }}} -->
+
+        </div>
+
+        
+        <div class="pagination">
+            <div class="pagination__title">
+                <hr />
+            </div>
+            <div class="pagination__buttons">
+                    <span class="button previous">
+                        <a href="https://marcellbarsony.github.io/portswigger-access-control/">
+                            <span class="button__icon">‹</span>&nbsp;
+                            <span class="button__text">Portswigger - Access control vulnerabilities</span>
+                        </a>
+                    </span>
+                
+                
+                    <span class="button next">
+                        <a href="https://marcellbarsony.github.io/portswigger-authentication/">
+                            <span class="button__text">Portswigger - Authentication vulnerabilities</span>&nbsp;
+                    <span class="button__icon">❯</span>
+                        </a>
+                    </span>
+                </div>
+        </div>
+    
+    </div>
+
+    </div>
+
+    <!-- FOOTER -->
+    <!--  -->
+    <!-- <footer class="footer"> -->
+    <!--     <div class="footer__inner"> -->
+    <!-- -->
+    <!--             <div class="copyright copyright--user">My custom&nbsp;<b>copyright</b></div> -->
+    <!--         -->
+    <!--     </div> -->
+    <!-- </footer> -->
+    <!--  -->
+
+</div>
+</body>
+
+</html>

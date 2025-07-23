@@ -1,0 +1,367 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title>I hack things sometimes</title>
+    
+    <meta http-equiv="content-type" content="text/html; charset=utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
+    <meta name="robots" content="noodp"/>
+
+    <link rel="stylesheet" href="https://marcellbarsony.github.io/style.css">
+
+    <link rel="stylesheet" href="https://marcellbarsony.github.io/color/blue.css">
+    <link rel="stylesheet" href="https://marcellbarsony.github.io/font-hack-subset.css">
+
+    <meta name="description" content="">
+
+    <meta property="og:description" content="">
+    <meta property="og:title" content="I hack things sometimes">
+    <meta property="og:type" content="article">
+    <meta property="og:url" content="https://marcellbarsony.github.io/hackthebox-oopsie/">
+
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:description" content="">
+    <meta name="twitter:title" content="I hack things sometimes">
+    <meta property="twitter:domain" content="marcellbarsony.github.io&#x2F;">
+    <meta property="twitter:url" content="https://marcellbarsony.github.io/hackthebox-oopsie/">
+
+    </head>
+
+<body class="">
+<div class="container">
+    <!-- HEADER -->
+    
+    <header class="header">
+        <!-- LOGO -->
+        <!-- <div class="header__inner"> -->
+        <!--     <div class="header__logo"> -->
+        <!-- -->
+        <!--              -->
+        <!--         -->
+        <!--         <a href="https://marcellbarsony.github.io/" style="text-decoration: none;"> -->
+        <!--             <div class="logo"> -->
+        <!--                -->
+        <!-- -->
+        <!--                     | | | | | | | | | | -->
+        <!--                 -->
+        <!--                  -->
+        <!--             </div> -->
+        <!--         </a> -->
+        <!--     </div> -->
+        <!-- </div> -->
+
+        
+        
+                <nav class="menu">
+            <ul class="menu__inner">
+                <li class="active"><a href="https://marcellbarsony.github.io/">posts</a></li>
+            
+                <li><a href="https://marcellbarsony.github.io//tags">tags</a></li>
+            
+                <li><a href="https://marcellbarsony.github.io//archive">archive</a></li>
+            
+                <li><a href="https://marcellbarsony.github.io//whoami">whoami</a></li>
+            </ul>
+        </nav>
+    
+    
+        
+    </header>
+    
+
+    <div class="content">
+        
+    <div class="post">
+        
+    <h1 class="post-title"><a href="https://marcellbarsony.github.io/hackthebox-oopsie/">Hack The Box - Oopsie</a></h1>
+    <div class="post-meta-inline">
+        
+    <span class="post-date">
+            2025-05-29
+        </span>
+
+    </div>
+
+    
+        <span class="post-tags-inline">
+                ::
+                <a class="post-tag" href="https://marcellbarsony.github.io/tags/hackthebox/">hackthebox</a>&nbsp;::
+            
+                <a class="post-tag" href="https://marcellbarsony.github.io/tags/starting-point/">starting point</a>&nbsp;::
+            
+                <a class="post-tag" href="https://marcellbarsony.github.io/tags/idor/">idor</a>&nbsp;::
+            
+                <a class="post-tag" href="https://marcellbarsony.github.io/tags/reverse-shell/">reverse shell</a>&nbsp;::
+            
+                <a class="post-tag" href="https://marcellbarsony.github.io/tags/suid/">suid</a>&nbsp;::
+            
+                <a class="post-tag" href="https://marcellbarsony.github.io/tags/privesc/">privesc</a>&nbsp;::
+            
+        </span>
+    
+
+        <div class="post-content">
+            <p><a href="https://labs.hackthebox.com/achievement/machine/447801/288"><img src="/pictures/articles/htb/oopsie/00-cover.png" alt="TODO" /></a></p>
+<p><strong>Oopsie</strong> is a Linux (Ubuntu) box created to teach the impact of Information
+Disclosure and <a href="https://owasp.org/Top10/A01_2021-Broken_Access_Control/">Broken Access Control</a>
+vulnerabilities and chain together multiple vulnerabilities to escalate
+privileges on the target system.</p>
+<span id="continue-reading"></span><h1 id="enumeration">Enumeration</h1>
+<!-- Enumeration {{{-->
+<p>The <a href="https://nmap.org/">nmap</a> scan shows that the target has port 22
+<a href="https://en.wikipedia.org/wiki/Secure_Shell">SSH</a> open and is running a HTTP
+(web) server on port 80.</p>
+<p><img src="/pictures/articles/htb/oopsie/01-nmap.png" alt="nmap-scan" /></p>
+<ul>
+<li><code>-sC</code>: Script scan</li>
+<li><code>-sV</code>: Version detection</li>
+</ul>
+<p>The web server serves a webpage however, it's just a static website that doesn't
+have much functionality.</p>
+<p><img src="/pictures/articles/htb/oopsie/02-webpage.png" alt="webpage" /></p>
+<p>After setting up a proxy with Burp Suite, the site map reveals that there is a
+hidden login page at <code>/cdn-cgi/login</code>.</p>
+<p><img src="/pictures/articles/htb/oopsie/03-site-map.png" alt="site-map" /></p>
+<p>The username and the corresponding password is unknown, but the site has an
+option to log in as Guest.</p>
+<p><img src="/pictures/articles/htb/oopsie/04-login-page.png" alt="test" /></p>
+<p>After logging in, Burp Suite intercepts a cookie where the user ID is set to
+<code>2233</code> and the role assigned to the session is <code>guest</code>.</p>
+<p><img src="/pictures/articles/htb/oopsie/05-login-cookie.png" alt="test" /></p>
+<p>On the website, there is an option to upload some files, but it requires super
+admin rights.</p>
+<p><img src="/pictures/articles/htb/oopsie/06-uploads.png" alt="test" /></p>
+<p>Also there is an <code>Account</code> option to check the details
+of the currently logged in session.</p>
+<p><img src="/pictures/articles/htb/oopsie/07-account.png" alt="test" /></p>
+<p>In the URL bar, there is an <code>id</code> parameter with the value of <code>2</code>. This value can
+be modified to <code>1</code> that leads to an information disclosure vulnerability
+by revealing the Access ID (<code>34322</code>) of the <code>admin</code> account.</p>
+<p><img src="/pictures/articles/htb/oopsie/08-account.png" alt="test" /></p>
+<p>The cookie stored in the browser for the <code>guest</code> user can now be modified to
+represent the ID (<code>34322</code>) discovered for the <code>admin</code> account - <em>the role
+<code>guest</code> could also be modified to <code>admin</code> however, this seems optional in this
+lab</em>.</p>
+<p><img src="/pictures/articles/htb/oopsie/09-cookie-storage.png" alt="test" /></p>
+<p>The upload functionality is now accessible, which opens the possibility of
+uploading a reverse shell that could potentially be exploited.</p>
+<p><img src="/pictures/articles/htb/oopsie/10-uploads.png" alt="test" /></p>
+<!-- }}} -->
+<h1 id="reverse-shell">Reverse shell</h1>
+<!-- Reverse shell {{{-->
+<p>Let's modify a simple PHP reverse shell so that it will initiate a connection
+back to the attacker machine (<code>10.10.15.124</code>).</p>
+<p><img src="/pictures/articles/htb/oopsie/11-revshell.png" alt="test" /></p>
+<p>The upload of the reverse shell script was successful, but unfortunately,
+there's no indication of where the script was uploaded.</p>
+<p><img src="/pictures/articles/htb/oopsie/12-uploaded.png" alt="test" /></p>
+<p><a href="https://github.com/OJ/gobuster">Gobuster</a> could be used to brute-force
+directories on the site using a word list, and it found a directory named
+<code>/uploads</code>, which has now become a point of interest.</p>
+<p><img src="/pictures/articles/htb/oopsie/13-gobuster.png" alt="test" /></p>
+<p>Prior to calling the reverse shell script in <code>/uploads</code>, a
+<a href="https://hu.wikipedia.org/wiki/Netcat">netcat</a> must be set up to listen to the
+incoming connection.</p>
+<p><img src="/pictures/articles/htb/oopsie/14-netcat.png" alt="test" /></p>
+<ul>
+<li><code>l</code>: Listen mode</li>
+<li><code>v</code>: Verbose mode</li>
+<li><code>n</code>: No DNS resolution</li>
+<li><code>p</code>: Port number</li>
+</ul>
+<p>The reverse shell can be triggered by accessing its URL on the web server.</p>
+<p><img src="/pictures/articles/htb/oopsie/15-query.png" alt="test" /></p>
+<p>Netcat has received the incoming connection and spawned a simple shell.</p>
+<p><img src="/pictures/articles/htb/oopsie/16-connection.png" alt="test" /></p>
+<p>Since <a href="https://www.python.org/">Python</a> is installed on the target, it can be
+utilized to create an interactive shell.</p>
+<p><img src="/pictures/articles/htb/oopsie/17-interactive-shell.png" alt="test" /></p>
+<ul>
+<li><code>c</code>: Run the following Python code in the command line</li>
+<li><code>import pty</code>: Import the pseudo-terminal module</li>
+<li><code>pty.spawn(&quot;/bin/bash&quot;)</code>: Spawn a new process (a Bash shell) and connect it to
+the pseudo-terminal for an interactive session</li>
+</ul>
+<!-- }}} -->
+<h1 id="lateral-movement">Lateral movement</h1>
+<!-- Lateral movement {{{-->
+<p>As the user <code>www-data</code> it is not possible to achieve many things,
+so either lateral movement or a privilege escalation is needed
+to further exploit the system.</p>
+<p>The root directory of the web server (<code>/var/www/</code>) can be investigated for
+plain-text passwords by <a href="https://en.wikipedia.org/wiki/Grep">grepping</a> them for
+the string <code>passw</code>.</p>
+<p><img src="/pictures/articles/htb/oopsie/18-plain-text-password.png" alt="test" /></p>
+<p>After finding a plain-text password for the <code>admin</code> user, the <code>/etc/passwd</code> file
+should be searched to identify existing users on the system.</p>
+<p><img src="/pictures/articles/htb/oopsie/19-users.png" alt="test" /></p>
+<p>Unfortunately, the found password doesn't work for the user named <code>robert</code>.</p>
+<p><img src="/pictures/articles/htb/oopsie/20-failed-attempt.png" alt="test" /></p>
+<p>The script named <code>db.php</code> in fact contains <code>robert</code>'s real password.</p>
+<p><img src="/pictures/articles/htb/oopsie/21-authentication.png" alt="test" /></p>
+<p>The user flag can be found in <code>robert</code>'s home directory, in the file <code>user.txt</code>.</p>
+<p><img src="/pictures/articles/htb/oopsie/22-user-flag.png" alt="test" /></p>
+<!-- }}} -->
+<h1 id="privilege-escalation">Privilege Escalation</h1>
+<!-- Privilege Escalation {{{-->
+<p>Unfortunately, <code>robert</code> is not a member of the <code>wheel</code> group so that this
+account cannot execute commands as sudo.</p>
+<p><img src="/pictures/articles/htb/oopsie/23-privesc-fail.png" alt="test" /></p>
+<ul>
+<li><code>-l</code>: List the user's allowed commands and privileges</li>
+</ul>
+<p>However, the <code>id</code> command shows that <code>robert</code> is the member of the <code>bugtracker</code>
+group which could be investigated further.</p>
+<p><img src="/pictures/articles/htb/oopsie/24-privesc-enum.png" alt="test" /></p>
+<p>The file system can be searched for files belonging to the group <code>bugtracker</code>.</p>
+<p><img src="/pictures/articles/htb/oopsie/25-privesc.png" alt="test" /></p>
+<ul>
+<li><code>/</code>: Search the root directory</li>
+<li><code>-group</code>: Find files belonging to the specified group</li>
+</ul>
+<p>The found file can be enumerated with the <code>ls -al</code> and the <code>file</code> commands.</p>
+<p>The <code>file</code> command reveals that there is a <code>suid</code> set on the found binary.</p>
+<p>SUID (Set owner User ID) is a special permission: A file with SUID set always
+executes as the user who owns the file (<code>root</code>), regardless of which user is
+issuing the command.</p>
+<p><img src="/pictures/articles/htb/oopsie/26-privesc-enum-file.png" alt="test" /></p>
+<p>The binary is accepts user input as a filename which contents will be dumped
+using the <code>cat</code> command.</p>
+<p><img src="/pictures/articles/htb/oopsie/27-privesc-run-file.png" alt="test" /></p>
+<p>Creating a file named <code>cat</code> in the <code>/tmp</code> directory with the content <code>/bin/bash</code>
+and making it executable with the <code>chmod +x cat</code> command will launch a bash
+shell upon execution.</p>
+<p><img src="/pictures/articles/htb/oopsie/28.png" alt="test" /></p>
+<p>To launch the exploit, the <code>/tmp</code> directory needs to be added to the <code>PATH</code>
+environmental variable.</p>
+<p>The <code>PATH</code> environment variable is a list of directories that the shell searches
+through to find the corresponding executable file.</p>
+<p><img src="/pictures/articles/htb/oopsie/29-privesc-path.png" alt="test" /></p>
+<p>Launching <code>bugtracker</code> from the <code>/tmp</code> directory will spawn a root shell and
+escalate privileges on the system.</p>
+<p><img src="/pictures/articles/htb/oopsie/30-privesc.png" alt="test" /></p>
+<p>The <code>root</code> flag can be found in the <code>/root/root.txt</code>.</p>
+<p><img src="/pictures/articles/htb/oopsie/31-root-flag-open.png" alt="test" /></p>
+<p>The contents of the file cannot be viewed with <code>cat</code> so I opened it with
+<a href="https://www.vim.org/">vim</a>.</p>
+<p><img src="/pictures/articles/htb/oopsie/32-root-flag.png" alt="test" /></p>
+<p>By obtaining the root flag the machine is
+<a href="https://www.hackthebox.com/achievement/machine/447801/288">pwned</a>.</p>
+<!-- }}} -->
+<h1 id="mitigation">Mitigation</h1>
+<!-- Mitigation {{{-->
+<ol>
+<li>
+<p>Hidden login page</p>
+<ul>
+<li>The hidden login page should be protected with additional layers of
+security (VPN, IP whitelisting, etc.)</li>
+</ul>
+</li>
+<li>
+<p>Weak session management</p>
+<ul>
+<li>Session cookies can be intercepted and modified to manipulate user roles
+and gain unauthorized access</li>
+<li>Use proper session management mechanisms (regenerate session IDs upon
+login or role change)</li>
+<li>Sanitize and validate user inputs, including URL parameters and cookies</li>
+<li>Use secure cookies with the <code>Secure</code> and <code>HttpOnly</code> flags</li>
+</ul>
+</li>
+<li>
+<p>File upload vulnerability</p>
+<ul>
+<li>Validate uploaded files and only allow the required file types</li>
+<li>Store uploaded files outside the web root or disable execution scripts in
+upload directories</li>
+<li>Enforce antivirus scanning on uploaded files</li>
+</ul>
+</li>
+<li>
+<p>Directory brute-force</p>
+<ul>
+<li>Ensure directory indexing is disabled</li>
+<li>Use a WAF (Web Application Firewall) to block or rate-limit brute-force
+attempts</li>
+</ul>
+</li>
+<li>
+<p>Insecure reverse shell trigger</p>
+<ul>
+<li>Ensure internal networks are segmented from production systems</li>
+<li>Restrict outbound traffic for web servers to prevent reverse shell
+connections</li>
+</ul>
+</li>
+<li>
+<p>Plain-text password disclosure</p>
+<ul>
+<li>Avoid storing clear-text password and use strong encryption algorithms to
+hash passwords</li>
+<li>Use secrets management to securely store passwords</li>
+</ul>
+</li>
+<li>
+<p>SUID binary exploit</p>
+<ul>
+<li>Minimize the use of SUID binaries</li>
+<li>Monitor files with SUID set to ensure they are necessary and secure</li>
+<li>Use file integrity monitoring to detect changes to sensitive binaries</li>
+</ul>
+</li>
+<li>
+<p>Path manipulation</p>
+<ul>
+<li>Do not allow users to modify system environmental variables</li>
+<li>Limit the set of commands a user can run with sudo</li>
+</ul>
+</li>
+</ol>
+<!-- }}} -->
+
+        </div>
+
+        
+        <div class="pagination">
+            <div class="pagination__title">
+                <hr />
+            </div>
+            <div class="pagination__buttons">
+                    <span class="button previous">
+                        <a href="https://marcellbarsony.github.io/hackthebox-archetype/">
+                            <span class="button__icon">‹</span>&nbsp;
+                            <span class="button__text">Hack The Box - Archetype</span>
+                        </a>
+                    </span>
+                
+                
+                    <span class="button next">
+                        <a href="https://marcellbarsony.github.io/hackthebox-vaccine/">
+                            <span class="button__text">Hack The Box - Vaccine</span>&nbsp;
+                    <span class="button__icon">❯</span>
+                        </a>
+                    </span>
+                </div>
+        </div>
+    
+    </div>
+
+    </div>
+
+    <!-- FOOTER -->
+    <!--  -->
+    <!-- <footer class="footer"> -->
+    <!--     <div class="footer__inner"> -->
+    <!-- -->
+    <!--             <div class="copyright copyright--user">My custom&nbsp;<b>copyright</b></div> -->
+    <!--         -->
+    <!--     </div> -->
+    <!-- </footer> -->
+    <!--  -->
+
+</div>
+</body>
+
+</html>

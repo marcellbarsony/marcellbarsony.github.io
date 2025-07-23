@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title>I hack things sometimes</title>
+    
+    <meta http-equiv="content-type" content="text/html; charset=utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
+    <meta name="robots" content="noodp"/>
+
+    <link rel="stylesheet" href="https://marcellbarsony.github.io/style.css">
+
+    <link rel="stylesheet" href="https://marcellbarsony.github.io/color/blue.css">
+    <link rel="stylesheet" href="https://marcellbarsony.github.io/font-hack-subset.css">
+
+    <meta name="description" content="">
+
+    <meta property="og:description" content="">
+    <meta property="og:title" content="I hack things sometimes">
+    <meta property="og:type" content="article">
+    <meta property="og:url" content="https://marcellbarsony.github.io/portswigger-directory-traversal/">
+
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:description" content="">
+    <meta name="twitter:title" content="I hack things sometimes">
+    <meta property="twitter:domain" content="marcellbarsony.github.io&#x2F;">
+    <meta property="twitter:url" content="https://marcellbarsony.github.io/portswigger-directory-traversal/">
+
+    </head>
+
+<body class="">
+<div class="container">
+    <!-- HEADER -->
+    
+    <header class="header">
+        <!-- LOGO -->
+        <!-- <div class="header__inner"> -->
+        <!--     <div class="header__logo"> -->
+        <!-- -->
+        <!--              -->
+        <!--         -->
+        <!--         <a href="https://marcellbarsony.github.io/" style="text-decoration: none;"> -->
+        <!--             <div class="logo"> -->
+        <!--                -->
+        <!-- -->
+        <!--                     | | | | | | | | | | -->
+        <!--                 -->
+        <!--                  -->
+        <!--             </div> -->
+        <!--         </a> -->
+        <!--     </div> -->
+        <!-- </div> -->
+
+        
+        
+                <nav class="menu">
+            <ul class="menu__inner">
+                <li class="active"><a href="https://marcellbarsony.github.io/">posts</a></li>
+            
+                <li><a href="https://marcellbarsony.github.io//tags">tags</a></li>
+            
+                <li><a href="https://marcellbarsony.github.io//archive">archive</a></li>
+            
+                <li><a href="https://marcellbarsony.github.io//whoami">whoami</a></li>
+            </ul>
+        </nav>
+    
+    
+        
+    </header>
+    
+
+    <div class="content">
+        
+    <div class="post">
+        
+    <h1 class="post-title"><a href="https://marcellbarsony.github.io/portswigger-directory-traversal/">Portswigger - Directory traversal vulnerabilities</a></h1>
+    <div class="post-meta-inline">
+        
+    <span class="post-date">
+            2025-05-21
+        </span>
+
+    </div>
+
+    
+        <span class="post-tags-inline">
+                ::
+                <a class="post-tag" href="https://marcellbarsony.github.io/tags/webapp/">webapp</a>&nbsp;::
+            
+                <a class="post-tag" href="https://marcellbarsony.github.io/tags/portswigger/">portswigger</a>&nbsp;::
+            
+                <a class="post-tag" href="https://marcellbarsony.github.io/tags/burp-suite/">burp suite</a>&nbsp;::
+            
+                <a class="post-tag" href="https://marcellbarsony.github.io/tags/server-side/">server-side</a>&nbsp;::
+            
+                <a class="post-tag" href="https://marcellbarsony.github.io/tags/directory-traversal/">directory traversal</a>&nbsp;::
+            
+                <a class="post-tag" href="https://marcellbarsony.github.io/tags/path-traversal/">path traversal</a>&nbsp;::
+            
+        </span>
+    
+
+        <div class="post-content">
+            <p><img src="/pictures/articles/portswigger/directory-traversal/directory-traversal.svg" alt="directory-traversal" /></p>
+<p><strong>Directory traversal</strong> (or path traversal) vulnerabilities enable attackers to read
+arbitrary files (e.g.: application source code, credentials and other  other
+sensitive data) on the web application server. These vulnerabilities exist when
+applications don't handle user-supplied input properly in the file paths. By
+modifying the client's request, attackers can trick the web application into
+accessing files outside its intended location by basically hitchhiking through
+directories.</p>
+<span id="continue-reading"></span><h2 id="exploitation">Exploitation</h2>
+<!-- LAB 1 {{{-->
+<h3 id="lab-1-file-path-traversal-simple-case"><a href="https://portswigger.net/web-security/learning-paths/server-side-vulnerabilities-apprentice/path-traversal-apprentice/file-path-traversal/lab-simple">LAB 1 - File path traversal, simple case</a></h3>
+<p>The example web shop application loads an image using the following HTML code:</p>
+<pre data-lang="html" style="background-color:#151515;color:#e8e8d3;" class="language-html "><code class="language-html" data-lang="html"><span>&lt;</span><span style="color:#ffb964;">img src</span><span>=</span><span style="color:#556633;">&quot;</span><span style="color:#99ad6a;">/loadImage?filename=21.png</span><span style="color:#556633;">&quot;</span><span>&gt;
+</span></code></pre>
+<p>The <code>loadImage</code> URL takes a <code>filename</code> parameter (<code>21.png</code>) and returns the
+contents of the specified file.</p>
+<p>With Burp Suite this <a href="https://developer.mozilla.org/en-US/docs/Web/HTTP/Methods/GET">HTTP GET request</a>
+can be intercepted and modified to retrieve the <code>/etc/passwd</code> file from the
+server.</p>
+<p><img src="/pictures/articles/portswigger/directory-traversal/directory-traversal_request.png" alt="directory-traversal_burp" /></p>
+<p>The HTTP response includes the contents of the aforementioned file that is
+storing essential information about the user accounts utilized on the server
+such as</p>
+<ul>
+<li>the username,</li>
+<li>user ID,</li>
+<li>group ID,</li>
+<li>home directory,</li>
+<li>and default shell.</li>
+</ul>
+<p><img src="/pictures/articles/portswigger/directory-traversal/directory-traversal_response.png" alt="directory-traversal_response_burp" /></p>
+<!--}}}-->
+<h2 id="mitigation">Mitigation</h2>
+<!-- Mitigation {{{-->
+<p>To mitigate such vulnerabilities, <strong>developers should never blindly trust
+user-supplied inputs</strong> that could potentially interact with the file system API,
+and must implement robust validation techniques such as</p>
+<ul>
+<li>input sanitizing,</li>
+<li>directory whitelisting,</li>
+<li>path canonicalization,</li>
+<li>or limiting permissions (least privilege principle).</li>
+</ul>
+<!-- }}} -->
+
+        </div>
+
+        
+        <div class="pagination">
+            <div class="pagination__title">
+                <hr />
+            </div>
+            <div class="pagination__buttons">
+                    <span class="button previous">
+                        <a href="https://marcellbarsony.github.io/portswigger-ssrf/">
+                            <span class="button__icon">‹</span>&nbsp;
+                            <span class="button__text">Portswigger - Server-Side Request Forgery [SSRF]</span>
+                        </a>
+                    </span>
+                
+                
+                    <span class="button next">
+                        <a href="https://marcellbarsony.github.io/portswigger-os-command-injection/">
+                            <span class="button__text">Portswigger - OS command injection</span>&nbsp;
+                    <span class="button__icon">❯</span>
+                        </a>
+                    </span>
+                </div>
+        </div>
+    
+    </div>
+
+    </div>
+
+    <!-- FOOTER -->
+    <!--  -->
+    <!-- <footer class="footer"> -->
+    <!--     <div class="footer__inner"> -->
+    <!-- -->
+    <!--             <div class="copyright copyright--user">My custom&nbsp;<b>copyright</b></div> -->
+    <!--         -->
+    <!--     </div> -->
+    <!-- </footer> -->
+    <!--  -->
+
+</div>
+</body>
+
+</html>

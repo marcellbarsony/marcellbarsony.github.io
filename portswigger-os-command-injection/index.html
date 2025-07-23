@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title>I hack things sometimes</title>
+    
+    <meta http-equiv="content-type" content="text/html; charset=utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
+    <meta name="robots" content="noodp"/>
+
+    <link rel="stylesheet" href="https://marcellbarsony.github.io/style.css">
+
+    <link rel="stylesheet" href="https://marcellbarsony.github.io/color/blue.css">
+    <link rel="stylesheet" href="https://marcellbarsony.github.io/font-hack-subset.css">
+
+    <meta name="description" content="">
+
+    <meta property="og:description" content="">
+    <meta property="og:title" content="I hack things sometimes">
+    <meta property="og:type" content="article">
+    <meta property="og:url" content="https://marcellbarsony.github.io/portswigger-os-command-injection/">
+
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:description" content="">
+    <meta name="twitter:title" content="I hack things sometimes">
+    <meta property="twitter:domain" content="marcellbarsony.github.io&#x2F;">
+    <meta property="twitter:url" content="https://marcellbarsony.github.io/portswigger-os-command-injection/">
+
+    </head>
+
+<body class="">
+<div class="container">
+    <!-- HEADER -->
+    
+    <header class="header">
+        <!-- LOGO -->
+        <!-- <div class="header__inner"> -->
+        <!--     <div class="header__logo"> -->
+        <!-- -->
+        <!--              -->
+        <!--         -->
+        <!--         <a href="https://marcellbarsony.github.io/" style="text-decoration: none;"> -->
+        <!--             <div class="logo"> -->
+        <!--                -->
+        <!-- -->
+        <!--                     | | | | | | | | | | -->
+        <!--                 -->
+        <!--                  -->
+        <!--             </div> -->
+        <!--         </a> -->
+        <!--     </div> -->
+        <!-- </div> -->
+
+        
+        
+                <nav class="menu">
+            <ul class="menu__inner">
+                <li class="active"><a href="https://marcellbarsony.github.io/">posts</a></li>
+            
+                <li><a href="https://marcellbarsony.github.io//tags">tags</a></li>
+            
+                <li><a href="https://marcellbarsony.github.io//archive">archive</a></li>
+            
+                <li><a href="https://marcellbarsony.github.io//whoami">whoami</a></li>
+            </ul>
+        </nav>
+    
+    
+        
+    </header>
+    
+
+    <div class="content">
+        
+    <div class="post">
+        
+    <h1 class="post-title"><a href="https://marcellbarsony.github.io/portswigger-os-command-injection/">Portswigger - OS command injection</a></h1>
+    <div class="post-meta-inline">
+        
+    <span class="post-date">
+            2025-05-22
+        </span>
+
+    </div>
+
+    
+        <span class="post-tags-inline">
+                ::
+                <a class="post-tag" href="https://marcellbarsony.github.io/tags/webapp/">webapp</a>&nbsp;::
+            
+                <a class="post-tag" href="https://marcellbarsony.github.io/tags/portswigger/">portswigger</a>&nbsp;::
+            
+                <a class="post-tag" href="https://marcellbarsony.github.io/tags/burp-suite/">burp suite</a>&nbsp;::
+            
+                <a class="post-tag" href="https://marcellbarsony.github.io/tags/server-side/">server-side</a>&nbsp;::
+            
+                <a class="post-tag" href="https://marcellbarsony.github.io/tags/os-command-injection/">os command injection</a>&nbsp;::
+            
+        </span>
+    
+
+        <div class="post-content">
+            <p><img src="/pictures/articles/portswigger/os-command-injection/os-command-injection.svg" alt="os-command-injection" /></p>
+<p><strong>OS command injection</strong> (also known as shell injection) allows an attacker to
+manipulate user input to execute arbitrary operating system commands on the
+server running the web application. This often occurs when an application
+improperly passes unsanitized to system functions like <code>exec()</code>, <code>system()</code>,
+<code>popen()</code>, or relies on shell commands for functionality
+without proper input validation.</p>
+<span id="continue-reading"></span><h2 id="exploitation">Exploitation</h2>
+<!-- LAB 1 {{{-->
+<h3 id="lab-1-os-command-injection-simple-case"><a href="https://portswigger.net/web-security/learning-paths/server-side-vulnerabilities-apprentice/os-command-injection-apprentice/os-command-injection/lab-simple">LAB 1 - OS command injection, simple case</a></h3>
+<p>The Giant Enter Key is back again! With the <code>Check stock</code> feature,
+it is possible to query the webshop's stock information.</p>
+<p><img src="/pictures/articles/portswigger/os-command-injection/lab-1-1.png" alt="os-command-injection" /></p>
+<p>Burp Suite's proxy can intercept this user-controllable request:
+the <code>storeId</code> parameter appears to be vulnerable to shell injection,
+allowing modification to execute arbitrary commands on the server's
+operating system. By appending the
+<a href="https://en.wikipedia.org/wiki/Whoami">whoami</a> command, we can determine
+the user context in which the server executes commands.</p>
+<p><img src="/pictures/articles/portswigger/os-command-injection/lab-1-2.png" alt="os-command-injection" /></p>
+<p>The reason behind why the pipe (<code>|</code>) symbol should be used instead of the
+ampersand (<code>&amp;</code>) is that <code>whoami</code> doesn't accept anything in standard input yet
+still executes, even if the command beforehand fails or has no meaningful
+output.</p>
+<!-- }}} -->
+<h2 id="mitigation">Mitigation</h2>
+<!-- Mitigation {{{-->
+<ol>
+<li>Avoid Directly Executing User Input</li>
+</ol>
+<ul>
+<li>Use safer alternatives like built-in APIs instead of system commands</li>
+</ul>
+<ol start="2">
+<li>Use Parameterized Commands</li>
+</ol>
+<ul>
+<li>Implement safe command execution methods (e.g., subprocess.run([...], check=True)
+in Python with arguments as lists).</li>
+</ul>
+<ol start="3">
+<li>Input Validation &amp; Allowlisting:</li>
+</ol>
+<ul>
+<li>Accept only predefined and expected input values;
+reject special characters (; | &amp; $).</li>
+</ul>
+<ol start="4">
+<li>Least Privilege Principle</li>
+</ol>
+<ul>
+<li>Run applications with minimal system privileges to reduce the impact of exploitation.</li>
+</ul>
+<ol start="5">
+<li>Disable Unnecessary System Commands</li>
+</ol>
+<ul>
+<li>Restrict access to dangerous shell utilities (e.g., sh, bash, cmd.exe).</li>
+</ul>
+<ol start="6">
+<li>Use Web Application Firewalls (WAFs)</li>
+</ol>
+<ul>
+<li>Deploy WAFs to detect and block suspicious input patterns.</li>
+</ul>
+<!-- }}} -->
+
+        </div>
+
+        
+        <div class="pagination">
+            <div class="pagination__title">
+                <hr />
+            </div>
+            <div class="pagination__buttons">
+                    <span class="button previous">
+                        <a href="https://marcellbarsony.github.io/portswigger-directory-traversal/">
+                            <span class="button__icon">‹</span>&nbsp;
+                            <span class="button__text">Portswigger - Directory traversal vulnerabilities</span>
+                        </a>
+                    </span>
+                
+                
+                    <span class="button next">
+                        <a href="https://marcellbarsony.github.io/portswigger-sql-injection/">
+                            <span class="button__text">Portswigger - SQL injection</span>&nbsp;
+                    <span class="button__icon">❯</span>
+                        </a>
+                    </span>
+                </div>
+        </div>
+    
+    </div>
+
+    </div>
+
+    <!-- FOOTER -->
+    <!--  -->
+    <!-- <footer class="footer"> -->
+    <!--     <div class="footer__inner"> -->
+    <!-- -->
+    <!--             <div class="copyright copyright--user">My custom&nbsp;<b>copyright</b></div> -->
+    <!--         -->
+    <!--     </div> -->
+    <!-- </footer> -->
+    <!--  -->
+
+</div>
+</body>
+
+</html>
